@@ -1,4 +1,5 @@
 http://www.digifail.com/index.shtml
+http://www.digifail.com/fails/btcrib.shtml
 http://www.digifail.com/fails/gccluster.shtml
 http://www.digifail.com/fails/serial.shtml
 http://www.digifail.com/fails/xboxmod.shtml
@@ -29,5 +30,6 @@ http://www.digifail.com/text/chromeos.shtml
 http://www.digifail.com/text/droidhacking.shtml
 http://www.digifail.com/text/btprimer.shtml
 http://www.digifail.com/text/guides.shtml
+http://www.digifail.com/text/spacehackers.shtml
 http://www.digifail.com/text/wfchack.shtml
 http://www.digifail.com/misc/links.html
