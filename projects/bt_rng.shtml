@@ -1,0 +1,415 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - Bluetooth PRNG</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Linux,cluster,multithreaded,BlueZ,Bluetooth,Bash,entropy,Spectra,ENT,PRNG" />
+<meta name="description" content="Generating random numbers using USB Bluetooth adapters" />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="right"><img src="/images/projects/btrng1.jpg" alt="Dice" /></span>
+<h1>bt_rng</h1>
+<b>
+&nbsp; &nbsp; &nbsp; &nbsp;Platform: GNU/Linux
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Language: C
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;License: GPLv2
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Dependencies: BlueZ
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Development Progress:
+(<a href="https://github.com/MS3FGX/bt_rng">github</a>)
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Latest Stable Release: 2.1
+(<a href="ftp://ftp.digifail.com/downloads/software/bt_rng/bt_rng-2.1.tar.gz">Download</a>)
+</b>
+<h1>Initial Idea</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;During the course of my Bluetooth security research,
+I found that the BlueZ utility bccmd could be used to poll a Bluetooth adapter
+based on the Cambridge Silicon Radio (CSR) chipset for a random number.
+Bluetooth devices use random numbers as part of the pairing process, to
+generate initialization keys based on the user's PIN and the MAC addresses of
+the devices pairing. With bccmd you can direct a specific Bluetooth adapter to
+generate a random number on the fly, which is reported back to the software.
+<p>
+Now, I wasn't going to lie to myself. I was positive pretty much from the
+start that the pseudorandom number generator (PRNG) in a Bluetooth adapter is
+probably not very good, and would be unlikely to outperform a decent PRNG
+algorithm on the computer. But I couldn't help but be curious about just
+<i>how well</i> the PRNG in one of these devices could perform. Even if it
+didn't outperform the operating system's built-in PRNG, it had a certain
+advantage of being a dedicated piece of hardware. In theory, the generation of
+random numbers in an external device, even if it is only a software PRNG
+running on it, is slightly more secure than using the default OS's PRNG, if for
+no other reason than the fact that it is not part of the OS itself. It should
+be less susceptible to the environmental factors that can hinder the
+effectiveness of the OS's generator. For example, Linux's PRNG uses things like
+keyboard and mouse activity to generate entropy, but what if the machine is
+headless? By pushing random number generation to another device, even if the
+objective quality of the numbers is no better, it may still be less prone to
+attack.
+<p>
+Also, the PRNG in some software implementations and operating systems is not
+very good in the first place. For example, take a look at this interesting
+discovery about the
+<a href="http://www.boallen.com/random-numbers.html" target="_blank">PHP rand() function on Windows</a>.
+To be fair, this was a combination of a few problems, but it does show how
+PRNGs that are actively being used in the field can end up being defective.
+In these cases, the Bluetooth PRNG could conceivably <i>outperform</i>
+what is already in place. 
+<p>
+But really, the biggest draw here was the fact that devices with the CSR
+chipset can be had for as little as $3 shipped from retailers like
+DealExtreme. Having a dedicated PRNG hardware device for $3, even one that
+isn't terribly good, is just too cool not to look into.
+<h1>Supported Hardware</h1>
+<span class="right"><img src="/images/projects/btrng2.jpg" alt="Devices" /></span>
+&nbsp; &nbsp; &nbsp; &nbsp;In theory, this should work with any Bluetooth USB
+adapter based on the CSR chipset, but in my testing I found that some adapters
+simply wouldn't return any data when queried. I was never able to find out the
+exact reason for this, so there is a bit of luck involved with finding hardware
+that will work consistently with these methods. In my own testing, I used 2
+<a href="/hardware/hostxr.shtml">AIRcable XR's</a>, and SKUs
+<a href="http://www.dealextreme.com/details.dx/sku.11825~r.58964868" target="_blank">11825</a>,
+<a href="http://www.dealextreme.com/details.dx/sku.16229~r.58964868" target="_blank">16229</a>,
+and <a href="http://www.dealextreme.com/details.dx/sku.12696~r.58964868" target="_blank">12696</a>
+from DealExtreme.
+<p>
+If you are going to buy hardware to experiment with, I would probably suggest
+SKU 16229; it is the cheapest option I have found but out of all the devices I
+tested had the most unreliable performance. With DX's BULKRATE program, you can
+get 10 of these shipped for under $30, which is good, because you are going to
+want multiples in case some of them don't want to play nice. If you are into
+Bluetooth research in general and are going to do other things with it, it is
+worth it to get a second-hand Host XR on eBay. The Host XR was easily the most
+reliable out of all the devices I used.
+<p>
+Besides the devices shown here, I have done some (minimal) testing with the
+internal Bluetooth devices in Dell laptops, and found those to work fairly
+well. If anyone tries to duplicate these results on their own, I would be
+interested in hearing about what devices you used and how reliable they were.
+<h1>Proof of Concept</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;As a quick proof of concept, I wrote up a very
+simple little Bash script to call bccmd a few times and run the output through
+awk and sed to isolate the random number. Usually, the output of bccmd looks
+something like this:
+<pre><code>bash:~# bccmd rand
+Random number: 0x69e (1694)
+</code></pre>
+Using the following Bash script (I am not very good with sed, please don't
+laugh at me), we can demonstrate generating a string of random data from the
+adapter:
+<pre><code>#!/bin/sh
+#
+# Test script to generate random numbers from CSR dongle
+
+CMD="~/Research/Bluetooth/tools/bccmd"
+
+clear
+for (( c=1; c<=10; c++ ))
+do
+	echo -n `$CMD rand | awk '{print $4}' | sed 's/.\(.*\)/\1/' | \
+       		sed 's/\(.*\)./\1/'`
+done
+echo ""
+echo "Done"
+</code></pre>
+The output of this script, which will (hopefully...) look different on your
+machine, will be something like this:
+<pre><code>bash:~# ./btrng.sh
+4350632454361813338057937354844449441131998020638
+Done
+</code></pre>
+So now that the method is sound, it is only a matter of generating enough
+potentially random numbers to analyze, right? Well, let's see, how about we
+modify that script a bit, and instead of outputting to the terminal we redirect
+the command to a file, "rand.txt". Then let's say as a test we change the
+number of times to run the command to 1000. Let's take a look at the output
+from the new code:
+<pre><code>bash:~# time ./btrng.sh
+Working...
+Loop 1000 of 1000
+Done
+
+real    0m29.994s
+user    0m3.592s
+sys     0m6.219s
+bash:~# wc -m ./rand.txt
+4854
+</code></pre>
+<i>Oh</i>. So it took just shy of 30 seconds to generate about 4,800 random
+digits. Now, considering any real analysis of random numbers takes
+<i>millions</i> of digits to even approach statistical accuracy, we have a
+little bit of a problem on our hands. At this rate, it would take nearly two
+hours to create just 1 million digits, which still isn't enough to do any
+serious testing with.
+<p>
+Clearly I had an issue. I proved that random numbers could be pulled en masse
+from a bog-standard Bluetooth adapter, but the rate at which this Bash script
+was doing it was way too low for a statistical analysis. I needed to do it much
+much faster, and when you need speed you certainly don't want Bash. Rather
+reluctantly, as I am not a terribly good nor experienced programmer, I came to
+realize the only way to get the speed I needed was to open up the source for
+bccmd itself, and modify it.
+<h1>The Joy of Open Source</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Getting the source for bccmd was easy enough, I just
+got it from the Slackware /source directory on my nearest mirror (which happens
+to be about 10 feet from where I am sitting). I used bccmd from the BlueZ 3.x
+branch, as that is what I do all of my testing and work with.
+<p>
+Opening up bccmd.c showed me all of the functions that bccmd is able to
+perform, and it wasn't much of a problem to strip the functions and
+capabilities I didn't need. As I test I simply had it loop the cmd_rand
+function 1000 times as in the Bash example:
+<pre><code>bash:~# time ./bccmd_test
+Random number: 0xd475 (54389)
+Random number: 0xbb9d (48029)
+
+...
+
+Random number: 0x3189 (12681)
+Random number: 0x7902 (30978)
+Done!
+
+real	0m16.007s
+user	0m0.017s
+sys	0m0.039s
+</code></pre>
+Ah, now that was more like it. It took the modified bccmd almost half the time
+to run 1000 iterations as did the simple Bash proof of concept. I began work
+refining my little modification, until it rapidly turned into a complete
+rewrite, keeping only the one or two functions that provided the BlueZ
+transport and commands. bt_rng was born.
+<h1>Multiplicity</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;I realized pretty early on that the biggest problem
+with using Bluetooth adapters as a source of random number was that the adapter
+takes it's sweet time responding no matter how fast the computer itself is. I
+am not sure if the delay is in BlueZ, or the processing time it takes the
+meager adapter's hardware to calculate a number (probably a bit of both), but I
+know that it is the absolute speed-limit. So if one adapter can only output
+data at a specific rate...the only way to get data faster would be to use more
+adapters.
+<p>
+To do this I needed to make bt_rng multithreading. Basically, the function
+that requests a random number from the adapter would break off from the main
+program and run on it's own in the background. The main program could then
+spawn another copy of the function, or thread, pointing at a different adapter.
+Assuming BlueZ could hold it together, I figured it would be possible to poll
+at least 2 adapters simultaneously, and possibly more. Though from my previous
+research I knew BlueZ seems to destabilize once you get more than 2 or 3
+Bluetooth devices in the same machine.
+<p>
+This was a fine idea, but the only problem was I never wrote a multithreaded
+application before. As I mentioned earlier, I am not a terribly good programmer
+either, so I was worried that my inexperience and lack of skill would be
+enough to stop this concept dead in it's tracks. But luckily for me I found
+<a href="http://softpixel.com/~cwright/programming/threads/threads.c.php" target="_blank">this excellent page</a>
+which gave a very clear overview on how to do multithreaded applications
+in a standards-compliant way. After only a few tries, I had a basic
+multithreaded version of bt_rng up and running.
+<p>
+As I expected, past a 2 adapters things start to get a little shaky, and
+devices start to time out. bt_rng supports and can work with up to 4 threads on
+4 separate devices, but I have found that 2 seems to give the best balance of
+performance and stability. Any more, and the auto-correction routine (which
+involves throttling down the thread) tends to slow down overall performance.
+<p>
+Let's take a look at how long it takes to do 1000 iterations with 2 devices:
+<pre><code>bash:~# time ./bt_rng -t 2 -i 1000
+bt_rng Proof of Concept
+---------------------------
+Running 1000 iterations on 2 threads. Mode: Integer
+Initalizing device: hci0 on thread 0
+Initalizing device: hci1 on thread 1
+Thread 1 autocorrection - Retry: 1 Old: 29066, New: 29066
+Thread 0 done.
+Thread 1 autocorrection - Retry: 2 Old: 29066, New: 51308
+Thread 1 done.
+Main Done.
+
+real	0m10.467s
+user	0m0.009s
+sys	0m0.021s
+</code></pre>
+As you can see, performance is up a bit. Two devices during 500 iterations each
+completes in about 10.5 seconds, compared to 16 seconds for a single device.
+This is not completely unexpected, but still disappointing. The auto-correction
+adds a few seconds to overall runtime, which is unfortunately a necessary evil.
+Auto-correction only becomes more frequent as the number of devices increases,
+so runtime actually gets worse with too many devices going at once. This was
+certainly better than the old code, but was fundamentally flawed; if I couldn't
+run more than 2 devices on a machine without incurring performance penalties,
+there was only one other option.
+<h1>Divide and Conquer</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;If I was limited to 2 devices per machine, then the
+next step was to run 2 devices on <i>multiple</i> machines at the same time. I
+am sure a more experienced programmer would have built some parallel processing
+functions into the application itself, but my solution was a little more
+mundane. I would simply export the bt_rng program over NFS, and have multiple
+client machines execute it from there. As all of them will be writing to the
+same output file on the NFS export, they will be collectively working together
+to overcome the issues incurred running multiple devices on each machine.
+<p>
+In addition, as each client will have opened the file in append mode there will
+be an interleaving effect due to multiple processes writing to the same file
+simultaneously. In other words, node 1 might inject it's data into the output
+file chronologically after node 4, but before node 3. In theory, this should
+help to compensate for any bias in one particular adapter or node.
+<p>
+Running bt_rng on a cluster is the only way to generate large amounts of random
+data in a realistic time frame, but it is still by no means quick. The previous
+examples showed us that, roughly, a machine running 2 bt_rng threads would take
+10 seconds to complete 1000 iterations, or 1 second to complete 100. Using this
+as a very rough metric of speed, we can calculate per-node runtime for a given
+number iterations.
+<p>
+For example, say we had 2 nodes in the cluster, each running 2 devices. Let's
+also say that each node was set to run 4 million iterations. Given a speed of
+100 iterations per second, we can expect each node to be running for a minimum
+of just under 6 hours. This time can vary slightly depending on the number of
+autocorrections required, so between 6 and 6.5 hours would be a good estimate.
+But since we have <i>2</i> nodes running in parallel, the end result will be
+8 million iterations in 6 to 6.5 hours.
+<h1>Early Data</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Once I had a system setup were I could generate
+significant random digits from the devices I was able to start doing serious
+analysis on the data. Take a look at the
+<a href="/research/entropy.shtml">Evaluating Entropy Research Page</a> for
+information on the software and methods used in the following section.
+Go ahead, I'll wait.
+<p>
+The first runs show that bt_rng has a very good ratio for the digits 1 through
+9, but occurrences of 0 are significantly lower than the others. This is sort
+of a flaw in bt_rng, though one that I can't immediately figure out a better
+solution for. Basically, some incompatible Bluetooth devices just put out 0
+every time you request a random number, so bt_rng interprets this as a hardware
+problem and exits. So the only zeros that appear in the output are the leading
+zeros, hence the lower probability.
+<p>
+<span class="center"><img src="/images/projects/btrng3.png" alt="Int Chart" /></span>
+<p>
+To get around this problem, by default bt_rng will only deal with digits
+between 1 and 8. This does cut down a bit on throughput, but gives much better
+results as can be seen in the above chart. The statistical probability of
+getting a 1 through 8 is almost perfectly equal, which is considerably better
+than I thought it would be.
+<h1>Second Attempt</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Now that I had adjusted for the problem with 0, I
+did another large run to see what the final output would look like. I set the
+cluster up with 3 nodes running 2 adapters each, and let them run for over 20
+hours. The resulting file was run through ENT:
+<pre><code>bash:~# ent -c ./output.txt 
+Value Char Occurrences Fraction
+ 48   0     10372348   0.500081
+ 49   1     10368975   0.499919
+
+Total:      20741323   1.000000
+
+Entropy = 1.000000 bits per byte.
+
+Optimum compression would reduce the size
+of this 20741323 byte file by 87 percent.
+
+Chi square distribution for 20741323 samples is 2634148091.21, and randomly
+would exceed this value less than 0.01 percent of the times.
+
+Arithmetic mean value of data bytes is 48.4999 (127.5 = random).
+Monte Carlo value for Pi is 4.000000000 (error 27.32 percent).
+Serial correlation coefficient is 0.000393 (totally uncorrelated = 0.0).
+</code></pre>
+This looks...exceptionally good. Bias is very low, and the serial correlation
+coefficient is excellent. I then set Spectra to run through and generate a
+1920x1080 image of the data set, which also looked good, no noticeable pattern
+in the data.
+<a href="/images/projects/btrng4.png">Click here to view.</a>
+<h1>Data Comparison</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Frankly, the output surprised me. This was an
+incredible improvement over the previous runs, though I wanted to see just how
+good these numbers were compared to known-good sources and comparable PRNGs.
+For the known good data I once again used files from Random.org, and for the
+PRNG I just wrote up a simple C program to generate 0's and 1's with a
+time-seeded rand().
+<p>
+The file from Random.org for this particular day contained 8,388,608 digits, so
+accordingly that is how many digits I pulled from bt_rng and rand(). Running
+them both through ENT with the "-c" option gave me the following data:
+<p>
+<span class="center"><img src="/images/projects/btrng5.png" alt="RNG Comparison" /></span>
+<p>
+As you can see here, bt_rng shows almost zero bias, the probability of a 0 or 1
+appearing are very close to 50/50, which theoretically is a good thing. I am
+surprised to see that Random.org is actually the most skewed, but as mentioned
+previously, part of the difficulty in evaluating random data is how...random it
+is. It could be that the data for another day would be even closer than this.
+Ideally I would need to run this comparison a few thousand times or so, but for
+the sake of simplicity, let's just take the win for now. I then ran the same
+data through Spectra to see if I could find any obvious patterns. Here is a
+small sample:
+<p>
+<span class="center"><img src="/images/projects/btrng6.png" alt="RNG Comparison 2" /></span>
+<p>
+There isn't a whole lot going on here, but if you look closely you will notice
+that the bt_rng and rand() data have a slightly more dense look to them, with
+some clusters of black here and there. This is a bit more evident on the rand()
+sample. What this basically means is that the Random.org data is better spread
+out than the other two, which is to be expected. But bt_rng doesn't exhibit any
+glaringly obvious repeating pattern, which is very impressive considering how
+close the spread was in the last test. I have to admit, I almost expected
+Spectra to show that the entire file generated by bt_rng was alternating 0's
+and 1's.
+<h1>Conclusion</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Well, I am not entirely sure how to grade this one.
+On one hand, bt_rng is able to generate some apparently high-quality random
+numbers through commodity Bluetooth adapters. On the other hand, it takes at
+least a half a dozen of those adapters and 2 or 3 computers running for ~12
+hours to do it. But for argument's sake, I was also generating many more
+numbers than the average installation would require as I was testing millions
+of digits at a time. For a home server that is tasked with encryption, one or
+two adapters could very well be enough to generate enough random data to meet
+demand. I'm also not sure how to evaluate bt_rng's ability to resist attacks or
+flaws in the operating system's PRNG. My gut still tells me this would be
+somewhat less exploitable, but more testing would be necessary to say for sure.
+<p>
+At the end of the day, I learned a lot about parallel computing tasks,
+multi-threading applications, and repurposing proven GPL'd code for new
+programs. Plus there were a lot of graphs, so I think that deserves bonus
+points. In total I think enough went right, or at least sufficiently
+un-terrible to keep this one out of the "Fails" department.
+<h1>bt_rng: The Home Game</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;As a blind Starfleet Chief Engineer once said, "But
+you don't have to take <i>my</i> word for it." You can download stable(ish)
+versions of bt_rng from the
+<a href="/misc/downloads.shtml">Downloads</a> section. As with my other
+projects, I will also try to keep
+<a href="/slackware/packages.shtml">Slackware packages</a>
+built for at least the latest stable Slackware release.
+<p>
+You will notice that there is a 1.x series and a 2.x series of bt_rng in the
+Downloads. bt_rng 2.x is the new series that takes into account advice and
+information I got after this project hit HackaDay, most notably from Simon
+Cooper of LavaRND fame. bt_rng 2.x uses a much more accurate and efficient
+algorithm, and drops the multiple output modes from 1.x. I will keep the older
+1.x series up for the sake of completion, but for all practical purposes only
+2.x should be used for any real work.
+<p>
+I would be <i>exceptionally</i> interested to hear from anyone who plays with
+this code on their own systems, or is bored enough to actually setup their own
+bt_rng cluster for evaluation.
+<p>
+For those of you who are feeling somewhat less masochistic, I have also put up
+the output file from the cluster's 20 hour run. That is 20,741,323 random bytes
+for you to enjoy. Test it for entropy, print it out and make wallpaper,
+whatever you want. Let me know if you find anything interesting. You can get it
+from the bt_rng Download directory.
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

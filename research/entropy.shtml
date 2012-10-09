@@ -1,0 +1,263 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - Evaluating Entropy</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="TRNG,PRNG,ENT,Spectra,random,entropy" />
+<meta name="description" content="Simplified methods of evaluating possibly random numbers." />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="center"><img src="/images/research/entropy1.png" alt="Dilbert" title="Copyright Scott Adams" /></span>
+<h1>Defining Random</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;First, I hope that you will forgive me for using the
+same <i>"Dilbert"</i> strip that seems to be posted up on every web page that
+even mentions the concept of random data. Though do note that the version I
+have put up is in <i>color</i>, so this exercise was not without effort.
+<p>
+Say what you will about Dilbert, but this particular strip perfectly
+encompasses just how difficult it is to determine the "randomness" of a
+number. At first glance you might think the humor is that the...hell
+beast...things, think the monster continually chanting 9 is generating random
+numbers; and perhaps that was even the intent of Scott Adams originally. But
+the truth of the matter is that we have no idea if this Satanic RNG is working
+right or not from the supplied information. Could 9 be a random number?
+Absolutely, if it was generated via some random method. Could a RNG put out six
+9's in a row? It is unlikely, but technically, yes.
+<p>
+So then how do you know if a number is random? The short answer is, <i>you
+don't</i>. It is impossible to determine beyond a shadow of a doubt that a
+single number is random. The best you can hope to do is generate <i>many</i>
+numbers and evaluate them as a whole. This will still not give you a 100%
+accurate answer, as by it's nature, a random event cannot be predicted.
+<p>
+Truly evaluating the quality of random numbers is an exceptionally complex
+task. As I am not a mathematician, the methods and software outlined on this
+page will be fairly simplistic. I make no guarantees that it is 100% free from
+errors or misconceptions. But I <i>can</i> say that these methods are fairly
+accessible to the average person and appear to be at least somewhat accurate
+when compared to known good data sources.
+<h1>Counting Occurrences</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Say you have some dice, and you want to roll one of
+them a few million times. I don't know, you are <b>REALLY</b> bored. Each die
+has 6 sides, so that means in a perfect world there would be a 1 in 6 shot of
+hitting a particular number (say 4) on every roll. It doesn't matter how many
+times you roll, there is always going to be six possible outcomes. Now, for
+something to be random it needs to be unpredictable; if you can plot a trend
+for a particular event or formula, then it obviously isn't random. At first
+this seems illogical, how can something with only 6 possible outcomes defy
+prediction? By spreading itself out as evenly as possible.
+<p>
+In this way, the event is as unpredictable as allowed by the laws of Newtonian
+Physics (I.E. the dice are prohibited from exploding into pure energy on a
+roll). We know there will always be a maximum of 6 outcomes, but we can never
+have more than a 1 in 6 chance at guessing it right. Logically then, if we roll
+our die 1 million times, each face of the die should appear roughly the same
+number of times.
+<p>
+But this is where it gets a little confusing. Because there are multiple
+possible outcomes, and because the event is random in the first place, we can't
+just roll 6 times and expect to get a different face on each roll. To do any
+serious analysis of random numbers, you need to generate millions and millions
+of them. Only with an exceptionally large viewpoint can you make even educated
+guesses on the quality of the numbers. As our demonic friend above showed us,
+it would be conceivable (though again, not likely) to roll the same side 10
+times in a row, but by the end of 10000 rolls it may have equalled out again.
+<p>
+Counting the number of times something appears in a random stream is a good
+early indicator of the data's entropy and allows you to determine if the
+generator is exhibiting any clear bias. Not to say it is definitive, there are
+other tests that need to be preformed, but it is a good first step to at least
+determine where you stand.
+<h1>Identifying Patterns</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;After you have done your counts and confirmed that
+when your algorithm or device is given long enough it will roughly even itself
+out, the next logical step is to look at how the data is coming out. For
+example, if you count that the six faces came up very close to even after 1
+million rolls, and then found out that the faces came up sequentially 1 million
+times; you would know the data is not random. In this case, even though the
+occurrences looked like an even distribution, there was a clearly predictable
+pattern in the data.
+<p>
+You could use some complicated mathematical formula to try and determine if a
+data set is adhering to any particular pattern, but a much easier way is to use
+the most powerful computer in the world, your brain. The human mind and eye is
+exceptionally good at picking out patterns in visual data. All you need to do
+is visualize that data in some way, and you might be surprised at the results.
+The author of this page was when he looked at the data being generated by the
+<a href="http://www.boallen.com/random-numbers.html" target="_blank">PHP rand() function on Windows</a>.
+His findings showed that the PHP function had a rapidly repeating pattern, and
+all an attacker would have to do would be to "sync" with the pattern on a target
+machine to figure out what it was using for a seed value at any given time.
+<p>
+Visualization of random data can be, and usually is, as simple as plotting each
+bit or ASCII character from a given file as a single pixel in an image. The
+color of the pixel is determined by the data being read. Once every pixel in
+the image has been filled, the eye will be able to detect slight variations in
+color and density which can help find patterns and bias in the data. As with
+all evaluations of random data, the larger the sample the better. Small images
+may not include enough pixels to accurately portray the overall performance of
+the generator, so you should use as large an image as your hardware is capable
+of handling.
+<h1>John Walker's ENT</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;<a href="http://www.fourmilab.ch/random/" target="_blank">ENT</a>,
+written by John Walker is an exceptionally useful program. John went through
+the traditional sequence testing suites and found them to be ungainly and not
+particularly accurate in some cases. So he set off to create his own sequence
+testing application that combined the best tests from the other applications
+into a much smaller and agile tool.
+<p>
+You will see ENT used a lot in projects dealing with random number generators
+for exactly those reasons. It is fast, light, and easy to understand. It
+generates easily readable output that you can understand without a Master's
+degree. Perhaps best of all, there is no configuration required, it is smart
+enough to handle whatever you throw at it. However, this also means you need to
+be smart enough to anticipate that and interpret the results. ENT includes 5
+tests (plus occurrence counting), not all of which will necessarily apply to
+every data set you run through it. Some will say the data is terribly
+predictable, while another might say that it is approaching quantum perfection.
+It is up to the user to figure out which ones are telling the whole story (or
+at least, a less fragmented version of the story) than the others.
+<p>
+For an excellent example of this effect, let's run ENT against two different
+versions of the same known-good data. For this example we will use the randomly
+generated files from <a href="http://www.random.org/files/" target="_blank">Random.org</a>,
+which are offered as both as string of ASCII characters (0 and 1) and binary
+files. Both versions of the file contain the same information, but ENT will
+interpret them differently.
+<p>
+First, we will run ENT against the binary version (use option "-b"), as that
+will give us the easier to understand output:
+<pre><code>bash:~# ent -b ./2009-11-08.bin 
+Entropy = 1.000000 bits per bit.
+
+Optimum compression would reduce the size
+of this 8388608 bit file by 0 percent.
+
+Chi square distribution for 8388608 samples is 0.03, and randomly
+would exceed this value 85.37 percent of the times.
+
+Arithmetic mean value of data bits is 0.5000 (0.5 = random).
+Monte Carlo value for Pi is 3.138828807 (error 0.09 percent).
+Serial correlation coefficient is 0.000213 (totally uncorrelated = 0.0).
+</code></pre>
+John's page explains the various tests better than I can, but the results are
+fairly self explanatory. All of the test results are right where they should
+be, indicating this file is almost certainly comprised of random data.
+<p>
+But if we run the same data through ENT as an ASCII file of 0's and 1's, the
+output will look quite different.
+<pre><code>bash:~# ent -c ./2009-11-08.txt 
+Value Char Occurrences Fraction
+ 48   0      4194571   0.500032
+ 49   1      4194037   0.499968
+
+Total:       8388608   1.000000
+
+Entropy = 1.000000 bits per byte.
+
+Optimum compression would reduce the size
+of this 8388608 byte file by 87 percent.
+
+Chi square distribution for 8388608 samples is 1065353220.35, and randomly
+would exceed this value less than 0.01 percent of the times.
+
+Arithmetic mean value of data bytes is 48.5000 (127.5 = random).
+Monte Carlo value for Pi is 4.000000000 (error 27.32 percent).
+Serial correlation coefficient is 0.000213 (totally uncorrelated = 0.0).
+</code></pre>
+Notice this time I used the "-c" option, which generates counts for how many
+times each character appears in the file. Now that we are dealing with ASCII
+characters, we can actually count each one individually. The count shows the
+total times 0 and 1 appeared where very close to equal, which as we covered
+earlier is a good sign. But from there, things don't look so good.
+<p>
+The other test are way out of spec, which would indicate that the data is
+<b>NOT</b> random. The only one that still gives us a good reading is the
+serial correlation coefficient. Why is this? Because these tests are designed
+with binary files in mind, and other than the occurrence counting and serial
+correlation value, they simply don't work on ASCII values. ENT was designed for
+hardware RNGs which can output their data as digital bits on a serial port, not
+strictly for files of ASCII characters. Always keep this in mind when running
+different types of data through ENT.
+<p>
+So put it simply, if using binary files you should be OK, but for anything that
+contains ASCII characters use "-c" and make note of the occurrences report and
+the serial correlation coefficient. Otherwise you might get the wrong
+impression about your data.
+<h1>Spectra</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;<a href="/software/spectra.shtml">Spectra</a> is my
+humble entry into the field of entropy testing software. It is a very simple
+application which simply allows the user to visualize an ASCII file filed with
+(possibly) random data. In doing so, it can help reveal patterns in the data
+which would indicate a faulty RNG.
+<p>
+Consider a data set which shows a perfect ratio of occurrences when run through
+software like ENT, but is in fact simply made up of alternating digits over
+and over again. Even though the ratio will look good, the data itself will have
+an exceptionally predictable pattern. A data set like this would show up
+immediately when run through Spectra.
+<p>
+Here is a quick example of what a good RNG and bad RNG will look like:
+<p>
+<span class="center"><img src="/images/research/entropy2.png" alt="Spectra Example" /></span>
+<p>
+This is a little to the extreme, but it gives you an idea of what to look for.
+Check the Spectra page for more information on this tool, or head right to the
+<a href="/misc/downloads.shtml">Downloads</a> page.
+<h1>Burp Suite Sequencer</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;<a href="http://portswigger.net/suite/" target="_blank">Burp Suite</a>
+isn't technically a tool to analyze random number generators, it is actually a
+collection of tools used for web security research. However, it features a
+"Sequencer" mode (primarily intended for analyzing session tokens) which turns
+out to be a very handy tool for analyzing random data.
+<p>
+The only problem I have found with using the Burp Sequencer so far is that it
+will only accept data if the input file is broken up into separate lines so
+that they can be compared to each other. Luckily, this is easy enough to do
+with the "fold" command; the following will separate the file "output.txt" into
+lines of 100 characters each and output it as "output.fold":
+<pre><code>bash:~# fold -b100 output.txt > output.fold</code></pre>
+You won't get any output from this command, and the input file "output.txt"
+will not be changed in any way, but you should now see "output.fold" in the
+current directory. At this point you might want to open up the file in your
+editor of choice and see what the last line of the file looks like. It will
+almost certainly be shorter than the others, so you should delete it just to
+keep all lines the same length. Once the file is prepared, you can load it
+into the Burp Sequencer for analysis.
+<p>
+In the Burp Suite, click on the tab that says "sequencer", and then the tab
+that says "manual load". On this page you will see buttons labeled "load",
+"paste", and "clear". Press the "load" button and navigate to your prepared
+file. It should look something like this:
+<p>
+<span class="center"><img src="/images/research/entropy3.png" alt="Burp Sequencer" /></span>
+<p>
+Once you file has been loaded, click the "analyze now" button to start the
+process. This should complete relatively quickly (depending on your loaded
+data, naturally) and when it is done you will be able to browse through
+the results of the various tests. The Burp Sequencer preforms an impressive
+amount of tests, ranging from character count and transition to FIPS and
+spectral analysis. Each test has a description of the theory and operation of
+that test in addition to graphical representation of the result, so the output
+is much easier to understand than the rather obtuse output of "Ent".
+<p>
+<span class="center"><img src="/images/research/entropy4.png" alt="Burp Results" /></span>
+<p>
+One important thing to realize about the Burp Sequencer is that, due to it's
+intended use (analyzing plain text session IDs) it is much better suited to
+working with ASCII data than binary files. In my testing it found output from
+<a href="/projects/bt_rng.shtml">bt_rng</a> to be excellent, but said the
+output	of /dev/urandom was terrible. While I do like to think rather highly
+of my own work, of course the real reason for these results is that the output
+of bt_rng is an easily-readable stream of ASCII characters.
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

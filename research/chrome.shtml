@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - Chrome OS</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Linux,cloud,Google,Chrome,OSS,modification,hacking" />
+<meta name="description" content="Information, tips, and tricks for Google's Chrome OS" />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="center"><img src="/images/research/chrome1.jpg" alt="Chrome logo" /></span>
+<h1>What is Chrome OS?</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;To put it in the most simplistic of terms, Google's
+Chrome OS is a fairly standard GNU/Linux operating system which boots the user
+directly into the Chrome browser. There are a few additions like a login screen
+that let's you chose between different Google Accounts, and more settings and
+options than the standalone browser has, but that's pretty much it.
+<p>
+The idea behind Chrome OS is really to make the computer as a physical object
+less important, and instead make the Internet itself (and of course, Google's
+services) the new computing environment. Since all applications, settings, and
+documents are stored on the Internet rather than the local machine, the machine
+itself becomes almost disposable. In the Chrome OS world, the local computer is
+simply a portal to the services the user will access.
+<p>
+Well, I don't know that I necessarily agree with that idea in a lot of cases.
+Certainly my time with Chrome OS has shown that it is an interesting concept,
+and could be a viable option for some users, but it certainly won't do as my
+own primary OS. There is simply too much I do on the local machine to make
+living in the "cloud" impossible, and frankly, I have some issues with the idea
+of Google holding every one of my applications and documents on their servers.
+Still, I am very interested in Chrome OS as a platform from a technology
+standpoint, so this page will contain information about my own work and findings
+with Chrome OS's internal workings.
+<h1>Developer Mode</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;You won't be getting far in Chrome OS unless you
+enable Developer Mode. Devices like Google's official reference hardware, the
+<a href="/hardware/cr48.shtml">CR-48</a>, have a physical developer switch that
+you need to toggle; so the first step is figuring out the method appropriate
+for your system.
+<p>
+Developer Mode will let you boot unsigned OS images (so you can try test builds
+of Chrome OS, or even install a completely different OS), and let you switch over
+to a Linux terminal while Chrome OS is running. Everything on this page assumes
+you have already enabled Developer Mode on your particular piece of hardware,
+so make sure you have that sorted out before continuing.
+<h1>Linux Terminal (VT2)</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;If you want to do anything beyond browsing the web
+on Chrome OS, you need to get into the Linux terminal. When in Developer Mode,
+you can switch over to the second virtual terminal (VT2), which is running a
+login daemon. You can switch to the second VT by pressing:
+<p>
+&nbsp; &nbsp; &nbsp; &nbsp;<i><b>ctrl+alt+F2</b></i>
+<p>
+You should be prompted with a login screen which looks like this:
+<pre><code>Developer Console
+
+To return to the browser, press:
+
+  [ Ctrl ] and [ Alt ] and [ F1 ]
+
+To use this console, the developer mode switch must be engaged.
+Doing so will destroy any saved data on the system.
+
+In developer mode, it is possible to
+- login and sudo as user 'chronos'
+- require a password for sudo and login(*)
+- disable power management behavior (screen dimming):
+  sudo initctl stop powerd
+- install your own operating system image!
+
+* To set a password for 'chronos', run the following as root:
+
+echo "chronos:$(openssl passwd -1)" > /mnt/stateful_partition/etc/devmode.passwd
+
+
+Have fun and send patches!
+
+localhost login: _</code></pre>
+Entering in "chronos" at the login prompt will give you a shell on the machine
+from which you can start playing around. It is important to note that the "chronos"
+user is <i>not</i> root, so you will still need to use "sudo" to do a lot of things.
+<p>
+The login prompt here shows you the main things you will want to remember when
+using VT2: the key combination to return to VT1 (where Chrome is), how to setup
+a password for security, and how to disable power management. You will probably
+want to disable the power management, as the system doesn't detect activity on
+VT2, and will dim the screen even if you are typing in the terminal.
+<p>
+<h2>Note:
+<br>
+On machines that don't have F keys, like the CR-48, F1 should be the "Back",
+and F2 should be "Forward".</h2>
+<h1>Using crosh</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;VT2 is an easy way to get a local Linux terminal on
+a Chrome OS machine, but it does have some drawbacks. The power management issue
+is annoying, and disabling power management just so you can use the terminal
+might not be a great idea on a netbook/laptop. There are also some glitches
+between switching between the VTs, in some cases it takes a few seconds for
+input to start working again when switching back to Chrome. Luckily, there is
+another way to get a Linux terminal when running in Developer Mode.
+<p>
+Chrome OS includes a debug terminal called "crosh" (which I assume means
+"Chrome Shell", but can't find a definitive answer) that let's you run various
+diagnostics on a running Chrome system, including starting up a local Linux
+terminal. You can start crosh with the following key combination:
+<p>
+&nbsp; &nbsp; &nbsp; &nbsp;<i><b>ctrl+alt+t</b></i>
+<p>
+After entering this, the Chrome browser should shift over to the left and you
+will see a black screen that looks like this:
+<pre><code>Welcome to crosh, type 'help' for a list of commands.
+crosh></code></pre>
+crosh offers many interesting commands, though the most useful one is "shell",
+which gives you the same Linux terminal as using VT2. There are some notable
+differences however. For one, you are now running in a "window" of sorts in
+Chrome OS, so you can still use the mouse and applications that are running
+in the background on Chrome OS (like GTalk) are still accessible as if you
+were using any other Chrome OS App. The power management issue is now resolved
+as well, and the screen will turn off and dim properly.
+<p>
+You can switch between the crosh Linux terminal and Chrome by using:
+<p>
+&nbsp; &nbsp; &nbsp; &nbsp;<i><b>alt+tab</b></i>
+<p>
+Just like you would switch between running applications on any other OS. It is
+also worth mentioning that you can start up multiple crosh shells and use the
+"alt+tab" combination to switch between them.
+<p>
+Other useful crosh commands include:
+<p>
+<b>ssh <i>user</i> <i>host</i> <i>port</i></b><br>
+&nbsp; &nbsp; &nbsp; &nbsp;A simple SSH client that connects to the given
+<i>user@host:port</i> combination.
+<p>
+<b>network_logging <i>(wifi | cellular | ethernet)</i></b><br>
+&nbsp; &nbsp; &nbsp; &nbsp;Enables logging on given network interface.
+<p>
+<b>ping -c <i>count</i> -i <i>interval</i> -s <i>packet size</i> -W <i>wait time</i> <i>target</i></b><br>
+&nbsp; &nbsp; &nbsp; &nbsp;Standard "ping" command. Will attempt an ICMP ping against
+the given <i>target</i> with the given options.
+<p>
+<b>modem <i>command</i></b><br>
+&nbsp; &nbsp; &nbsp; &nbsp;Interact with the device's built-in
+cellular modem. With this command you can activate and connect the modem, reset
+it, and get the current status.
+<h1>USB Storage</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Chrome OS's UI doesn't currently offer support for
+even basic things like USB mass storage devices, but the underlaying Linux
+system is fully functional and is able to mount and access many different USB
+devices.
+<p>
+In fact, Chrome OS automatically mounts USB devices that are plugged in, even
+though it has no method to actually tell the user that. To use a USB storage
+device under Chrome OS, simply plug it in and give the system a few seconds to
+automatically mount it. You can then switch over to a Linux terminal and access
+the device mounted under <i>/media</i>.
+<p>
+If you want the files on the USB device to be accessible to Chrome, you need to
+copy them over to the Chrome "Downloads" directory, which is currently the only
+part of the filesystem that Chrome Apps are able to see. To do that, simply
+copy whatever files you want from the USB mount point under <i>/media</i> to
+<i>/home/chronos/user/Downloads</i>.
+<p>
+For example, here I am copying some JPG images from a camera mounted on /media/Camera:
+<pre><code>chronos@localhost ~ $ ls /media/Camera/
+1030081444.jpg           2010-05-29 16.47.52.jpg  IMG_20100919_101225.jpg
+2009-11-23 19.04.28.jpg  2010-06-18 00.33.21.jpg  IMG_20100919_105504.jpg
+chronos@localhost ~ $ cp /media/Camera/* /home/chronos/user/Downloads/
+</code></pre>
+<h1>X over SSH</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The easiest way to "run" another application on
+Chrome OS is to simply get a Linux terminal and use the included SSH client to
+tunnel X over the network. This requires that you are able to connect to another
+Linux machine (ideally, on the same network) which is running an X server.
+<p>
+On the server, make sure the SSHd configuration file contains the appropriate
+lines for X forwarding:
+<pre><code>X11Forwarding yes
+X11DisplayOffset 10
+</code></pre>
+On the Chrome OS machine, open up the Linux terminal (crosh would be better
+since it won't take you out of X, but VT2 will work) and connect to the
+server with the following command:
+<pre><code>chronos@localhost ~ $ ssh -XY user@server command</code></pre>
+This will initiate an SSH session to the given <i>user@server</i> and run
+<i>command</i> with it's output shown in Chrome OS's window manager. For
+example, to start xchat on my desktop and redirect it's UI to a Chrome OS
+machine, I would do this:
+<pre><code>chronos@localhost ~ $ ssh -XY tom@TBird xchat</code></pre>
+When the program starts, it will show up on the Chrome OS device fullscreen
+without any kind of window decoration, just like Chrome does. You can switch
+between Chrome and your new application with Alt+Tab, just like you would on
+a normal OS.
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

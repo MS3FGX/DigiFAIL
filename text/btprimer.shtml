@@ -1,0 +1,416 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - Bluetooth Hacking Primer</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Linux,Hacking,Bluetooth,BlueZ,2600" />
+<meta name="description" content="Introduction to working with Bluetooth hardware and software, published in 2600." />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="right"><img src="/images/text/btprimer1.jpg" alt="2600 Cover" /></span>
+<h1>Foreword</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The following is <i>Bluetooth Hacking Primer</i>, an
+introduction to Bluetooth hacking published on page 54 of <i>2600</i> issue
+27:1.
+<p>
+This document is not a guide about actually attacking Bluetooth devices, but
+rather walks the reader through Bluetooth's basic principles of operation, and
+touches on the hardware and software setup required to start doing security
+related research. Some simple attacks are mentioned at the end of the document
+to illustrate the realistic threat of Bluetooth devices, but it is not intended
+as a full documentation of those weaknesses.
+<p>
+The original ASCII text file for this document can be found in the "Text" section
+of the <a href="/misc/downloads.shtml">Downloads</a> page.
+<h1>Introduction</h1>
+Originally conceived in 1994 by Ericsson, Bluetooth was set to revolutionize
+the computing and consumer electronics world. It promised to rid us of wires
+and provide a method by which all of our devices could communicate seamlessly.
+Unfortunately, early versions of the protocol were so beleaguered by problems
+that consumers were all too happy to keep their spider web of cables. Besides,
+most technology of the mid-ninety's was not exactly designed with mobility in
+mind in the first place.
+<p>
+But today, Bluetooth has come back in a big way. Mobile technology has
+dominated this decade, and the need for a standardized method of low-power
+communication has never been greater. At the same time, newer versions of the
+Bluetooth protocol have all but eliminated the poor range, transfer rate, and
+interoperability issues that plagued earlier implementations. Bluetooth has now
+become so popular in the mass market that it has even attained a sort of brand
+association, to the point that most people simply refer to all wireless
+headsets as "a Bluetooth."
+<p>
+However, with the resurgence of Bluetooth has come a dangerous, if predictable,
+complacency. Millions of people are now using the technology without any clear
+understanding of how it works and what it is capable of.
+<p>
+This article is not written as a hyper-technical look at the Bluetooth
+protocol, nor does it detail any one particular attack against Bluetooth
+devices. Instead, it is intended to give the reader some information on how
+Bluetooth works, what you can do with it, and the risks associated. Hopefully
+this article will give you enough information to start exploring Bluetooth and
+allow you to form your own opinions on the technology.
+<h1>Low-Level Communication</h1>
+Bluetooth operates in the ISM band between 2.4 and 2.4835 GHz, which is divided
+into 79 channels that are each 1 MHz wide. Connected Bluetooth devices hop
+channels at up to 1600 times per second in a pattern derived by the master
+device's clock. By rapidly changing channels like this, Bluetooth devices are
+able to avoid interference with other devices in the 2.4 GHz band, such as WiFi
+networks and cordless telephones, and remain segmented from other Bluetooth
+networks in the area.
+<p>
+When one Bluetooth device wants to connect to another, it must go through a few
+steps to learn about and authenticate with the remote device. The eventual
+master device first scans the band to find other devices which are in so-called
+"discoverable" mode, and then preforms an inquiry on each one. This gives the
+device a list of hardware addresses (which are in the familiar MAC-48 format),
+human-friendly device names (which the owner of the device assigns, or more
+often than not, leaves as the default), device class IDs (to determine what the
+device actually is), and clock offsets (used in calculating channel hopping
+operations). This provides the master device with enough information to begin
+establishing an actual connection with one or more of the devices it found. The
+master sends out what is known as a frequency-hop synchronization (FHS) packet,
+which the slaves use to get locked on to the correct channels and start
+the authentication process.
+<p>
+While the Bluetooth protocol is a master/slave arrangement, there is a
+provision which allows for multiple devices to be connected together in what is
+known as a piconet. In a piconet, up to 8 Bluetooth devices can communicate
+simultaneously by timing their transmissions to fall on even or odd channel
+hops. The device currently marked as master can communicate with any of the
+slaves in the piconet, as well as add or remove devices from the network. It is
+also possible to connect multiple piconets together by having certain devices
+act as a master in one piconet and a slave in the other, which is referred to
+as a scatternet.
+<p>
+Even though only 8 devices can be active in the piconet, there can be up to 255
+slaves waiting for their turn to be activated. In addition to the standard
+"Active" mode, a slave in a piconet can be in 3 modes: "Sniff", "Hold", and
+"Park". Each of these modes involves progressively less data transmission and
+therefore lower power consumption (important on portable devices). Devices in
+these inactive modes still remain synchronized with the piconet master, but do
+not actively participate unless they are brought back to "Active" status.
+<h1>High-Level Protocols</h1>
+There are a few core protocols that all Bluetooth services make use of in some
+way or another. The most fundamental of these is the Logical Link Control and
+Adaptation Protocol (L2CAP), which could be thought of as the Bluetooth
+equivalent of TCP. L2CAP handles the creation, sequencing, and reassembling of
+packets, QoS, and the channel identifiers (CIDS). CIDS are like TCP ports, they
+are the endpoints between two devices through which processes can communicate.
+Like TCP, L2CAP also features a number of signalling commands which are used to
+control communication over the CIDS.
+<p>
+The next protocol is known as Radio Frequency Communication (RFCOMM). At it's
+core, RFCOMM is designed as a replacement for RS-232 connections; anything that
+uses serial communications can be adapted to RFCOMM very easily. RFCOMM
+provides up to 60 emulated serial ports per device, which are usually referred
+to as RFCOMM channels. Bluetooth services bind to an open RFCOMM channel, and
+remote devices address that particular service with a combination of MAC and
+channel number.
+<p>
+The last major protocol you should be aware of is the Service Discovery
+Protocol (SDP). SDP is the method by which two Bluetooth devices can determine
+which services the other is running and how they would connect to them. Each
+SDP entry contains the name of the service, which protocols it relies on, and
+which RFCOMM channel it is bound to. With this information, the device can
+inform the user about the remote device's capability, and internally store the
+channel and protocol information for later use.
+<p>
+On top of all of these protocols are the highest-level functions, which are
+provided by what are known as profiles or services. These applications are what
+the end user is actually interacting with when they send a picture to a phone
+or connect a headset. There are many Bluetooth services available, certainly
+more than I would want to list here, but the main ones would be things like
+Dial-up Networking (DUN), File Transfer Profile (FTP), Headset Profile (HSP),
+Object Push Profile (OPP), etc.
+<h1>Hardware Options</h1>
+Bluetooth hardware is rated in three Classes, which determine the output power
+(and therefore the approximate range) of the device:
+<p>
+&nbsp; &nbsp; &nbsp; &nbsp;Class 1&nbsp; &nbsp; &nbsp; &nbsp;100 mW (20 dBm)&nbsp; &nbsp; &nbsp; &nbsp;~100 meters<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Class 2&nbsp; &nbsp; &nbsp; &nbsp;2.5 mW (4 dBm)&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ~10 meters<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Class 3&nbsp; &nbsp; &nbsp; &nbsp;1 mW (0 dBm)&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ~1 meter<br>
+<p>
+If you don't mind spending a little money, try to get a Class 1 adapter that
+has an external antenna, such as the Linksys USBBT100. Adapters with external
+antennas are obviously going to have a better range out of the box, but are
+also easier to modify for use with a larger antenna. One of the nice things
+about working with Bluetooth hardware is that, since it uses the 2.4 GHz band,
+you can use WiFi antennas by simply hacking in the appropriate connector.
+<p>
+On the other side of the spectrum, you can get a low-end adapter for as little
+as $3 shipped from a number of overseas retailers. While the price is certainly
+right, you need to be careful when buying these cheap adapters for use in
+research. Manufacturers will often mislabel these devices as Class 1, when they
+are actually Class 2 or even sometimes Class 3. It is also common for the very
+cheap adapters to have duplicate MAC addresses; rather than writing a new MAC
+address to each device's firmware as it rolls off the line, it is cheaper for
+the manufacturer to leave them all with the default.
+<p>
+Don't be fooled by very cheap adapters with external antennas either. I have
+purchased many of these devices online, and every one of them had either a fake
+antenna (nothing more than a plastic stick), or just a bare wire poorly
+soldered to the existing internal antenna of a generic adapter.
+<p>
+The last thing you want to be aware of when buying Bluetooth hardware is the
+chipset it is using. While all of them are fairly good, the best supported and
+documented is the Cambridge Silicon Radio (CSR) chipset. There are a number of
+tools written specifically for this chipset, and with firmware modifications it
+is possible to get enhanced scanning and sniffing capabilities. While any
+adapter will let you scan and enumerate; if you want to get into more advanced
+techniques like sniffing the pairing process and cracking PINs, a CSR-based
+device is a must.
+<h1>BlueZ Basics</h1>
+It probably won't come as much of a surprise to hear that the Linux Bluetooth
+stack, BlueZ, is one of the most advanced and capable Bluetooth implementations
+available on any operating system. Unfortunately, not all parts of it are well
+documented, and it is currently in a state of transition between the widely
+supported 3.x branch and the next generation 4.x branch. As of this writing,
+very little software supports the BlueZ 4.x branch; BlueZ 3.x is still the
+standard and is what all of the software and guides are written for. This
+document will be no different, so the following information and recommended
+software is not guaranteed to work under the newer BlueZ 4.x releases.
+<p>
+The easiest way to get started with BlueZ is to run BackTrack 3 (BackTrack 4
+has switched to BlueZ 4.x, and dropped a lot of Bluetooth tools in the
+process), which includes a wealth of Bluetooth software and the proper
+libraries to make it all work. Even if you already have a Linux system up and
+running, it may be easier for you to run BackTrack as it will already have all
+of the tools and support software ready to go, which may or may not be true for
+your distribution's package repository.
+<p>
+The capabilities provided by BlueZ could take up a few articles by itself, so
+I'm not going to detail every possible configuration and function of the whole
+library, but let's take a brief look at the most important commands and how
+they work.
+<p>
+The first tool, hciconfig, is the Bluetooth equivalent to ifconfig. With this
+tool you can bring Bluetooth devices up and down, set their operating modes,
+and various other low-level functions. The most useful functions of hciconfig
+in the context of Bluetooth hacking are probably the ability to change the
+device's name and class. For example, you could make your adapter appear to be
+a Bluetooth headset to the casual observer:
+<pre><code>bash# hciconfig hci0 name "Motorola H700" class 0x200404</code></pre>
+The second tool we will cover is hcitool. You will be using hcitool quite a bit
+when working with Bluetooth, as this command is what you use to scan for,
+inquire, and ultimately pair with other devices. hcitool also shows any current
+connections to and from a specific Bluetooth interface, as well as details like
+signal quality and power levels. A scan for other Bluetooth devices looks like
+this:
+<pre><code>bash# hcitool scan
+Scanning ...
+	00:21:FB:5F:B3:21	LG VX9600
+	00:1B:AF:DB:CB:72	Nokia 6555b
+	00:15:A8:2D:4C:A2	Motorola Phone
+	00:1F:E3:77:E3:1F	Dare
+</code></pre>
+Here you can see that my Bluetooth adapter is currently connected to a remote
+device (in this case, my mouse):
+<pre><code>bash# hcitool con
+Connections:
+	> ACL B0:73:08:09:10:57 handle 42 state 1 lm MASTER
+</code></pre>
+Once connected to a device, hcitool can perform a number of other neat tricks,
+such as displaying the received signal strength indication (RSSI) for a given
+MAC; which  can be used as a crude form of proximity detection. Here you can
+see how the RSSI differs between my mouse sitting right next to the keyboard
+and my phone charging across the room:
+<pre><code>bash# hcitool rssi B0:73:08:09:10:57
+RSSI return value: 0
+bash# hcitool rssi 00:1F:E3:77:E3:1F
+RSSI return value: -3
+</code></pre>
+Unfortunately, due to the different output ratings of various devices you can't
+directly equate RSSI to a set distance. With targets of unknown transmission
+power, the best you can do is determine if your distance from the target is
+increasing or decreasing.
+<p>
+Another exceptionally useful tool is sdptool. This tool allows you to not only
+query the SDP records of remote devices, but also add, delete, and edit the SDP
+records being advertised for your adapter. Getting the SDP records for a target
+device looks like this (truncated greatly for space):
+<pre><code>bash# sdptool browse 00:1F:E3:77:E3:1F
+Browsing 00:1F:E3:77:E3:1F ...
+Service RecHandle: 0x10000
+Service Class ID List:
+  "PnP Information" (0x1200)
+
+Service Name: Object Push
+Service RecHandle: 0x10001
+Service Class ID List:
+  "OBEX Object Push" (0x1105)
+Protocol Descriptor List:
+  "L2CAP" (0x0100)
+  "RFCOMM" (0x0003)
+    Channel: 1
+  "OBEX" (0x0008)
+Profile Descriptor List:
+  "OBEX Object Push" (0x1105)
+    Version: 0x0100
+</code></pre>
+Here you can see the wealth of information returned by an SDP query. We not
+only see the name and class of each service being offered, but also the
+protocols and services they rely on, the channels they use, and which version
+of the service is being run.
+<p>
+Not only is sdptool invaluable for enumerating possible targets, it can also be
+used to advertise bogus services to remote devices. To go back to the hciconfig
+example, after changing your adapter's name and device class to that of a
+Bluetooth headset, you could then use sdptool to advertise the headset and
+handsfree profiles; in practice making your machine almost completely
+indistinguishable from a standard headset.
+<p>
+Finally, a few words about rfcomm, which is (rather obviously) the tool used
+to setup and maintain RFCOMM links under BlueZ. This tool is used when you want
+to create a direct link to an RFCOMM channel on the remote device. You might
+use this to try and pass different commands to a Bluetooth service to see how
+it reacts, or you might need to legitimately connect to a device over the
+Serial Port Protocol (SPP). For example, binding a Bluetooth GPS to
+/dev/rfcomm0 over SPP would look something like:
+<pre><code>bash# rfcomm bind rfcomm0 00:0B:0D:6F:88:3E 
+bash# cat /dev/rfcomm0
+$GPGGA,190505.558,0000.0000,N,00000.0000,E,0,00,,0.0,M,0.0,M,,0000*43
+</code></pre>
+<h1>Recommended Software</h1>
+The following are a few tools that anyone interested in Bluetooth hacking
+should take a look at. This list is by no means exhaustive, but should give you
+some ideas as to what is possible. To make things a little easier, I made sure
+that all of these tools can be found on the aforementioned BackTrack 3 Linux
+live CD.
+<h2>carwhisperer</h2>
+If you are looking for a quick way to scare your friends, this would be it.
+carwhisperer is an absolutely brilliant piece of software that exploits a
+design flaw in many Bluetooth headsets: essentially, if the phone the headset
+is paired with is not in range or otherwise unavailable, the headset goes back
+into discoverable mode. carwhisperer scans for any headsets that are in
+discoverable mode, connects to them by using the included list of common
+headset PINs, and then makes the headset believe the "phone" has received a
+call. The end result? Your victim is now unwittingly wearing a bug strapped to
+the side of his head. 
+<p>
+Considering the number of people who walk around with a Bluetooth headset in
+their ear all day, this is a staggering security issue. Coupled with a
+high-gain directional antenna, an attacker could use this software to listen in
+on a meeting taking place in the office across the street; or just record all
+the audio from all the headsets picked up in a coffee shop or other public
+place to be analyzed for personal information at their leisure. If you show
+this to your friends and they are not at least partially concerned, get new
+friends.
+<h2>Bluetooth Stack Smasher (BSS)</h2>
+BSS is a tool to send malformed L2CAP packets to a given MAC, which can do
+anything from completely crashing the target to simply impairing it's ability
+to communicate. In my research, I found that BSS could remotely reboot a number
+of older phones within 5 seconds of launching a random attack (BSS cycles
+through it's list of fuzzed packets, which causes the most possible confusion
+in the least amount of time) on them, and most headsets I tested it against
+would either disconnect from the host phone or simply restart themselves.
+<h2>btscanner</h2>
+As the name suggests, this is a tool to continuously scan for nearby devices
+and extract as much information as possible from them. Technically, btscanner
+doesn't do anything you couldn't already do with hcitool (in fact, it's heavily
+based on hcitool), but the simple fact that it compresses the output from
+multiple commands into a clean Kismet-inspired ncurses UI is enough to win over
+most users.
+<h2>BT Audit</h2>
+This suite of tools contains rfcomm_scan and psm_scan, which are port scanners
+for RFCOMM and L2CAP, respectively. These scanners allow you to see which ports
+are open on the target device, which can help in finding services that are not
+advertised via SDP records.
+<h2>rfcomm_shell</h2>
+This is a simple tool that lets you bind an interactive shell to an RFCOMM
+channel on the remote device. This can be used to pass arbitrary data to a
+listening service, which could be used for things like passing AT commands to a
+phone or causing a buffer overflow.
+<h1>Real World Implications</h1>
+<span class="right"><img src="/images/text/btprimer2.png" alt="Phone Screen" /></span>
+As an experiment, next time you are out in a public place like the mall or a
+restaurant, pull out your phone and have it search for nearby devices. You will
+almost certainly pull up a few devices that have been left in discoverable
+mode, most of them still running the default device name. From there you could
+try to find a device-specific exploit, but more likely you could just use the
+ignorance of the user to gain access.
+<p>
+Imagine if you changed the device name of your Bluetooth adapter to "Facebook
+friend, enter 1234 to", and then attempted to pair with the target phone. Most
+phones will prompt the user about new Bluetooth connections with a line like:
+<p>
+&nbsp; &nbsp; &nbsp; &nbsp;"Connection from DEVICE_NAME. Allow?"
+<p>
+Which, when combined with your new device name, would look something like:
+<p>
+&nbsp; &nbsp; &nbsp; &nbsp;"Connection from Facebook friend, enter 1234 to. Allow?"
+<p>
+Admittedly, this isn't exactly the King's English; but in the modern "click
+first and ask questions later" world of shakily financed Nigerian princes, poor
+grammar alone is unlikely to set off any mental alarms in the average person's
+head. Given Facebook's exploding application library and the questionable
+mental capacity of many social networking denizens, a message like this could
+fool a decent amount of the targeted users. This particular attack can be even
+more effective if used contextually. For example, imagine if you were at a
+concert and advertised yourself as having free ringtones for the band currently
+on stage.
+<p>
+Another possible threat that doesn't get nearly the attention it deserves is
+tracking and identification. There is a huge fear of RFID being used to track a
+person's location without their knowledge or consent, to the point that people
+are now buying shielded wallets to prevent an attacker from sniffing any RFID
+chips that may be present in their ID cards. I have always found it rather
+ironic that a good deal of these people are likely carrying an active
+transmitter (which just happens to contain a wealth of personal information) in
+the pocket opposite their shielded wallet. In fact, there is a budding industry
+(especially overseas) for Bluetooth proximity marketing, which is a technology
+that sends unsolicited advertisements to any Bluetooth device that comes into
+radio range. The technical differences between pushing out a ringtone you
+didn't ask for and logging your device's unique MAC along with the current time
+and geographical location of the transmitter is very slight, and indeed could
+both be happening at the exact same time.
+<h1>Conclusion</h1>
+With so many Bluetooth devices in consumer's hands, and the increasing use of
+mobile devices for personal and financial data management, the incentive is
+certainly there for attackers to look into new ways to exploit the Bluetooth
+protocol. It is also worth mentioning that devices running the new Bluetooth
+3.0 protocol are slated for production soon, and as we all know, first run
+devices using new technologies are very likely to include a poor implementation
+at no extra charge; especially considering that the new specifications involve
+routing data over WiFi for increased range and speed.
+<p>
+Vendor implementations of the current protocol are improving, but are still not
+perfect. While many new devices default to non-discoverable mode, a lot still
+offer the option to leave the device permanently discoverable instead of using
+a time-limited discoverable mode. This means that if a user wants to put his
+device into discoverable mode to legitimately connect with his friend's device,
+he will remain discoverable if he forgets to turn it back off (or just doesn't
+know any better). Newer smartphones like the Blackberry allow the user to
+specify which Bluetooth services they wish to advertise, but this excellent
+feature doesn't seem to be making it's way into many other devices.
+<p>
+On the other hand, if used properly, Bluetooth is an incredibly useful
+technology for hackers and consumers alike. For example, I have scripts on my
+machine that backup system configuration and personal documents to my phone
+every night. Another script downloads the latest "Off the Hook" MP3 and pushes
+it into my phone's media player application. I've been tinkering with a setup
+that sends my wife's phone an SMS alert if her laptop detects that the phone
+isn't within a certain proximity of her desk past a set time of day so she
+remembers to put it on charge.
+<p>
+The possibilities for a low power, low cost, and widely available wireless
+communication technology are nearly endless with a little imagination and a bit
+of hacking. All you have to do is get out of the pervasive mindset that
+Bluetooth is solely capable of connecting a wireless headset to a mobile phone,
+and hopefully reading this has gotten a few people a bit closer to that
+realization.
+<p>
+<h2>Thanks:<br>
+Special thanks to all those who have donated their old Bluetooth-capable phones
+and other hardware to me for research.</h2>
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - GameCube Linux Cluster</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Linux,cluster,Gamecube,BOINC,PowerPC,G3" />
+<meta name="description" content="Clustering Nintendo GameCube consoles for use with BOINC" />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="center"><img src="/images/fails/cluster1.jpg" alt="Group Shot" title="Tremble at their power!" /></span>
+<h1>Why a GameCube cluster?</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Back in 2003 or so I was very involved with the
+GameCube homebrew scene, working on libogc (which has now matured to include
+Wii support), and desperately looking for developers who would be interested in
+working on serious GameCube projects. At this point the Xbox homebrew scene was
+still very very popular, and it seemed like nobody wanted to work on any other
+consoles. Of course, this was not without a reason, the Xbox was basically a
+standard x86 PC, complete with HDD, DVD-ROM, USB, and Ethernet. Developing
+software for the Xbox was much much easier, and people gravitated to it.
+Developing software for the GameCube on the other hand was not exactly a walk
+in the park. Even when you got the cross-compiler and build environment setup,
+there was still the issue of actually running your code on the console. Back
+then we were still stuck primarily using the PSO exploit, which was not for the
+impatient.
+<p>
+At the same time, I was very active with <a href="http://boinc.berkeley.edu/">BOINC</a>, running at least one dedicated node at all times on SETI@Home. I had
+been considering for quite some time putting together a cluster that could run
+the BOINC client 24/7 without tying up my other machines. But the problems with
+a cluster were pretty intimidating in the days before Atom and the new breed of
+netbook hardware; the cost, power consumption, and physical size requirements
+of even a 4 node cluster kept this idea firmly in the realm of unrealistic
+dreams.
+<p>
+Until February 2004, that is. This is when the <a href="http://www.gc-linux.org">GameCube Linux Project</a> released their first fully functional Linux builds.
+They had the kernel booting a bit earlier than this, but in February they had
+gotten networking and initrd support working, which made the GameCube a fully
+functional Linux machine.
+<p>
+While not exactly a super computer, the Nintendo GameCube could hold it's own
+at the time. With a 486 MHz PowerPC processor (based on an extended G3
+instruction set), a functional (albeit unusual) DVD-ROM drive, and an optional
+Ethernet adapter, it was up to the task of running a basic OS and crunching
+some numbers. The biggest limitation is RAM, as the GameCube only has 24 MB of
+main RAM, though the kernel was later able to use the console's VRAM for an
+additional 16 MB, bringing total RAM to a still-tight (but not impossible) 40
+MB.
+<p>
+Cost for the GameCube and the LAN Adapter was still pretty high in 2004, but
+unfortunately for Nintendo those prices would start dropping pretty quickly in
+the coming years. But the best part of using the GC as a cluster platform was
+it's small size and comparatively low power consumption. Plus, they were
+square, so you could even stack them!
+<h1>Philosophical Differences</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Like I said, by early 2004 the GameCube was able to
+boot a fully-functional kernel (at least for my purposes, video acceleration
+and audio were still being worked on) and load an initrd over NFS. The problem
+was, it seemed like most of the GC Linux developers were content with that
+much. They felt that there was no need to develop an actual Linux distribution
+for the GameCube, and instead believed it would best be served as a thin-client
+of sorts. Instead of working on a RAM-optimised local initrd to make the GC a
+functional machine, there primary goal was refining the video and audio drivers
+so the GameCube could be used to stream media.
+<p>
+I spoke to some of the GC Linux developers about this perceived trend, and was
+told that basically what I assumed was correct. The primary developers believed
+the GameCube would have no function as a stand-alone Linux machine, and there
+was no reason to develop an OS for it. I was told the project's goal (at that
+point in time at least, I don't want to slight any current developers) was to
+get the GameCube working as a Linux-based streaming media player. Perhaps this
+was to try and best XBMC, which was (and arguably still is) the greatest
+homebrew achievement of all time, as some of the GC Linux developers were fresh
+from the Xbox development scene. When I made a case for building a fully
+functional initrd that could be loaded on the local machine, making the
+GameCube an independent computer, I was told very simply to <i>"Fork it."</i>
+Meaning they had no interest in such a project, and if that is what I wanted to
+do, I had to do it myself. So, naturally, I did.
+<h1>The Beast</h1>
+<span class="right"><img src="/images/fails/cluster2.jpg" alt="Beast" title="The Beast!" /></span>
+&nbsp; &nbsp; &nbsp; &nbsp;The first thing I realized when I started working on
+a custom distribution of Linux for the GameCube was how annoying it got to
+cross-compile every single application, build it into an initrd, and see if it
+worked. I realized this whole process would be much easier if I just got a
+PowerPC machine and tested on that. For those of you who may be wondering, at
+this point in time virtualization was not an option like it is today. So I went
+to my local computer show and bought the first PowerPC machine I found, or
+should I say, found me. The man who sold it to me said he would take $5 for it
+if I promised to get it away from him right then and there. In hindsight I
+should have realized this was not a good sign, but this was my first PowerPC
+machine, and I really didn't know what I was getting into in the first place.
+<p>
+Digital blind dates, much like their real life counterparts, often turn out to
+be disappointing. The machine I ended up with was a <a href="http://www.everymac.com/systems/apple/powermac/stats/powermac_8600_200.html" target="_blank">Power Macintosh 8600/200</a>. I probably couldn't have picked a worse machine to
+develop on if I tried. First off, this machine is what is known as an "Old
+World" Mac, which basically means that it is unnecessarily difficult to install
+a non-Apple operating system on it. You need to jump through all sorts of
+hoops just to get the kernel booting on it, and once I did, I found that this
+thing was, aside from having much more RAM, a worse development platform than
+the GameCube itself. Worst of all, this wasn't even in the same processor
+family as the GameCube, so there was no guarantee it would even do what I
+wanted it to. After spending a few days getting Debian installed on it, I
+finally came to terms with the fact that it had almost no use to me as a
+development platform, and away it went into storage. At least it was only $5.
+<p>
+Although, without getting too far off subject, I do have to admit that this was
+easily one of the best-engineered and built machines I have ever worked on.
+Early Apple hardware was certainly built to last, and I can see why these
+things were so much more expensive than the relatively puny IBM-compatible
+hardware of the same era. It can take 8 banks of RAM totaling up to what must
+have then been a mind-bending 1 GB of RAM, and even has integrated composite
+video input and output, which just blows my mind considering my PC at the time
+this was released didn't even have a sound card.
+<h1>The Beauty</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Not about to let a $5 misstep derail the whole
+project, I went back out to the next computer show with a little more PowerPC
+savvy under my belt. It didn't hurt that I had made friends with a Mac-fanatic
+since the 8600/200 debacle and had him on speed-dial so I could describe the
+machines I was looking at as if I was defusing a bomb (which these things made
+about as much sense to me as anyway).
+<p>
+This time I spent $40, and came back with the rather sexy G3 you see above.
+The G3 was considerably more up to the task of operating as both my development
+and testing platform, being a "New World" machine and much much more powerful
+than the 8600/200. In fact, this machine was even able to run OS 10.4, which
+was a nice distraction while working out the rest of the details. Using the G3
+I was able to develop the GameCube's Linux distribution much more rapidly than
+I would have using cross-compilation and native hardware.
+<h1>The Plan</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The idea once I got the GameCube's booting the
+kernel and workable initrd was very simple. The G3 would serve as the main
+control node in the new cluster. It's primary function was to serve DHCP, DNS,
+and NFS to the client nodes. NTP was also used to keep the machines time-stamps
+in sync, though this strictly wasn't necessary. The server would hand out the
+DHCP leases to new nodes, cache the common DNS requests (which would all be
+BOINC related), and share out the project directory over NFS. The accepted
+method for running BOINC on a cluster at this time was to simply have all the
+nodes run a copy of the binary from an NFS export, as the BOINC client had no
+inherent clustering or multi-processor support (I would have to assume this has
+changed by now, but have not looked into it recently). Clients ran a
+password-less SSH so that commands could easily be pushed out to all of the
+nodes.
+<p>
+<span class="center"><img src="/images/fails/cluster3.png" alt="Diagram" title="General cluster overview" /></span>
+<h1>So why didn't it work?</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Ah, hold on. Perhaps I miscommunicated a bit here.
+Just because I consider this a "Fail", doesn't <i>necessarily</i> mean it was
+an actual failure. Does that make any sense?
+<p>
+What I mean is, technically this idea is completely sound. There is no problem
+with the methodology used, the fact of the matter is that the end result just
+wasn't worth the aggravation. Specifically in the case of the GameCube cluster,
+it took me so long to collect the appropriate development system, GameCubes,
+and the relatively rare LAN Adapters required to get them on the network, that
+the idea of a GameCube cluster simply didn't make sense anymore.
+<p>
+For a very rough idea of how the GameCube cluster would have performed had I
+continued on past the point of foolishness, we can use the kernel's built in
+estimation of processing power,
+<a href="http://en.wikipedia.org/wiki/BogoMips" target="_blank">BogoMips</a>.
+For the record, BogoMips are not actually intended to compare different
+processors in real-world situations, but in this case where we already know the
+cluster will be miserably inferior to modern hardware, it is safe to take some
+liberties and use BogoMips to determine just <i>how</i> miserable a failure it
+would be. The GameCube clocks in at 968.70 BogoMips, which multiplied by 4
+nodes gives us 3874.8. Of course you will lose a bit of processing power along
+the line when working with a cluster, but let's say for the sake of argument
+that the cluster had an estimated power of 3800 BogoMips.
+<p>
+An already-antiquated single-core Pentium 4 processor clocks in at about
+4800 BogoMips, so in terms of raw performance there isn't much of an incentive.
+You might think that power consumption would still be an advantage, but
+consider that each GameCube draws 21 watts when running, which brings the
+node's power consumption to 84 watts alone (this doesn't even take into account
+the master). On the other hand, an Atom 230 board clocks in at 3200 BogoMips,
+and can easily run in the mid-20 watt range depending on any additional
+hardware.
+<h1>On second thought...</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;I have to be honest, I had more or less written this
+whole thing off as a colossal waste of time and money quite time time ago.
+Going through the proposed steps and reviewing how close I had come only
+reinforced this fact, this thing really would never have performed well enough
+to justify it's complication. But then, perhaps that isn't the point in the
+first place? What happened to doing things just to say you did them?
+<p>
+On that note, I am currently considering powering on the cluster for real
+sometime in the near future. I will update this page when and if this happens
+with some more information and real-world performance numbers.
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

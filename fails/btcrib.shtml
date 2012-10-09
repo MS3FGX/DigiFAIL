@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - Bluetooth Crib Speaker</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Bluetooth,speaker,wood,LM317,pcb" />
+<meta name="description" content="Development and construction of a Bluetooth crib speaker." />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="right"><img src="/images/fails/btcrib1.jpg" alt="Bluetooth Crib Speaker" /></span>
+<h1>Bluetooth Crib Speaker</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;I really liked the idea of setting up a speaker in my
+daughter's crib so she could listen to music when going to sleep, but all of
+the ones I found on the market were ridiculously expensive and made the crib look
+like <i>Fisher Price</i> vomited on it. Perhaps worst of all, they used some
+strange media known as a "Compact Disc", which my research tells me is how
+ancient peoples listened to music before the advent of lossy audio codecs.
+<p>
+I decided that the best solution to the problem was to build a speaker of my own
+design rather than spending ~$100 USD on something I didn't even like. The most
+important part for me was to make the finished product look like a part of the crib,
+not some plastic garbage clamped onto the side. Everything from the shape of
+the device to the materials used would be influenced by the crib it would eventually
+attach to.
+<p>
+Originally I was simply going to build a case around a cheap MP3 player, but
+quickly realized that had quite a few problems. For one, I would need to
+constantly be putting new music on there as we found new things that she
+reacted well to; but more importantly, we would have to fiddle with the
+thing every time we wanted to change the tracks or adjust the volume. It seemed
+counterproductive to have a crib speaker, which is supposed to relax the baby,
+if one of us had to come into her room and make noise just to control it.
+<p>
+After some thought, I had the idea of building a wooden case around a Bluetooth
+media player. This would let me stream audio to the speaker from my phone or
+computer; that way I could change tracks, adjust the volume, and pause/stop the
+music without ever having to open the door to her room.
+<h1>Speaker Cabinet</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The only part of the design I had figured out for
+sure in my head when I started this project was that I wanted the finished
+product to actually <i>look</i> like a miniature speaker, not some ugly kid's
+toy. It would also be stained to match the crib itself and all of the hardware
+and details on the speaker should blend in with the existing design.
+<p>
+The first step was to go to the store and get some decent looking wood, in this
+case 1x3 furniture-grade pine, and make a tiny speaker cabinet. I measured the
+space between the side slats of the crib, and came up with some rough dimensions
+that would put the speaker grille right between them.
+<p>
+The first version of the speaker cabinet measured 89 mm x 137 mm (3.45 in x 6 in),
+and felt very sturdy. I was initially pleased with it and started to plan out
+the rest of the design, but quickly started seeing some serious problems. For one,
+the 1x3 wood was rather thick for such a small cabinet, so the internal dimensions
+were only 49 mm x 98 mm (2 in x 4 in). This was a little tighter than I would like,
+though not completely unworkable. The bigger problem though were the aesthetics;
+the thing just didn't <i>look</i> like a speaker cabinet. The frame was too
+thick, so the proportions between cabinet and grille would be all wrong.
+<span class="right"><img src="/images/fails/btcrib2.jpg" alt="Cabinets" /></span>
+<p>
+I went back to the store and found 3/4 x 4 poplar, which had the right thickness
+but was too wide. So I ripped it down to 3 inches on a table saw and made a new
+cabinet with more or less the same external dimensions. Since the wood was thinner
+this time around, the same external dimensions gave me more space internally,
+and the cabinet overall had a much more proportionate look.
+<p>
+Now that I had a basic frame I was happy with, I needed to start considering
+how the thing would actually work. I originally intended on making one side of
+the cabinet open up, sort of like a jewelery box. This probably would have
+worked, but the logistics became difficult the more I thought about it. I
+eventually came up with the idea of putting the speakers and electronics on a
+sled of sorts, which would have the speaker grille on one side and the back
+side of the speaker cabinet on the other. This design had the advantage of
+putting all of the electronics on a removable platform, and didn't require any
+hinges or latches. The only problem was that the dimensions would need to be
+carefully measured so that the grille ended up flush with the cabinet when
+the sled was put into place.
+<h1>The Button Problem</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;While I was planning this whole thing out in my
+head, one issue kept coming up blank: what I would use to turn the thing
+on and off. The Bluetooth media player, similar to many Bluetooth headsets,
+required you to hold the "Play" button for a few seconds to power on the
+device; so I knew I needed a momentary pushbutton, but besides that, I had
+nothing. I looked for a few weeks, but all the momentary buttons I could find
+were ugly plastic, and none of them came even close to the look I was going
+for.
+<p>
+For awhile I entertained the idea of making my own push button, using a small
+piece of stained glass, lit with a blue LED, attached to some kind of spring
+actuated contact. The idea was that you would push down on the little square
+of glass, which would light up when the device was powered on with a soft
+diffuse glow from behind. It would have looked really cool, but I couldn't
+wrap my mind around a reliable way to handle the mechanics in such a small
+space that wouldn't take longer than the rest of the project. It went this
+way for quite some time. I worked on other parts of the project, like the case
+and electronics, and did my best to ignore the looming problem of how to
+actually turn this thing on and off.
+<p>
+Then one day, I was thinking to myself: "What kind of momentary buttons are
+decorative, and ideally lighted?," and the answer hit me. It was so obvious,
+I couldn't believe I didn't think of it before. A doorbell! I immediately
+went on eBay and started searching for doorbell buttons, and within 10 minutes
+I found a button by Baldwin that was exactly what I had in mind. The plate had
+a wonderful antique bronze look, and it was the perfect size for the back cover
+of the speaker cabinet.
+<p>
+<span class="center"><img src="/images/fails/btcrib3.jpg" alt="Button" /></span>
+<h1>Feeling The Blues</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Up to this point, I was pretty happy with the whole project.
+I had something that looked acceptably like a speaker and a pretty good idea how to make
+it all work together. The only thing left was, what I assumed, the easy part of fitting
+it with some appropriate Bluetooth electronics to turn it into a functional device.
+<p>
+Unfortunately, this is the part of the project that never actually worked out. I spent months
+picking up different Bluetooth audio devices on DealExtreme and eBay, taking them apart, and
+getting furious.
+<p>
+OK, let me rewind this a bit for you. Before I started putting this whole thing
+together, I went on DealExtreme and picked up a Bluetooth media player for $15
+or so, connected it to a small external speaker, and did some basic tests.
+How far could I get from the thing before it lost signal, what kind of volume
+control I could expect, battery life, etc, etc. All this went smoothly and
+encouraged me enough to start the construction of the speaker cabinet itself.
+Once that had progressed to the point I was ready to start fitting electronics
+into it, I went back to get my Bluetooth media player and discovered that,
+oddly, it no longer worked.
+<p>
+Searching online, I found out this was actually a very common problem. A good
+portion of these devices are defective from the factory, and stop working after
+a few hours for who knows what reason. So to be sure I had a working unit, I need
+to order a few of them and implement a "stress test" of sorts where I would run
+each of the media players for a few hours connected to an external power supply
+and speaker just to weed out the ones which were defective.
+<span class="right"><img src="/images/fails/btcrib4.jpg" alt="Switch Leads" /></span>
+<p>
+This process worked, and after ordering 6 of these devices, I was left with a
+couple of them that <b>appeared</b> to be functional.
+<p>
+But then there was another problem. The first device I tried delivered very
+good audio on my set of external speakers, it sounded loud and clear. But
+these new ones sounded like trash. The audio cracked and hissed, and the
+volume level was so low that, unless my daughter was sitting in absolute
+silence, there was a good chance she would never even hear the thing. For
+a device that was supposed to sooth her, potentially when she is in the
+room crying, this was obviously not acceptable.
+<p>
+For awhile I had toyed with the idea of packing an audio amplifier
+circuit in there with the Bluetooth device, but then I hit the final
+problem that damned the whole project.
+<p>
+The internal construction of these adapters was so poor that it made the
+necessary modifications nearly impossible. At the absolute minimum I had
+to relocate the power switch and activity LEDs to the doorbell, but even
+a light handling of the player's PCB would occasionally cause components
+to fall right off the board.
+<h1>Time's Up</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;After all the delays with the shoddy Bluetooth
+devices, I simply ran out of time on this one. By the time I was ready to
+give up on the cheap Chinese Bluetooth media players and graduate to
+something that actually cost more than lunch at Wendy's, my daughter was
+past the point where this would do her any good. It turns out that children
+age at a rate that greatly exceeds my ability to focus on a single project.
+<p>
+Ironically, my daughter turned out to sleep easily anyway, and we never
+need to play her any music or that kind of thing when it was time for her
+to go down, she always went directly to sleep.
+<p>
+Perhaps I will revisit this one for the next child. If I do, one thing is
+for sure, I'll spend a few more dollars on the internal components instead
+of trying to make some cheap garbage do my bidding.
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

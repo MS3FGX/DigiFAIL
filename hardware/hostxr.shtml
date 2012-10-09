@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - AIRcable Host XR</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Bluetooth,BlueZ,AIRcable,Host XR,BlueCore4-External,GPS Status,range,OpenProximity" />
+<meta name="description" content="AIRcable Host XR hardware information and real-world applications." />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="center"><img src="/images/hardware/hostxr1.jpg" alt="AIRcable Host XR1" /></span>
+<h1>What is it?</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The AIRcable Host XR is an exceptionally powerful
+USB Bluetooth adapter. It can be used with any and all Bluetooth software
+because, as far as the software is concerned, it is no different from any other
+adapter you would use. The difference is the insanely powerful transmitter,
+outputting at 200 mW (double the power output of the highest conventional
+Bluetooth device), coupled with a standard RP-SMA antenna connector which will
+be immediately familiar to anyone who has worked with WiFi hardware. When
+linked to a directional antenna, two Host XRs can communicate for up to 30 KM.
+For more practical use, you can connect it to a 9 dBi omni-directional antenna,
+which will give you a range of hundreds of meters when working with standard
+Bluetooth devices like phones and headsets.
+<p>
+This device is based on the extremely well supported Cambridge Silicon Radio
+chipset, which has a number of tools specifically geared for it. This enables
+advanced functions not possible on other Bluetooth devices, like MAC spoofing
+and direct low-level access to the baseband radio.
+<pre><code>bash:~# hciconfig hci0 version revision
+hci0:	Type: USB
+	BD Address: 00:50:C2:7F:XX:XX ACL MTU: 310:10 SCO MTU: 64:8
+	HCI Ver: 2.0 (0x3) HCI Rev: 0x10b7 LMP Ver: 2.0 (0x3) LMP Subver: 0x10b7
+	Manufacturer: Cambridge Silicon Radio (10)
+	Unified 22b
+	Chip version: BlueCore4-External
+	Max key size: 56 bit
+	SCO mapping:  HCI
+</code></pre>
+<h1>XR2: Electric Boogaloo</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Recently, AIRcable has introduced the Host XR2 and
+discontinued the Host XR in the process. For awhile you could buy the Host XR
+at a steep discount from the AIRcable online store (50% off), but as of this
+writing they have now sold out the rest of their old stock. You can still get
+the older Host XR on eBay for pretty cheap though.
+<p>
+The XR and XR2 are <i>exactly</i> the same in terms of capability, and anything
+you can do with one you can do with the other. The XR2 represents an aesthetic
+design change, with a much more modern external casing than the original XR. It
+also features retail-friendly blister packaging, rather than the ZipLock
+Freezer bag that my XR was sent to me in. Both of these changes are an
+attempted capitalization on the fact that the Host XR series is essentially the
+only mass-marketable product AIRcable has in their line; it is conceivable that
+the average person might even pick one of these things up in their local
+electronics shop if it was marketed correctly. Coverage on a few technology
+blogs about using the Host XR with Bluetooth headsets and headphones have
+helped that along a bit.
+<p>
+If you can get a cheap XR, go ahead and do it. You won't lose any functionality
+over the XR2, and personally, I find the design of the XR a little more
+appealing; the XR2 looks more at home in an adult toy store than the desk of a
+hacker, but to each his own.
+<h1>Practical Range</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The spec sheet from AIRcable lists the maximum range
+of the Host XR at 30 KM, but of course that is only under laboratory conditions
+and with two Host XRs connected to high-gain directional antennas. It doesn't
+mean anything for it's real world performance, which is what most people are
+interested in.
+<p>
+I set out to test the realistic range of the Host XR in the most simplistic
+way possible. I had somebody hold a cellphone set to discoverable mode, put one
+of the Host XRs on the roof of my car, and started driving. Once I lost signal
+I would switch to the next higher gain antenna, until I got to the directional
+parabolic. It should be said that maximum range with the directional parabolic
+antenna is likely higher than what is reported here, but at these distances
+keeping the target aligned becomes prohibitively difficult.
+<p>
+Distance was measured with the free Android application
+<a href="http://eclipsim.com/gpsstatus/" target="_blank">GPS Status</a>. In my
+mind this is easily the best GPS software available on the Android platform,
+and is exceptionally useful for finding direction and range to an arbitrary
+target. It is a great tool for wardriving, geocaching, or just exploring. Of
+course, as range was found via GPS there is an estimated position error of
+roughly 3 meters. As such, the ranges reported here have actually been rounded
+down from the measurement reported by GPS Status.
+<p>
+As a control, I also tested the range of the cheapest Bluetooth adapter I could
+find, SKU
+<a href="http://www.dealextreme.com/details.dx/sku.16229~r.58964868" target="_blank">16229</a>, from DealExtreme. I was actually surprised at how well this
+device performed, I expected considerably worse for a $4 item.
+<p>
+<span class="center"><img src="/images/hardware/hostxr2.png" alt="Host XR Range" /></span>
+<p>
+As you can see, the range with even the stock 3 dBi antenna is more than twice
+that of a Class 1 Bluetooth device. The biggest surprise of this test for me
+was how little the range was increased using the 9 dBi over the stock antenna.
+In fact, I also tested a 5 dBi antenna, but the difference in signal strength
+was so small I didn't even bother to record it.
+<p>
+The biggest winner, of course, was the monster 19 dBi parabolic antenna. Even
+with a very rough alignment to the target, this antenna achieved just shy of
+400 meters, or 1/4 of a mile.
+<p>
+As I said, a number of things could have been done to push the range even
+farther. Better alignment of the directional antenna would have been highly
+beneficial, and an elevated position would have significantly increased the
+range (and made alignment easier as well). You could also use an external 2.4
+GHz amplifier to push more power through the dish, as truthfully, a 200 mW radio
+doesn't really have the power to drive a 19 dBi dish. But again, this test was
+not to push the hardware to the envelope (though it might be an interesting
+project), but to give an idea as to what results you might expect in the field.
+<h1>What can you do with it?</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Well, think of anything you can do with a normal
+Bluetooth device...and just do it at a greater distance. This means everything
+from simply scanning for discoverable devices to launching an active attack
+with something like Bluetooth Stack Smasher. Imagine how much more effective
+and dangerous Bluetooth vulnerabilities are when the range is extended 5 or 10
+times what the average user is expecting. One of the things that has kept
+Bluetooth security on the back burner in many people's minds is the fact that
+Bluetooth is generally a very short range protocol. It is assumed that any
+attacker would have to be so close to you that it would make any serious attack
+impractical. But with hardware like this, you can enumerate and attack even a
+moving target from a considerable distance. If you are fixed on one relatively
+static target (say, the Bluetooth headset of a person sitting by their office
+window) you can even employ a high-gain directional antenna to push your useful
+range even farther. Such a setup was used by security researchers to
+successfully attack a standard cell phone from over 1 mile away, and the only
+hardware they had was a regular USB Bluetooth adapter modified with an external
+antenna lead.
+<p>
+You could also use the Host XR in your very own
+<a href="/projects/bt_rng.shtml">bt_rng</a> cluster! Impress your friends as you
+generate marginally good random data at ridiculously slow speeds with your
+expensive piece of industrial hardware! In fact, the Host XR doesn't generate
+random data any better or faster than the super cheap "Mini" Bluetooth adapters
+sold online for $4, but it certainly looks cooler.
+<h1>Firmware Modification</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;As this device is based on the BlueCore4 with
+external firmware EEPROM it <i>should</i> be possible to modify it with the
+firmware from <a href="http://www.fte.com/" target="_blank">Frontline's</a>
+Bluetooth sniffing hardware. This would give you RAW access to over-the-air
+Bluetooth communication, allowing for all sorts of interesting things like
+cracking PINs at 100 meters.
+<p>
+Unfortunately, as the process to put the newer firmware releases onto regular
+hardware has changed, and due to the fact that doing it wrong will brick the
+hardware, I have been unable to work on this yet. I have bought a second Host
+XR specifically for this purpose, and will update this page if I find out
+anything useful.
+<h1>Bluetooth Marketing</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Another interesting feature of these devices is that
+they are the only devices which (officially) work with AIRcable's open source
+Bluetooth marketing system, <a href="http://code.google.com/p/proximitymarketing/" target="_blank">OpenProximity</a>. While technically any Bluetooth device
+would work, OpenProximity blocks anything but the Host XR line of devices as
+they are the only Bluetooth devices powerful enough to be useful for proximity
+marketing. Plus the hardware sales are what keep AIRcable and development of
+OpenProximity going, so they aren't about to let you run it with the $4 adapter
+you got off of DealExtreme.
+<p>
+I hope to document the setup and use of an experimental OpenProximity in the
+near future. I am interested in how the system works, and what interesting
+applications there are for being able to push data into unsuspecting user's
+devices.
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - DealExtreme.com Devices</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="DealExtreme,Bluetooth,adapter" />
+<meta name="description" content="Reviews and information about electronic devices sold on DealExtreme.com" />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="center"><img src="/images/hardware/dxdevices1.png" alt="DealExtreme Logo" /></span>
+<h1>DealExtreme.com</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;I think most people browsing my site are probably
+the sort of people who already know about
+<a href="http://www.dealextreme.com/default.dx/r.58964868" target="_blank">DealExtreme.com</a>;
+but if not, DealExtreme is a site that sells all manners of strange gadgets and
+devices direct from Chinese manufacturers, with <i>free</i> worldwide shipping.
+Well, the shipping cost is tacked onto the item price, naturally, but the
+prices for some of these items are simply beyond belief.
+<p>
+Of course, there is always a downside. From the time you place your order to
+the time it actually arrives on your doorstep can take anywhere from 3 weeks to
+3 months (and yes, I personally have waited up to 3 months on a DX order).
+Customer support is also notoriously troublesome, with responses occasionally
+taking weeks. Though the one nice thing I can say about DX customer service is
+that if they send you the wrong item, in many cases they will send out a
+replacement and not ask for the other one back. I have gotten a few extra items
+this way in the past. Finally, one of the biggest problems with DX (at least in
+my mind) is the unacceptable delays in posting user reviews, or the reviews
+never getting posted in the first place. There are some absolutely
+<i>terrible</i> items sold on DX, and if they won't put up my reviews about
+them there, I will just have to post them on my own site.
+<p>
+On this page I will be covering a small fraction of the devices and items I
+have ordered from DX over the years. I'll only put up the ones I think there
+will be some interest in, as many of the things I order are simply novelties
+that have no practical purpose. I will be putting items and devices up here in
+no particular order, and expect to regularly add to this page as I order new
+things and get a chance to play with them.
+<h1>Mini Bluetooth (16229)</h1>
+<span class="center"><img src="/images/hardware/dxdevices2.jpg" alt="16229" /></span>
+<p>
+&nbsp; &nbsp; &nbsp; &nbsp;For $2.17 (in bulk orders),
+<a href="http://www.dealextreme.com/details.dx/sku.16229~r.58964868" target="_blank">SKU 16229</a>
+is the cheapest USB Bluetooth adapter I am personally aware of (that actually
+works). I have ordered somewhere in the neighborhood of 20 of these devices for
+my various projects and machines here, and they have been of
+consistently...usable quality. These are by no means high-quality devices, but
+they serve their purpose and rarely give me issues.
+<p>
+These are the adapters which most of the nodes ran during the creation and
+testing of <a href="/projects/bt_rng.shtml">bt_rng</a>. I was also able to
+confirm the functional range of this adapter to be 30 meters during the
+<a href="/hardware/hostxr.shtml">Host XR range test</a>. They are based on a
+low-end version of the Cambridge Silicon Radio chipset:
+<pre><code>bash:~# hciconfig hci0 version revision
+hci0:	Type: USB
+	BD Address: 00:11:67:6A:XX:XX ACL MTU: 310:10 SCO MTU: 64:8
+	HCI Ver: 2.0 (0x3) HCI Rev: 0xc5c LMP Ver: 2.0 (0x3) LMP Subver: 0xc5c
+	Manufacturer: Cambridge Silicon Radio (10)
+	Unified 21e
+	Chip version: BlueCore4-ROM
+	Max key size: 128 bit
+	SCO mapping:  HCI
+</code></pre>
+Note that this device (and all of the DealExtreme Bluetooth adapters, for that
+matter) uses the BlueCore4-ROM version of the CSR chipset, which means they
+lack the external flash storage that is required for making permanent changes
+like replacing the firmware or writing a new MAC address to the device. This
+does limit your capability a bit, but these adapters are just fine for
+scanning. If you want to do more advanced work, like sniffing PINs, you need an
+adapter with BlueCore4-External, like the
+<a href="/hardware/hostxr.shtml">AIRcable Host XR</a>.
+<p>
+As a side note,
+<a href="http://www.dealextreme.com/details.dx/sku.12696~r.58964868" target="_blank">SKU 12696</a>
+appears to be an identical clone to SKU 16229, just at a higher price point. As
+the capabilities of these two adapters are identical, they are both good choices
+for basic Bluetooth research...but since one costs more than double the other,
+the choice between them is pretty obvious.
+<h1>Mini Bluetooth (11866)</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Now, above I mentioned SKU 16229 was the cheapest
+<i>working</i> Bluetooth adapter I am aware of. That is because DX also sells
+another adapter with the same name under
+<a href="http://www.dealextreme.com/details.dx/sku.11866~r.58964868" target="_blank">SKU 11866</a>
+for $1.80 ($1.13 in bulk); this adapter is <i>not</i> the same as SKU 16229 and
+is in fact complete garbage. I ordered 10 of SKU 11866 once I saw how cheap
+they were, and not only did they all come with the same default MAC address
+(making them useless for many tasks), but one of them actually got so hot when
+plugged in that I could smell plastic melting. These two devices are identical
+externally, but when you check the device information you can see it isn't the
+same:
+<pre><code>bash:~# hciconfig hci0 version revision
+hci0:	Type: USB
+	BD Address: 00:15:83:15:A1:DA ACL MTU: 672:4 SCO MTU: 48:1
+	HCI Ver: 2.0 (0x3) HCI Rev: 0xc5c LMP Ver: 2.0 (0x3) LMP Subver: 0xc5c
+	Manufacturer: Cambridge Silicon Radio (10)
+	Build 0
+	Chip version: BlueCore01a
+	Max key size: 0 bit
+	SCO mapping:  PCM
+</pre></code>
+BlueCore01a is an ancient version of the CSR chipset, and is worthless for
+almost anything you could possibly want to do with it. I have also heard some
+reports that recent batches of this SKU are using the Broadcom BCM2210 chipset,
+which is marginally less terrible, but doesn't have the software support that
+CSR enjoys. Unless you just want to scan for remote devices, please don't buy
+SKU 11866.
+<h1>Class 1 BT Dongle (14484)</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;<a href="http://www.dealextreme.com/details.dx/sku.14484~r.58964868" target="_blank">SKU 14484</a> is a cheap knock-off of the
+Linksys BT100, and even for a knock-off, it is absolute garbage. It's nothing
+more than a standard Bluetooth adapter with a thin piece of wire soldered
+(poorly) to the internal antenna. It is certainly not Class 1, and if anything,
+it seems like the "antenna" they added hinders performance. Take note of the
+expert LED mod they did here as well:
+<p>
+<span class="center"><img src="/images/hardware/dxdevices3.jpg" alt="Garbage" /></span>
+<p>
+This is one of the first items that DX refused the images and review I
+submitted for it, so I wanted to make sure I got this one on the site. At $8 it
+is one of the worst Bluetooth adapters you can buy on DX. Please never buy this
+item for any reason.
+<h1>Mag Stripe Reader (17726)</h1>
+<span class="center"><img src="/images/hardware/dxdevices4.jpg" alt="17726" /></span>
+<p>
+&nbsp; &nbsp; &nbsp; &nbsp;As of this writing,
+<a href="http://www.dealextreme.com/details.dx/sku.17726~r.58964868" target="_blank">SKU 17726</a> is unfortunately no longer available on DX. For $20 it is a
+decent quality USB magnetic stripe reader that appears as a USB HID to the host
+OS. Well, that is the idea anyway. I found that this doesn't always work as
+expected under Linux, and the reader only seems to work randomly. This is an
+exceptionally annoying problem, but I have never found any workable solution
+and the kernel's error messages are not terribly helpful. I suspect the
+internal firmware on this device doesn't comply 100% with the USB HID
+specifications, and that a kernel driver would need to be made/modified to
+accept this device as HID based on it's USB VID/PID, regardless of what it
+appears to be. But I have yet to dive into kernel hacking so I haven't been
+able to implement anything. The only output from the kernel when this device is
+connected (and not working) is:
+<pre><code>usb 6-2: new full speed USB device using uhci_hcd and address 2
+usb 6-2: config 1 interface 0 altsetting 0 has 2 endpoint descriptors,
+different from the interface descriptor's value: 1
+usb 6-2: configuration #1 chosen from 1 choice
+input: HID f725:f834 as /devices/pci0000:00/0000:00:10.1/usb6/6-2/6-2:1.0/input/input21
+input: USB HID v1.10 Keyboard [HID f725:f834] on usb-0000:00:10.1-2
+drivers/hid/usbhid/hid-core.c: ctrl urb status -75 received
+</code></pre>
+This device has a small DIP switch on the bottom which is used to toggle
+optional post-processing of the ASCII card data. DIP 1 toggles LF after
+outputting the string, and DIP 2 toggles pre/postfix control characters (; and
+?, respectively). The third DIP is supposed to switch the reader between tracks
+1/2 and 2/3, but apparently doesn't actually do anything.
+<p>
+All in all, this is a decent buy for an easy to interface mag reader, but the
+fact it only works reliably under Windows is a pretty big drawback. It is also
+rather large for such a relatively simple device, but that is not nearly as big
+a problem.
+<h1>USB to RS232 Dongle (5859)</h1>
+<span class="right"><img src="/images/hardware/dxdevices5.jpg" alt="5859" /></span>
+<p>
+&nbsp; &nbsp; &nbsp; &nbsp;Not a whole lot to say about this one, other than
+that it is a very handy tool to have around. For under $4,
+<a href="http://www.dealextreme.com/details.dx/sku.5859~r.58964868" target="_blank">SKU 5859</a> it's worth keeping in your parts box just in case you need to
+quickly interface a serial device with one of your machines. This device is
+obviously designed for machines that lack serial ports, but even on machines
+that do have serial ports, I find it is more convenient to simply use this
+device in the front USB ports than reach around the back to the serial.
+<p>
+I have also had situations where some serial devices wouldn't work on my
+<i>actual</i> serial port, but worked through this. For example, I have had
+problems getting the <a href="/hardware/mini.shtml">AIRcable Mini</a> to talk
+over an actual serial port, but it has no problem through this adapter.
+<p>
+This device is a particularly good buy as it uses the very well supported
+Prolific PL2303 chipset, which will work in basically any modern OS right out
+of the box. It also supports <i>all</i> RS-232 signals, such as RTS/CTS and
+DTR/DSR. A lot of cheap adapters leave these out to cut costs, so it is pretty
+impressive that it has them in. I know some people have also modified this
+device to work with TTL-level signals by disabling the MAX232 chip inside.
+<p>
+<i><b>Update:</b></i> I have read some reports that new versions of this device
+are shipping with the CH341 chipset rather than the more common PL2303. I
+have not been able to personally verify the new adapters have switched
+chips, but at least CH341 chipset is fairly well supported if it has. So if
+your only concern is getting an adapter that works on all of your computers,
+you will still be fine, the only problem you might have is if you need a
+PL2303 device specifically.
+<h1>Dummy SIM Cards (16159)</h1>
+<span class="center"><img src="/images/hardware/dxdevices6.jpg" alt="16159" /></span>
+<p>
+&nbsp; &nbsp; &nbsp; &nbsp;<a href="http://www.dealextreme.com/details.dx/sku.16159~r.58964868" target="_blank">SKU 16159</a> is a 10 pack of dummy SIM cards,
+which are invaluable when working with cell phones, as many brands of GSM phone
+won't start without a valid SIM inserted. During my Bluetooth research I picked
+up dozens of cheap phones off of eBay to test with, so luckily they are a
+pretty good value at just under $4 a pack.
+<p>
+Keep in mind though that not all phones require a SIM to operate. For example,
+in my experience most Nokia phones don't require them, while Motorola phones
+usually do. Also, if the phone you are working with is locked to a particular
+carrier, then these alone won't get the phone working. The phone will
+<i>start</i> with the dummy SIM, but when it tries to connect to the cell
+network it will fail (unless, perhaps, you live in China where these SIMs were
+pulled from). To get past the carrier lock, you will need...
+<h1>i-SmartSim Unlocker (12167)</h1>
+<span class="right"><img src="/images/hardware/dxdevices7.jpg" alt="12167" /></span>
+<p>
+&nbsp; &nbsp; &nbsp; &nbsp;<a href="http://www.dealextreme.com/details.dx/sku.12167~r.58964868" target="_blank">SKU 12167</a> is a very small device that
+piggy-backs onto a SIM card and fools the phone into thinking it is for the
+carrier the phone is locked to. You can use this device to perform a physical
+unlock on your phone (say for example, if you wanted to use the iPhone on
+T-Mobile), or you can combine this with SKU 16159 to get even carrier locked
+phones to boot up without the original SIM. The DealExtreme page says this
+device is designed primarily for Nokia phones, but personally I have been able
+to use it on phones from a number of different manufacturers without any
+issues.
+<p>
+To install this device you need to cut out a little notch on the top part of
+the SIM, as shown in the picture above. This area of the SIM is simply plastic,
+and doesn't contain the actual SIM chip, which is located on the opposite side
+of the gold contacts. There is no danger of cutting too far into the SIM and
+destroying it, so don't be afraid to cut out a little more than I did. I used a
+Dremel to cut out the square, but if you have snips small enough you should be
+able to get in there, or maybe use a small hobby razor knife. I would suggest
+tacking the unlocker and the SIM together with some <i>very</i> small drops of
+cyanoacrylate adhesive (AKA, Super Glue or Krazy Glue) around the extreme edges
+of the SIM. You need to be very careful not to put too much on, or else it may
+overflow onto the actual SIM contacts under the unlocker, in which case you are
+in some real trouble. If you don't glue them together, it makes it much more
+difficult to insert and remove the SIM/unlocker, though not impossible.
+<p>
+I have never personally found a phone this didn't work on, though I am told
+newer handsets might have issues (for which DX sells an updated version of this
+product). While this should certainly not be taken as a compatibility list in
+any shape or form, I can at least confirm the i-SmartSim works perfectly on the
+following phones:
+<p>
+<b>&nbsp; &nbsp; &nbsp; &nbsp;Ericsson T39m
+<br>	
+&nbsp; &nbsp; &nbsp; &nbsp;LG CU575
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Motorola Razr V3
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Nokia 2600
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Nokia 6555b
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Samsung A737</b>
+<h1>100g Digital Scale (15002)</h1>
+<span class="right"><img src="/images/hardware/dxdevices8.jpg" alt="15002" /></span>
+<p>
+&nbsp; &nbsp; &nbsp; &nbsp;<a href="http://www.dealextreme.com/details.dx/sku.15002~r.58964868" target="_blank">SKU 15002</a>
+is an extremely accurate digital scale at an incredible price ($10.87 as of
+this writing), perfect for weighing small objects and chemistry work. This
+scale features a maximum capacity of 100g, with a precision of 0.01g. The scale
+comes with a fake-leather carrying case that protects it pretty well, and there
+is a plastic snap-on protector for the actual weighing platform.
+<p>
+If you are going to get this scale and want to make sure it is as accurate as
+possible, you should also order the 100g calibration weight
+(<a href="http://www.dealextreme.com/details.dx/sku.15761~r.58964868" target="_blank">SKU 15761</a>).
+Even if the scale is perfectly accurate when you receive it (which is already
+unlikely as movement tends to knock it out of precision), with time and temperature
+changes the accuracy of the scale will begin to drift. To calibrate the scale,
+hold the "On" button until "0" flashes and place the calibration weight on the
+scale; after a few seconds the weight should peg at "100.00" and stop flashing.
+Once calibrated, you should verify the calibration of the scale every so often
+by simply placing the calibration weight on scale and verifying it still reads
+"100.00".
+<p>
+If you need higher capacity, this same scale is available in models all the way
+up to 300g. After that, there is a trade off between accuracy and capacity.
+Scales above 500g usually only offer 0.1g resolution. If you are looking for
+very high resolution, you may want to check out
+<a href="http://www.dealextreme.com/details.dx/sku.10515~r.58964868" target="_blank">SKU 10515</a>,
+which appears to be the highest resolution scale currently offered on DealExtreme.
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

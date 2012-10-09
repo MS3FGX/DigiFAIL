@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - In-Wall Serial Terminal</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Linux,terminal,serial,RS-232" />
+<meta name="description" content="Idea for a Cold War style in-wall serial terminal built from an old laptop." />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="center"><img src="/images/fails/serial1.jpg" alt="LCD and Switch" /></span>
+<h1>What was it?</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;OK, maybe the best way to start this would be a
+little background information. Basically I was relocating my primary network
+operations to a different area of the house, but due to physical restraints and
+wiring issues, I had to leave the server where it was. This was a problem,
+because at the time my primary interface with the server was an RS-232
+connected VT420 serial terminal. So my solution was to build a serial terminal
+directly into one of the walls in the new area of the house. I would run the
+RS-232 signals down the unused pairs in the Cat 5 via some breakout modules I
+was working on, so both the serial connection and primary data link would be
+run through the same line, preventing me from having to run a second cable down
+the run.
+<p>
+Now...it would probably be wishful thinking of me to believe you have read this
+far and didn't already ask yourself "Why not just use SSH..."; of course, any
+normal person would. I had naturally considered that at the time, but was
+prevented from going this route initially because of two primary concerns.
+<p>
+First, I had no constant-on alternative to the serial terminal. Or in other
+words, if there was some issue that needed immediate attention, I would have to
+startup one of my laptops, connect to the network, authenticate with the
+server, and by that time the crisis (I never got far enough to postulate what
+would necessitate such urgency) could have been too far out of control. This
+was in stark contrast to the serial terminal, which would greet me with a
+flashing prompt no more than 10 seconds after I flicked the switch. One of the
+little joys of serial networking that is rarely experienced today is the fact
+that even if you turn the terminal off, your session never stops on the server.
+So you could not power the terminal on for a week, but it would still be
+sitting exactly where you left off when it came back online.
+<p>
+The second issue, as I recall, was that I had an inexplicable fear that either
+the network itself would go down, or any remote access daemons I was running on
+the server would fail. As I saw it, the serial terminal was the most reliable
+line of contact with the server. Even if somehow the server lost all TCP/IP
+connectivity, I would still have a direct connection from which I could
+diagnose and fix the issue. To be fair, this was my first Unix server after
+coming from a lifetime of Windows administration, so perhaps I simply expected
+there to be multiple unexplained failures as I had come accustomed to under
+Microsoft's offering.
+<p>
+<h1>How did it work?</h1>
+<span class="right"><img src="/images/fails/serial2.jpg" alt="LCD" /></span>
+&nbsp; &nbsp; &nbsp; &nbsp;The idea was really very simple. Basically, I would
+take an old 386 laptop, put the screen on top of the motherboard using stand
+offs, and put the whole thing into a metal panel that would have been flush
+with the wall. The real hook though was the keyboard, I had devised a way for
+the keyboard to fold up to cover the screen when the terminal was not in use.
+The easiest way to describe it would be to think of the trays on the back of
+airliner seats. When you wanted to use the terminal, you pulled the keyboard
+down towards you, and turned on the main power.
+<p>
+The laptop's HDD was replaced with a CF-IDE adapter and 32 MB CF card. This
+contained an MS-DOS 6.22 installation and the appropriate software and
+autoexec.bat file to launch the terminal emulator immediately. I wanted to use
+Linux on the board, but frankly there was no way to get the kernel and initrd
+to boot as quickly as DOS; Linux took over a minute to boot, while DOS was up
+in roughly 8 seconds. RAM was also a concern, as the machine only had 8 MB in
+the first place, and even a frugal kernel and run-time environment would be a
+tight fit.
+<p>
+Aesthetically, I was going for a Cold War Era "You can't fight in the War Room"
+sort of look. I had envisioned this as looking totally at home in a missile
+silo, so to that end I used a red lighted safety switch that you might find on
+the dashboard of a B-52 (or alternately, a '91 Civic). The front panel was to
+be cut from a single sheet of stainless steel, as was the fold-down keyboard
+tray.
+<p>
+<h1>So what happened?</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Thankfully, I never got as far as actually blowing
+the hole in the wall. Sometimes I look at the spot the terminal was going to go
+into and just breathe deeply with an inner peace. Not that I wouldn't have
+liked the look of it exactly, but as time went on and I got more accustomed to
+how Linux would work for me on the server side, I realized there was absolutely
+no reason to be able to have constant access to the server. When I got to the
+point that I trusted SSH enough that I decided I could rely on it in a (still
+unquantified) emergency, my skills in scripting and running the server had
+gotten good enough that the machine basically ran itself.
+<p>
+I recently ran into the box that held the half-completed terminal and felt a
+slight pang of regret as I pushed it back into the cavernous interior of what I
+consider my technology graveyard. While I still think the look of a built-in
+terminal would be very cool for a server area, the idea of it being a
+<i>serial</i> terminal is perhaps not as appealing anymore.
+<p>
+On the other hand...it did give me an idea. I wonder if I couldn't resurrect
+the old VT420 and put it to some useful work with more modern technology...
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

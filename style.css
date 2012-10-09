@@ -1,0 +1,371 @@
+/* DigiFAIL CSS - Version 1.7 */
+html, body
+{
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	background-color: #33333F;
+	font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif;
+	font-size: 12px;
+	overflow: auto;
+	background-image:url('/images/site/bgpattern.jpg')
+}
+
+h1
+{
+	/* Have to set height to show cross-bar */
+	height: 50px;
+	/* Align text over image */
+	line-height: 35px;
+	padding-left: 20px;
+	background-image: url('/images/site/heading.png');
+	background-repeat: no-repeat;
+	color: #DDD;
+	font-size: 20px;
+	letter-spacing: 1px;
+}
+
+h2
+{
+	color: #DDD;
+	font-family: "Trebuchet MS", helvetica, sans-serif;
+	font-size: 13px;
+	font-style: italic;
+}
+
+/* Used for footer link */
+h4, h4 a
+{
+	position: relative;
+	text-align: right;
+	margin-top: 2px;
+	right: 2px;
+	color: #FF9C27;
+	font-size: 10px;
+}
+
+#header
+{
+	height: 75px;
+	padding: 10px 16px 10px 16px;
+	background-color: #182842;
+	border-bottom: 2px solid #FF9C27;
+}
+
+/* Position the tagline and CSE*/
+#subheader
+{
+	line-height: 40px;
+	text-align: right;
+	color: #DDD;
+	font-family: "Trebuchet MS", helvetica, sans-serif;
+	font-size: 18px;
+	font-style: italic;
+
+}
+
+/* Whole page goes in here */
+#container
+{
+	position: absolute;
+	margin: 2%;
+	min-width: 900px;
+	width: 96%;
+	min-height: 680px;
+	height: 94%;
+	background-color: #414141;
+}
+	
+/* Banish footer bar to bottom of container object */
+#container div.footer
+{
+	position: absolute;
+	bottom: 0;
+	height: 20px;
+	width: 100%;
+	background-color: #182842;
+	border-top: 1px solid  #FF9C27;
+}
+
+/* Center content box */	
+#content
+{
+	/* Have to set left margin to 0 for Opera, not sure why */
+	margin: 20px 20px 20px 0px;
+	height: 72%;
+	color: #DDD;
+	line-height: 15px;
+	background-color: #545454;
+	/* This doesn't work on Android Browser. Breaks site, thanks. */
+	overflow: auto;
+	border: 1px solid #787878;
+	padding: 10px;
+}
+
+/* Color for inline links */
+#content a
+{
+	/* text-decoration: line-through; */
+	color: #FF9C27;
+}
+
+/* Keeps sidebar objects in their own area */
+#sidebar
+{
+	float: left;
+}
+	
+/* Generic sidebar container */
+#sideobject
+{
+	/* Set margin against content here, makes Opera happy */
+	margin: 20px;
+	width: 160px;
+}
+
+#updates
+{
+	background-color: #545454;
+	border: 1px solid #787878;
+}
+
+#updates a
+{
+	color: #FF9C27;
+}
+
+#updatescontent
+{
+	color: #DDD;
+	margin: 2px;
+	padding: 5px 5px 0px 5px;
+	font-size: 10px;
+}
+
+/* Generic sidebar box header */	 
+#boxheader
+{
+	height: 20px;
+	width: 158px;
+	line-height: 22px;
+	color: #DDD;
+	font-family: arial, sans-serif;
+	font-weight: bold;
+	font-size: 14px;
+	text-align: center;
+	background-color: #23232F;
+	border: 1px solid #787878;
+}
+	
+/* Terminal-looking box for code, commands, etc */
+pre
+{
+	background-color: #000000;
+	padding: 5px;
+	border: 2px solid #787878;
+	/* This should be 80 characters in monospace font, need to test more */
+	width: 575px;
+	/* If the code is really long, pop up scroll bars */
+	max-height: 800px;
+	overflow: auto;
+	margin: 20px;
+	/* Voodoo to make copy & paste work */
+	white-space: pre-wrap;
+        white-space: -moz-pre-wrap;
+        white-space: -pre-wrap;
+        white-space: -o-pre-wrap;
+        word-wrap: break-word;
+}
+
+/* Font to be used when <code> is called from <pre> */
+pre code
+{
+	font-family: monospace;
+	font-weight: bold;
+	font-size: 11px;
+	color: #FFFFFF;
+}
+
+/* Navbox objects */
+ul.nav,
+.nav ul
+{
+	/* Remove the spaces from list items */
+	margin: 0;
+	padding: 0;
+	cursor: default;
+	list-style-type: none;
+	font-family: arial, sans-serif;
+	text-align: center;
+	font-size: 15px;
+	background-color: #545454;
+	color: #DDD;
+}
+
+ul.nav
+{
+	width: 158px;
+}
+
+ul.nav>li
+{
+	/* Padding looks better, but causes bounding issues... */
+	padding: 2px;
+}
+
+/* Make the sub list items invisible */
+ul.nav li>ul
+{
+	display: none;
+	position: absolute;
+	width: 158px;
+	/* Doesn't work right in IE, maybe need separate style sheet? */
+	margin-top: -21px;
+	left: 179px;
+}
+
+/* When hovering, make them appear */
+ul.nav li:hover>ul
+{
+	display: block;
+}
+
+/* What to do when hovering over object */
+.nav li:hover
+{
+	background-color: #42629B;
+	color: #FF9C27;
+	outline: 1px solid #5B8BDD;
+}
+
+/* Adds border to all menu boxes */
+ul.nav, li:hover>ul
+{
+	border: 1px solid #787878;
+}
+
+/* Forces color of hovered link to orange */
+.nav a:hover
+{
+	color: #FF9C27;
+}
+
+/* Keeps links from looking like links */
+.nav a
+{
+	display: block;
+	text-decoration: none;
+	color: #D5D2D6;
+}
+
+/* Image positioning - left, right, and center */
+.left
+{
+	float: left; 
+	padding: 0px 8px 0px 0px;
+}
+
+.right
+{
+	float: right; 
+	padding: 0px 0px 0px 8px;
+}
+
+.center
+{
+	display: block;
+	text-align: center;
+	margin: 0 auto;
+}
+
+/* Individual lines in updates sidebar */    
+
+.updateitem {margin-bottom:5px; font-size:10px; color: #DDD; }
+
+.updatelink {margin-bottom:10px; font-size:10px; color: #D5D2D6; }
+
+/* For Slackware package browser and downloads */
+ul#filetabs li
+{
+	display: inline;
+	margin-left: -15px;
+	margin-right: -15px;
+}
+
+ul#filetabs li a
+{
+	margin-left: -35px;
+	margin-right: 35px;
+	padding: 5px;
+	width: 100px;
+	color: #eee;
+	float: left;
+	text-align: center;
+	border-top: 1px solid #fff;
+	border-left: 1px solid #fff;
+	border-right: 1px solid #fff;
+	text-decoration: none;
+}
+
+ul#filetabs li a:hover
+{
+	background: #a2b3a1;
+	color: #000;
+}
+
+#filelist
+{
+	margin-left: 5px;
+	height: 75%;
+	overflow: visible;
+}
+object
+{
+	width: 100%;
+	height: 100%;
+	padding: 0px;
+	overflow: visible;
+	border-top: 1px solid #fff;
+}
+
+/* Hover thumbnails */
+
+.thumbnail
+{
+	position: relative;
+	z-index: 0;
+}
+
+.thumbnail:hover
+{
+	background-color: transparent;
+	z-index: 50;
+}
+
+.thumbnail span
+{
+	/* Enlarged image */
+	position: absolute;
+	padding: 5px;
+	left: -1000px;
+	visibility: hidden;
+	background-color: #414141;
+	border: 1px solid #787878;
+	}
+
+.thumbnail span img
+{
+	/* Enlarged image*/
+	border-width: 0;
+	padding: 2px;
+}
+
+.thumbnail:hover span
+{ 
+	/* Enlarged image on hover */
+	visibility: visible;
+	top: 0;
+	left: 60px; /* Offset */
+}
+
+/* EOF */

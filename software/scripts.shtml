@@ -1,0 +1,338 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - Bash Scripts</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Linux,Bash,script,function" />
+<meta name="description" content="Miscellaneous Bash scripts and functions I have written over the years." />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<h1>Miscellaneous Scripts</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The following are various Bash scripts I have
+written over the years, hosted here on the off chance somebody might find
+them useful. Most of these were written up as a quick fix for whatever
+problem I was tackling at the moment, rather than full on projects. As such,
+they are not well tested or as throughly tested as most of my other software.
+<p>
+You can download any of these files from the
+<a href="/misc/downloads.shtml">Downloads</a> section, just make sure to make
+them executable after download with "chmod +x".
+<h1>2Pass.sh</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;I wrote this script up when a friend needed a bunch
+of videos re-encoded and their own computer wasn't up to the task (not if he
+wanted it finished within the year, anyway). This isn't terribly flexible as
+it is only setup to work with XviD and you have to set the desired bitrate
+in the file itself. XviD has fallen out of favor for newer codecs now, but the
+script itself is still a useful example if you want to wrap up a different
+encoder.
+<pre><code>#!/bin/sh
+
+# 2Pass.sh
+APPNAME="2Pass"
+VER="1.0"
+# Simple script to do a two pass XviD encode on given file. Can also encode all
+# files in current directory.
+
+# Set bitrate for final video
+RATE=6000
+
+#------------------------------------------------------------------------------#
+
+ErrorMsg ()
+{
+# ErrorMsg <Error Type> <Error Message>
+# Displays either a minor (warning) or critical error, exiting on an critical.
+# If message starts with "n", a newline is printed before message.
+[[ $(expr substr "$2" 1 1) == "n" ]] && echo
+if [ "$1" == "ERR" ]; then
+        # This is a critical error, game over.
+        echo "  ERROR: ${2#n}"
+        exit 1
+elif [ "$1" == "WRN" ]; then
+        # This is only a warning, script continues but may not work fully.
+        echo "  WARNING: ${2#n}"
+fi
+}
+
+VerifyCmd ()
+{
+# VerifyCmd <Output Bool> <Command>
+# Checks to see if given command exists, optional output.
+[ $1 -eq 1 ] && echo -n "Checking for $2: "
+if which $2 > /dev/null 2>&1; then
+        [ $1 -eq 1 ] && echo "OK"
+        return 0
+else
+        [ $1 -eq 1 ] && echo "FAILED"
+        return 1
+fi
+}
+
+FirstPass ()
+{
+# FirstPass <Filename>
+# Preforms first pass scan on file <Filename>
+if [ -f ./divx2pass.log ]; then
+        echo "An existing first pass log has been found!"
+        echo "Skipping to second pass!"
+        return
+else
+        echo "Starting first pass on $1..."
+        mencoder "$1" -oac mp3lame -ovc xvid -xvidencopts pass=1 -o /dev/null
+        [ $? == 1 ] && ErrorMsg ERR "First pass failed!"
+fi
+}
+
+SecondPass ()
+{
+# SecondPass <Filename>
+# Preforms second pass encode on file <Filename>
+echo "Starting second pass on $1..."
+[ -f ./divx2pass.log ] || ErrorMsg ERR "No first pass log found!"
+# Determine original file extension
+ORIGEXT=`echo "$1" | awk -F . '{print $NF}'`
+if [ $ORIGEXT == "avi" ]; then
+        NEWEXT="avi.new"
+else
+        NEWEXT="avi"
+fi
+mencoder "$1" -oac mp3lame -ovc xvid -xvidencopts pass=2:bitrate=$RATE -o "${1%.*}.$NEWEXT"
+[ $? == 1 ] && ErrorMsg ERR "Second pass failed!"
+if [ -f ./divx2pass.log ]; then # Do I need to do this?
+        rm ./divx2pass.log
+fi
+}
+
+#------------------------------------------------------------------------------#
+
+case "$1" in
+'all')
+
+;;
+'single')
+echo "Starting $APPNAME $VER in single file mode."
+# Did the user give us a filename?
+[ "$2" == "" ] && ErrorMsg ERR "You have to give a file name!"
+# Does the file exist?
+echo -n "Checking source file..."
+[ -f "$2" ] || ErrorMsg ERR "nFile does not appear to exist!"
+echo "OK"
+FirstPass "$2"
+SecondPass "$2"
+echo "Encoding of $2 complete!"
+;;
+'multi')
+echo "Starting $APPNAME $VER in multi file mode."
+ls ./* | while read I; do
+        echo "Starting encode of "$I""
+        FirstPass "$I"
+        SecondPass "$I"
+        echo "Encoding of $I complete!"
+done
+echo "Encoding complete for all files!"
+;;
+'help')
+echo "This is $APPNAME, a script to perform a 2 pass XviD encode on either a"
+echo "single or multiple video files. This is designed so that an entire"
+echo "directory of files can be converted without human intervention, as in"
+echo "the case with converting an entire series or season of a show."
+echo
+echo "The available arguments as of version $VER are as follows:"
+echo "single - Converts single file, must give valid source filename"
+echo "multi  - Converts all files in current directory (video or not)"
+echo "help   - What you are reading now"
+;;
+*)
+echo "$APPNAME Version $VER"
+echo "usage: $0 single|multi|help"
+esac
+# EOF</code></pre>
+<h1>archive.sh</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;This was written as a quick experiment when I was
+putting together <a href="/projects/mainframe.shtml">Mainframe</a>. The idea
+was to export a directory over NFS or Samba, and run this script against it
+every day or so. The script scans the directory for files and compresses every
+file that isn't already compressed. This would allow me to have an "Archive"
+share that would compress anything which was put into it, perfect for long-term
+storage of files. In the end I never put it into use, but the concept is sound.
+<pre><code>#!/bin/sh
+#
+# Script to scan a directory for files, and compress them if they haven't
+# already been.
+
+# Compression, gzip and bzip2 supported
+COMP="bzip2"
+
+# Delete files after compression (BE CAREFUL)
+DELFILE="yes"
+
+# Make sure we have a target
+[ "$1" == "" ] && echo "Must give target!" && exit
+
+# Determine compression type and extension
+if [ "$COMP" == "gzip" ]; then
+        COMPEXT="gz"
+elif [ "$COMP" == "bzip2" ]; then
+        COMPEXT="bz2"
+else
+        echo "Unsupported compression type!"
+        exit
+fi
+
+# Create the list of files to work with
+LIST=`find $1 -type f`
+
+# Search for files
+for i in $LIST;
+do
+        if [ `echo $i | awk -F . '{print $NF}'` != "$COMPEXT" ]; then
+                echo -n "Compressing $i..."
+                gzip -c9 $i > $i.$COMPEXT
+                echo "OK!"
+                [ "$DELFILE" == "yes" ] && rm -f $i
+        fi
+done</pre></code>
+<h1>gpstime.sh</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;This is a very simple little script that I wrote as
+an experiment, for which I intended on basing a full project on. I never went
+through with the project (yet), but the idea seems to work well enough.
+<p>
+Basically, the idea was to set the system time from a GPS device connected over
+Bluetooth. The Bluetooth GPS must already be connected with RFCOMM (check out
+the <a href="/text/btprimer.shtml">Bluetooth Hacking Primer</a> for information
+on setting up RFCOMM links under Linux) before running this script, which
+simply parses the output and sets the system time once it is downloaded from
+the satellites.
+<p>
+There are a lot of problems with this idea, unfortunately. First off, the GPS
+device will report the time from it's own internal RTC until it has received a
+time update from the satellites. The problem is that the GPS has no reliable
+way of indicating when this occurs, so some additional checking would be
+necessary to make sure you weren't setting your system time to a cheap RTC.
+There is also additional latency inherent with using Bluetooth as the
+communication medium, which causes more drift than if the device was connected
+over USB. Finally, the only way to get truly accurate time updates from serial
+devices (emulated serial, or otherwise) is to use Pulse Per Second (PPS), which
+the Linux kernel doesn't actually have built-in support for. Though even if it
+did, the RFCOMM emulated serial device wouldn't be able to communicate PPS to
+the kernel anyway.
+<p>
+So in other words, this is a <i>very</i> rough way to set the time from GPS. It
+isn't terribly accurate, but in my testing did appear to be at least as accurate
+as setting the system time with NTP when taking Internet/network latency into
+account.
+<pre><code>#!/bin/sh
+# Hackish way to set system time to GPS PPS
+
+# Pre-fetch date info
+DATE="$(date +%m%d)"
+YEAR="$(date +%y)"
+
+# Pause and return UTC time string as close to PPS as possible:
+UTC="$(awk -F, '/\$GPGGA/ {print $2; exit}' /dev/rfcomm0 | cut -c 1-6)"
+TIME="$(echo $UTC | cut -c 1-4)"
+SECONDS="$(echo $UTC | cut -c 5-6)"
+
+# Put it back together and set the time
+date -u $DATE$TIME$YEAR.$SECONDS</pre></code>
+<h1>Common Functions</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Early in my Bash scripting career, I realized I was
+writing the same code over and over again way too often. In more advanced
+programming languages, commonly used functions are always broken out into their
+own subroutines so you don't have to keep putting it in manually, but it seemed
+most people didn't necessarily do the same with Bash scripts. Maybe it is just
+because I take some of these scripts pretty far into the realm of "Should have
+done it with C", but I like to think it is better to just get them written out
+properly in the first place, and paste them into new projects I am working on.
+<p>
+Indeed, most of the scripts I have posted up on the site make use of these
+functions in some way or another, so I figured it was worth putting them up on
+their own.
+<p>
+<h1>ErrorMsg</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;I use this one <i>a lot</i>. It is a function to
+display either a warning or critical error message, with an error message
+causing the script to exit. You can also have the message printed with or
+without a newline.
+<pre><code>ErrorMsg ()
+{
+# ErrorMsg <Error Type> <Error Message>
+# Displays either a minor (warning) or critical error, exiting on an critical.
+# If message starts with "n", a newline is printed before message.
+[[ $(expr substr "$2" 1 1) == "n" ]] && echo
+if [ "$1" == "ERR" ]; then
+	# This is a critical error, game over.
+	echo "  ERROR: ${2#n}"
+	exit 1
+elif [ "$1" == "WRN" ]; then
+	# This is only a warning, script continues but may not work fully.
+	echo "  WARNING: ${2#n}"
+fi
+}
+</code></pre>
+Using ErrorMsg is pretty straight forward, you simply call the function with
+the type of error, and put the message you want printed in quotes. Now using
+the newline function might not be immediately obvious. The idea there is that
+you might want to print an "OK" type message on the same line as a command if
+it succeeds, and an error if it doesn't. Let's look at the following example
+code:
+<pre><code># Let's look at a warning:
+echo "I am warning you..."
+ErrorMsg WRN "You have been warned!"
+
+# Here we check for a file on the system that should exist:
+echo -n "Checking for /etc/exports..."
+[ -f /etc/exports ] || \
+ErrorMsg ERR "nFile: /ext/exports does not exist!"
+echo "OK!"
+
+# Now let's look for something you (probably...) don't have, to see the error:
+echo -n "Checking for ~/nudez..."
+[ -d ~/nudez ] || \
+ErrorMsg ERR "nFailed to locate the nudez!!"
+echo "OK!"
+</code></pre>
+Looking at the output of the following lines, you can see how the output has a
+nice clean look on success, while still maintaining a consistent visual style
+on a warning or failure:
+<pre><code>I am warning you...
+  WARNING: You have been warned!
+Checking for /etc/exports...OK!
+Checking for ~/nudez...
+  ERROR: Failed to locate the nudez!!
+</code></pre>
+<h1>VerifyCmd</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;VerifyCmd is not strictly necessary, you could just
+check for the presence of the file using a regular Bash conditional and then
+call ErrorMsg accordingly; but I wanted to have a little nicer way to tell the
+user what is going on, and make it very clear they are missing a program rather
+than showing a general failure message, especially if it is not a required
+program.
+<pre><code>VerifyCmd ()
+{
+# VerifyCmd <Output Bool> <Command>
+# Checks to see if given command exists, optional output.
+[ $1 -eq 1 ] && echo -n "Checking for $2: "
+if which $2 > /dev/null 2>&1; then
+	[ $1 -eq 1 ] && echo "OK"
+	return 0
+else
+	[ $1 -eq 1 ] && echo "FAILED"
+	return 1
+fi
+}
+</code></pre>
+If you want to use VerifyCmd to just check for the program rather than
+outputting it's usual message (like if you wanted to show a different message
+with ErrorMsg), you can call it with the boolean "0" to turn off visual output.
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

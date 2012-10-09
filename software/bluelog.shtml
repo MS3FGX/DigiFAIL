@@ -1,0 +1,253 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - Bluelog</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Linux,Bluetooth,scanner,discoverable" />
+<meta name="description" content="Bluelog, a Linux Bluetooth scanner and logger with optional web front-end designed for site surveys and traffic monitoring." />
+<link href="https://plus.google.com/112295798437810480494" rel="publisher" />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="right">
+<img src="/images/software/bluelog1.png" alt="Bluelog logo" />
+</span>
+<h1>Bluelog</h1>
+<b>
+&nbsp; &nbsp; &nbsp; &nbsp;Platform: GNU/Linux
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Language: C, HTML
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;License: GPLv2
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Dependencies: BlueZ
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Google Plus Page: <a href="https://plus.google.com/112295798437810480494?prsrc=3">View</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Tagged Blog Posts: <a href="http://blog.digifail.com/tagged/bluelog">View</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Development Progress:
+(<a href="https://github.com/MS3FGX/Bluelog">github</a>)
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Latest Stable Release: 1.0.4
+(<a href="ftp://ftp.digifail.com/downloads/software/bluelog/bluelog-1.0.4.tar.gz">Download</a>)
+(<a href="http://packetstormsecurity.org/files/download/113924/bluelog-1.0.4.tar.gz">Mirror</a>)
+</b>
+<h1>About</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Bluelog is a Linux Bluetooth scanner written
+to do a single task, log devices that are in discoverable mode. It is intended
+to be used as a site survey tool, determining how many discoverable Bluetooth
+devices there are in the area. It has also proven to be very well suited to
+Bluetooth traffic monitoring applications.
+<p>
+While there are many different Bluetooth scanners available, none I found did
+exactly what I wanted, most seemed focused on pulling down various bits of
+information from the target devices (like SDP records). I was also having
+trouble locating a scanner that didn't have a UI of some sort, which was a
+problem since I wanted to scan continuously without user intervention. After
+trying out all of the Linux Bluetooth scanners I could find, I eventually
+decided to simply write my own.
+<p>
+The more time I spent on Bluelog, the more features I worked into it.
+Eventually, Bluelog started evolving into a considerably more advanced tool
+then I initially intended. Still, all of the advanced features are completely
+optional, and if you chose it can still be used as the simple little scanner it
+started as.
+<p>
+This page will always have the latest source release of Bluelog, as well as all
+of the previous releases for archival purposes. As of version 1.0.2, Bluelog
+is also included in
+<a href="http://www.backtrack-linux.org/" target="_blank">BackTrack Linux</a>
+and the development version of
+<a href="https://openwrt.org/" target="_blank">OpenWRT</a>. Arch Linux users
+can also find it in the
+<a href="http://aur.archlinux.org/packages.php?ID=56441" target="_blank">AUR community package repository</a>.
+<h1>Basic Logging</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;If you want to use Bluelog to perform some simple
+scanning and logging, you technically don't even need to pass it any arguments,
+though some are helpful. Consider this simple scan:
+<pre><code>bash:~# bluelog -vtn -o ./example.log
+Bluelog (v0.9.9) by MS3FGX
+---------------------------
+Autodetecting device...OK
+Opening output file: ./example.log...OK
+Writing PID file: /tmp/bluelog.pid...OK
+Scan started at [06/20/10 16:58:13] on 00:16:41:B4:9E:1C.
+Hit Ctrl+C to end scan.
+[05/12/10 16:58:27] 00:1C:62:9E:5D:B8,LG CU575a,0x5a0204
+[05/12/10 16:58:27] 00:21:FE:7C:B5:33,Nokia 2600,0x5a0204
+[05/12/10 16:58:30] 00:1B:AF:DB:CB:9E,Nokia 6555b,0x5a0204
+Closing files and freeing memory...OK
+Done!
+</code></pre>
+In this case, Bluelog was run with the "verbose", "timestamp", and "name"
+options, which caused discovered devices to be shown in the terminal as well
+as having the time of their discovery logged along with MAC and device name.
+<p>
+I also chose to write the log to an alternate file, in this case "example.log".
+If we check the contents of that file we can see Bluelog's (very basic) output
+format:
+<pre><code>bash:~# cat ./example.log 
+[05/12/10 16:58:13] Scan started on 00:16:41:B4:19:1C
+[05/12/10 16:58:27] 00:1C:62:9E:5D:B8,LG CU575a
+[05/12/10 16:58:27] 00:21:FE:7C:B5:33,Nokia 2600
+[05/12/10 16:58:30] 00:1B:AF:DB:CB:9E,Nokia 6555b
+[05/12/10 16:58:35] Scan ended.
+</code></pre>
+<h1>Customized Logging</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Bluelog features multiple options for configuring
+the log file, all of which are optional but could be helpful depending on how
+you intend on parsing the resulting data. As of the current version, Bluelog
+supports the following logging options:
+<p>
+<b>-b</b>
+<p>
+&nbsp; &nbsp; &nbsp; &nbsp;This option will set the log format so that the
+resulting data is suitable for upload to ronin's Bluetooth Profiling Project
+(BlueProPro). This overrides most other logging options and disables Bluelog
+Live. For more information on this project, and the additional steps required
+to submit your data for inclusion, visit:
+<a href="http://www.hackfromacave.com/" target="_blank">www.hackfromacave.com</a>
+<p>
+<b>-c</b>
+<p>
+&nbsp; &nbsp; &nbsp; &nbsp;This option toggles writing the raw device class to
+the log file. Enabling this option disables the -f option. Default is disabled.
+<p>
+<b>-f</b>
+<p>
+&nbsp; &nbsp; &nbsp; &nbsp;This option takes the device class and interprets it
+into a more human friendly format. It will tell you what class the device is
+and also what it's core capabilities are. For example, the class "0x7a020c"
+would appear as: "Smart Phone,(Net Capture Obex Audio Phone)". Enabling this
+option disables the -c option. Default is disabled.
+<p>
+<b>-n</b>
+<p>
+&nbsp; &nbsp; &nbsp; &nbsp;Use this option to toggle displaying device names
+for discovered devices. Finding the device name takes extra time during
+scanning, and occasionally fails. Therefore by not resolving device names,
+Bluelog can scan faster and more accurately. Default is disabled.
+<p>
+<b>-s</b>
+<p>
+&nbsp; &nbsp; &nbsp; &nbsp;This option turns off the actual log file, and
+instead redirects all output to syslog. Using this option allows you to do
+things such as scan on devices which may not have enough local storage to hold
+the logs, or do centralized logging with multiple Bluelog scanning nodes.
+<p>
+<b>-t</b>
+<p>
+&nbsp; &nbsp; &nbsp; &nbsp;Use this option to toggle displaying timestamps
+for both the start and end of the scan and each new device found in the log
+file. Default is disabled.
+<p>
+<b>-x</b>
+<p>
+&nbsp; &nbsp; &nbsp; &nbsp;Use this option to toggle MAC address obfuscation.
+This allows you to release your log files without (completely) compromising
+the identity of the scanned devices. Default is disabled. 
+<h1>Bluelog Live</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;"Bluelog Live" is an advanced mode in which Bluelog
+generates a web page of it's results which you can host with the HTTP daemon of
+your choice (Apache, lighttpd, etc). The idea is that showing results on an
+easy to read web page helps the less technically inclined understand the
+implications of discoverable Bluetooth devices out in the wild. Showing
+somebody a parse log file might not get their attention, but a real-time web
+page showing the same information is likely to generate a better response.
+<p>
+You could also use "Bluelog Live" as a public awareness tool at a convention
+or other public place were security-concious individuals might be gathering.
+Indeed, the
+<a href="http://www.wallofsheep.com/" target="_blank">"Wall of Sheep"</a> was
+one of my primary inspirations for implementing the Live functionality in
+Bluelog.
+<h1>Bluelog Live Themes</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Bluelog Live is fully skinnable through CSS, so you
+can make your own layout for whatever application or event you wish. Themes currently
+included with Bluelog are:
+<p>
+<b>DigiFAIL:</b>
+<p>
+<span class="center"><img src="/images/software/bluelog_digifail.png" alt="DigiFAIL Theme" /></span>
+<br>
+<br>
+<b>Pwnie Express Pwn Plug:</b>
+<p>
+<span class="center"><img src="/images/software/bluelog_pwnplug.png" alt="Pwn Plug Theme" /></span>
+<br>
+<br>
+<b>BackTrack Linux:</b>
+<p>
+<span class="center"><img src="/images/software/bluelog_backtrack.png" alt="BackTrack Theme" /></span>
+<br>
+<br>
+<b>OpenWRT:</b>
+<p>
+<span class="center"><img src="/images/software/bluelog_openwrt.png" alt="Pwn Plug Theme" /></span>
+<p>
+<h1>Bluetooth Traffic Monitoring</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Truth be told, I wasn't actually aware of the
+concept of Bluetooth traffic monitoring until companies started contacting
+me about using Bluelog in their products and research. Apparently, Bluelog's
+specific set of features (constant logging to disk, daemon mode, support for
+writing to syslog) make it the only open source project that lends itself to
+traffic monitoring.
+<p>
+The basic idea is that you deploy (at least) two devices running Bluelog along
+a street at a known distance from each other and let them start scanning. You
+can then compare the timestamps on discovered devices between them and find
+average speed and travel time. The advantage of monitoring vehicle traffic with
+Bluetooth is that you only need to setup the receiving hardware and software,
+the people you are attempting to track provide the other end of the hardware
+setup without even knowing it.
+<p>
+Bluelog's use in traffic monitoring inspired my own successful research project,
+<a href="/research/streetsweep.shtml">Operation Street Sweep</a>.
+<h1>Supported Hardware</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Bluelog should work with any USB Bluetooth device
+supported under Linux. I have tested it with the integrated Bluetooth hardware
+on Dell laptops, ridiculously cheap adapters from
+<a href="/hardware/dxdevices.shtml">DealExtreme</a>, and high-end devices like
+the <a href="/hardware/hostxr.shtml">AIRcable Host XR</a>. Obviously more
+powerful devices will be able to detect targets at greater range, but scan
+speed is going to be the same no matter what you use. More powerful devices
+<i>should</i> help with name resolution though, for the simple fact that
+extended range will give you a larger window of time in which to receive a
+name query response (assuming the target, or your machine, is mobile).
+<p>
+There is also support for using different Bluetooth devices, such as in the
+case where you might have a powerful external Bluetooth device connected to
+a machine that has an internal Bluetooth radio, and want to scan with the
+better hardware. An alternate device is specified with the "-d" option, and
+can be given as either an HCI device (hci0, hci1, etc) or with the MAC of the
+device you wish to scan with. Note that Bluelog will fall back on automatic
+detection if the device you give it doesn't exist. This is an intentional
+feature to make Bluelog more reliable in automated setups, but can be tricky
+if you aren't reading the status messages. Be careful you don't pass the wrong
+device and end up scanning with your low-power radio accidentally.
+<h1>Bluelog in the News</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Well, that might be a stretch. But Bluelog
+<i>has</i> gained a bit of popularity since I released it publicly. It was
+mentioned on the September 24th, 2010 edition of Space Rogue's 
+<i><a href="http://www.hackernews.com/2010/09/26/hnncast-2010-09-24/" target="_blank">Hacker News Network</a></i>:
+<p>
+<span class="center"><img src="/images/software/bluelog5.jpg" alt="Hacker News Network" /></span>
+<p>
+The 0.9.7 release also hit the front page of
+<i><a href="http://www.packetstormsecurity.org" target="_blank">PacketStorm</a></i> as their
+featured file for November 2nd, 2010:
+<p>
+<span class="center"><img src="/images/software/bluelog6.png" alt="PacketStorm" /></span>
+<h1>Downloads</h1>
+<p>
+<!--#include virtual="/var/bluelog.html" -->
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

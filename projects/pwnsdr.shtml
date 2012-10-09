@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - PWN SDR: RTL-SDR for Pwn Plug</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Linux,Hacking,Bash,Pwn Plug" />
+<meta name="description" content="Using the Pwnie Express Pwn Plug as a remote RTL-SDR station." />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="right"><img src="/images/projects/pwn_sdr_logo.png" alt="pwn_sdr logo" /></span>
+<h1>PWN SDR</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;When it was discovered that low cost
+<a href="http://sdr.osmocom.org/trac/wiki/rtl-sdr" target="_blank">Realtek RTL2832U USB TV tuners</a>
+could be used for Software Defined Radio (SDR), I knew it was time for me to
+get into the radio field and start exploring. I've always been interested in things like ham
+radio, telemetry, and long range low frequency communication, but the cost of entry was always
+a bit to high for me to justify. Now for the first time, it only took about $20 USD to get in on
+some of these topics, which was a proposition I just couldn't ignore.
+<p>
+But...there was a problem. Getting the hardware wasn't a problem (outside of waiting for DealExtreme
+to ship it to me, as usual). Getting the software (RTL-SDR, GNU Radio, Gqrx) built wasn't a problem.
+In fact, I even wrote up a guide for "<a href="http://www.thepowerbase.com/2012/06/getting-started-with-rtl-sdr/" target="_blank">The Powerbase</a>" on how to get everything setup.
+<p>
+The problem was where I lived. There was no practical way for me to setup a proper antenna outside, but even if
+I did, there wasn't a whole lot to listen to around here. What I needed was a way to setup a remote SDR station
+in a more appropriate location, and just access it remotely. It turns out that RTL-SDR does offer this capability
+through "rtl_tcp", so I just needed a platform to run it on.
+<h1>The Pwn Plug</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;I looked around at different options for awhile
+(<a href="/research/streetsweep.shtml" target="_blank">OpenWRT router</a>, 
+<a href="/projects/mainframe.shtml" target="_blank">Atom Mini-ITX machine</a>, etc) but none of them were
+quite what I was looking for. A full Atom machine seemed like something of a waste (plus I
+didn't have any parts on hand to build one), while an OpenWRT router just didn't have the power.
+<p>
+The solution came with a device I've been a big fan of, the 
+<a href="http://pwnieexpress.com/" target="_blank">Pwnie Express Pwn Plug</a>.
+The Pwn Plug is a branded <a href="http://en.wikipedia.org/wiki/SheevaPlug" target="_blank">SheevaPlug</a>
+that's designed for security penetration testing. Its got a 1.2 GHz ARM processor with 512 MB of RAM and
+USB 2.0, which gives it a pretty powerful punch for only drawing 7 watts at maximum CPU load.
+It's also running a pretty stock build of Debian, so as long as the software you
+are interested in is portable enough to build for ARM, you can get it going on the Plug. 
+<p>
+I've been working with the Pwn Plug for some time doing documentation, and also a lot of
+testing and integration work with <a href="/software/bluelog.shtml" target="_blank">Bluelog</a>
+that I'm pretty proud of. I knew from the time I've spent on it that its got some
+decent processing power and is highly reliable, so it made a lot of sense to use
+in this particular application. If I could setup a remote SDR station that would be
+able to run for 24/7 and only draw a few watts, I was in business. 
+<h1>Installing RTL-SDR</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Getting RTL-SDR installed on the Pwn Plug itself
+was fairly easy, as it comes complete with GCC and all required libraries to
+build software right on the local device. Cross-compiling on a modern desktop
+would naturally be faster, but for relatively small packages like this it's
+hardly worth the effort; compiling RTL-SDR on the Pwn Plug takes something
+like a minute and a half.
+<p>
+The only dependencies missing are git and cmake, and even git you could skip by
+downloading the RTL-SDR source on your desktop and taring it up there. But for
+the sake of rapid updates (since RTL-SDR is still in a state of flux), being able
+to pull down the source with git on the Pwn Plug itself is worth installing the
+few dependencies required.
+<p>
+To actually install and build RTL-SDR, you can simply follow along with the
+official documentation, but I've made it a bit easier with the pwn_sdr.sh
+script. This script will get the dependencies in order, grab the latest RTL-SDR,
+and build it right on the Pwn Plug.
+<p>
+You can find pwn_sdr.sh in the <a href="/misc/downloads.shtml" target="_blank">Downloads</a>
+section, as well as on
+<a href="https://github.com/MS3FGX/pwn_sdr" target="_blank">github</a>.
+<h1>Hardware Setup</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;With the software installed, it's just a matter of
+plugging the RTL tuner into the Pwn Plug and hooking an antenna up. The antenna
+that comes with the tuner is absolute garbage (what do you expect for a pack in?),
+so the first thing you need is a new one. For testing purposes I just hooked up
+a standard set of TV "rabbit ears", which are still not very good for this
+kind of thing, but is still about 100 times better than the thing it came with.
+<p>
+<span class="center"><img src="/images/projects/pwn_sdr_hardware.jpg" alt="Hardware Setup" /></span>
+<p>
+Looking ahead, I'll use a more appropriate antenna when the Pwn Plug is setup in
+the remote location. Probably some kind of discone, as they are good over a wide
+range of frequencies.
+<h1>Speed Limit</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Once the software was installed and the hardware was
+setup, I did some testing to see if everything was working properly. RTL-SDR
+includes an "rtl_test" tool which you can use to run a benchmark on the hardware,
+which is helpful to know what kind of frequencies you can tune into (since every
+device is a little different).
+<p>
+Running the benchmark revealed a slight problem almost immediately:
+<pre><code>root@PwnPlug:~# rtl_test -s 2.0e6
+Found 1 device(s):
+  0:  ezcap USB 2.0 DVB-T/DAB/FM dongle
+
+Using device 0: ezcap USB 2.0 DVB-T/DAB/FM dongle
+Found Elonics E4000 tuner
+Supported gain values (18): -1.0 1.5 4.0 6.5 9.0 11.5 14.0 16.5 19.0 21.5 24.0 29.0 34.0 42.0 43.0 45.0 47.0 49.0 
+Exact sample rate is: 2000000.052982 Hz
+Reading samples in async mode...
+lost at least 52 bytes
+</code></pre>
+The "lost at least 52 bytes" line shows us that errors were encountered when trying
+to sample data from the tuner at 2 MHz. Trying with increasingly lower values
+shows that the combination of this tuner and the Pwn Plug hardware is only able to
+successfully sample data at 1.7 MHz, which is a bit underwhelming, as the same
+tuner on my laptop can sample at 2.5 MHz.
+<h1>Remote Control</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;To control the station remotely, the Pwn Plug needs
+to run the rtl_tcp server. With the Pwn Plug's IP, desired port, and known sample
+rate limitations, the command to start the server looks like this:
+<pre><code>root@PwnPlug:~# rtl_tcp -a 192.168.1.40 -p 1234 -s 1.5e6
+Found 1 device(s).
+Found Elonics E4000 tuner
+Using ezcap USB 2.0 DVB-T/DAB/FM dongle
+Exact sample rate is: 1500000.014901 Hz
+Tuned to 100000000 Hz.
+listening...
+Use the device argument 'rtl_tcp=192.168.1.40:1234' in OsmoSDR (gr-osmosdr) source
+to receive samples in GRC and control rtl_tcp parameters (frequency, gain, ...).
+</code></pre>
+My pwn_sdr.sh script includes functions to start and stop rtl_tcp with the
+appropriate settings, you can see more information about that in the included
+README file.
+<p>
+The last step is getting the tools to recognize we want to communicate with a
+remote device rather than a locally installed RTL tuner. The exact method will
+naturally differ for each different application, but they will all use the same
+device argument (which is helpfully given in the output of rtl_tcp):
+<p>
+<b>'rtl_tcp=192.168.1.40:1234'</b>
+<p>
+Configuring Gqrx to use the Pwn Plug remotely looks like this:
+<p>
+<span class="center"><img src="/images/projects/pwn_sdr_gqrx.png" alt="Gqrx Setup" /></span>
+<h1>Results</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;So far I've only done some testing with the Pwn Plug
+here on the local network, but it looks very promising. I've been able to receive
+analog and digital broadcasts via the Pwn Plug SDR setup with absolutely no problem.
+It works just as if the SDR device was connected locally.
+<p>
+I still have to test this setup running over the long term, and determine whether
+doing this over the Internet is feasible. I'll update this page as I spend more time
+with the setup.
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

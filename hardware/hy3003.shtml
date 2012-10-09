@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - Mastech HY3003 Power Supply</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Mastech,HY3003,electronics,hobby,linear,supply,DC" />
+<meta name="description" content="General information and review of the Mastech HY3003 adjustable DC power supply." />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="right"><img src="/images/hardware/hy3003_1.jpg" alt="HY3003" /></span>
+<h1>Hardware Specifications</h1>
+<b>
+&nbsp; &nbsp; &nbsp; &nbsp;Input Voltage: 110/220 VAC 
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Output Voltage: 0 - 30 V
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Output Amperage: 0 - 3 A
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Modes: Constant Voltage/Constant Current
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Voltage Regulation: < 0.01% + 1 mV
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Amperage Regulation: < 0.2% + 1 mA
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Display Type: LED
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Display Accuracy: +/- 2.5%
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Size: 292 mm x 158 mm x 160 mm
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Weight: 3.6 Kg
+</b>
+<h1>Power Supply and Demand</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;If you are going to do any sort of electronic work
+or experimentation, the first piece of real equipment you should get is a
+decent adjustable power supply. Unfortunately, for various reasons I was
+personally unable to follow this bit of advice and instead relied on one-off
+battery packs, hacked together wall-wart style DC adapters, and other
+unreliable and largely ineffectual means of powering my projects. There was a
+very dark period in which all of my projects had to run off of one brave little
+9 volt battery.
+<p>
+Now that I am taking things more seriously, I decided it was time to upgrade
+this particular part of my workbench. Luckily, adjustable power supplies are
+the latest bit of electronics that Chinese factories have decided to churn out
+at ridiculously low prices. There's a very large market for these adjustable
+power supplies on eBay, where it turns out they are largely used for powering
+tattoo guns. The variable voltage gives an easy way for the operator to control
+speed, and some even come with foot pedals. The hacker in me wonders why the
+guns couldn't use some kind of solenoid fired off using pulse width modulation
+(PWM), which would give you full strokes at a selectable interval rather than
+having to change the rotational speed of a flywheel and attached needle, but
+that is research for another day. Most of these supplies are adjustable
+between 0 and 18 VDC, and go for an average price of $60 or so.
+<p>
+I was very fortunate to find the Mastech HY3003 selling for the suspiciously
+low price of $90 from an eBay seller specializing in tattoo equipment
+(<a href="http://myworld.ebay.com/qualitytattoosupplies/" target="_blank">qualitytattoosupplies</a>).
+Seeing what they were going for on other auctions I was actually a bit nervous
+about buying it, and the fact that I couldn't find any reviews (or really, any
+legitimate information at all) certainly didn't help matters. But I figured it
+was worth a shot, and in any event I would document the device on DigiFAIL and
+maybe help others who were interesting in this particular supply.
+<h1>Construction</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The first thing I noticed about the HY3003 was that
+it wasn't nearly as large as I was worried it would be. Since I was hoping to
+leave this out on my bench all the time with my soldering station, I was a
+little concerned by how much space it would take up. Even though it is rather
+deep, it's not terribly wide and not so tall as to dominate over the workspace.
+It is however rather heavy, due to it's largely metal construction and
+monstrous internal transformer. In fact, aside from the case and transformer,
+there isn't a whole lot else going on in there. Just a circuit board for the
+LED display and a second board that is presumably used for managing the
+transformer output. Of course, this isn't too surprising for a linear power
+supply.
+<p>
+<span class="center"><img src="/images/hardware/hy3003_2.jpg" alt="Internals" /></span>
+<h1>Operation</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The usage of this power supply is rather straight
+forward. Both the current and voltage sides of the supply can be variably
+adjusted independently through both the Course and Fine adjustment knobs under
+each respective display. The Course adjustment allows you to make large and
+rapid adjustments, while the Fine knob let's you hone in right on the spot you
+want to hit. In addition, the HY3003 can be run in either a constant voltage or
+constant amperage mode. These modes are used when you want a load to be able to
+draw more power without increasing voltage to it, or vice versa. This is perfect
+for applications like lasers, where you want voltage to always remain the same
+but also allow the diode to draw more if necessary.
+<p>
+Beyond the 4 knobs, the most obvious feature on the front of the HY3003 is it's
+dual red LED displays. These displays not only have an awesome retro coolness
+about them, but are also very easy to see in low light conditions or from a
+distance, neither of which can be said about LCD or even analog displays. If
+there is any downside of these displays it's the margin of error. The spec
+sheet says the displays are accurate to within 2.5%, and while I haven't done
+any terribly scientific tests on the device, even with my multimeter I was able
+to see a slight deviation between the displayed and actual output voltage.
+Still, it's more than close enough for any work I am going to do.
+<h1>Performance</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Beyond the small deviation from displayed voltage I
+noted with my multimeter, I also found that there is a noticeable ripple on the
+output when viewed on my oscilloscope. The fluctuation was slight, but clearly
+visible. To be fair, both of my oscilloscopes are nearly as old as I am, so I
+generally take their results with a grain of salt when dealing with anything
+under half a volt or so.
+<p>
+While using the HY3003, I have also noted that dialing in to a specific
+voltage seems considerably more difficult than it should be. The controls have
+a rather unpredictable "float" to them, so you need to fiddle around with them
+to get where you want to be. Again, for the type of work a hobbyist gets into,
+this won't be an issue.
+<h1>Verdict</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;For $90, the HY3003 is an exceptional deal. It is
+more than adequate for working with things like microcontrollers, lasers, and
+consumer electronics. However, most sites and eBay sellers have the HY3003
+listed for considerably higher than that, usually in the $150 neighborhood. If
+you are willing to spend that much money on a power supply, you may be better
+off kicking in a few more dollars and trying to pick up a second hand
+laboratory-grade power supply from eBay or Craigslist; where I have seen them
+going for as little as $200.
+<p>
+Considering the questionable background of this device, I will be keeping a
+rather close eye on it as I use it more and see if any problems develop. Any
+changes or problems that arise will be added to this page.
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

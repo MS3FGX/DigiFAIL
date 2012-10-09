@@ -1,0 +1,324 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - net_update</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Linux,Bash,Script,MD5,wget" />
+<meta name="description" content="GPL client side functions for self-updating Bash scripts" />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<h1>net_update</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;I originally wrote net_update for a script I was
+planning on including in an article for <i>2600</i>. Being as anal as I am, I
+was terrified of there being a bug or typo in the script when I sent it in,
+forever immortalizing my useless script in the pages of the magazine. But I
+figured if I implemented some type of update mechanism in the script, I could
+at least remotely fix any serious issues and escape complete shame. Ironically
+I never got around to putting together the article, and instead spent all the
+time refining and testing the update mechanism. I have since started
+implementing some form of this update scheme into all of my Bash scripts, as it
+is a great way to handle scripts that you use on multiple machines. Of course
+it is especially effective if you plan on distributing your scripts online.
+<p>
+I still consider net_update to be in the experimental stage, and there are a
+few new features I want to add in (like a short description about changes in
+the new version), but there appear to be no glaring errors and it seems to work
+well enough. I would be interested in hearing anyone's opinion on this or their
+experiences with the code if they implement it in one of their projects.
+<h1>Client side code</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The client side code consists of two functions:
+Chk_Update and Do_Update. Chk_Update downloads the latest version information
+from the server and saves it to a file on the local machine, which is then
+parsed to pull out things like the new version and the MD5 sum of the download.
+Chk_Update can do one of three things, it can either just check the server for
+an update and do nothing, check and prompt the user interactively about the
+update (if one is found), or it can update the script automatically. The last
+option is intended for unattended scripts, but in practice is probably a bit
+dangerous.
+<p>
+Do_Update does the heavy lifting of net_update. It downloads the latest package
+from the server, extracts it to a temporary location while it verifies the file
+against a pre-computed MD5 sum, and finally moves the update into place. The
+updated script will take the exact same path and filename as the old version,
+and will save the older copy with a .old extension in the same directory.
+
+The following is a simple script that combines both functions into a workable
+example of how net_update is supposed to work. You can use this script to test
+your server side setup, or just play around with the update mechanism and see
+how it works. Take note of the global variables defined at the top of the file,
+APPNAME, BASEURL, and VER. If you are implementing net_update in your own
+scripts, make sure to include these at the top and update them accordingly.
+APPNAME is the name it will look for on the server, not necessarily the
+user-friendly name you might be displaying in your UI. More than likely,
+APPNAME will end up being the script's filename (sans extension). BASEURL is
+the server and directory where the updates are kept. These two variables are
+put together as $BASEURL$APPNAME, so you need to make sure they are correct or
+your download will fail. VER is obviously the version number of the script
+itself, which will be compared with the version number marked as latest on the
+server.
+<pre><code>#!/bin/sh
+# Prototype Internet-update engine for Bash scripts
+
+# Global variables
+APPNAME="net_update"
+BASEURL="ftp://ftp.digifail.com/updates/"
+VER="0.9"
+
+ErrorMsg ()
+{
+# ErrorMsg <Error Type> <Error Message>
+# Displays either a minor (warning) or critical error, exiting on an critical.
+# If message starts with "n", a newline is printed before message.
+[[ $(expr substr "$2" 1 1) == "n" ]] && echo
+if [ "$1" == "ERR" ]; then
+	# This is a critical error, game over.
+	echo "  ERROR: ${2#n}"
+	exit 1
+elif [ "$1" == "WRN" ]; then
+	# This is only a warning, script continues but may not work fully.
+	echo "  WARNING: ${2#n}"
+fi
+}
+
+#----------------------------------Do_Update-----------------------------------#
+Do_Update ()
+{
+# Do_Update <Filename> <MD5 String>
+# This function downloads and installs the update.
+echo -n "Downloading $1..."
+# Download URL is based on global variables plus given filename.
+wget $BASEURL$APPNAME/$1 -P /tmp -q || \
+	ErrorMsg ERR "nUnable to download update! Please try again later."
+echo "OK!"
+
+# Extract archive and then delete it
+echo -n "Extracting $1..."
+tar xf /tmp/$1 && rm /tmp/$1 || \
+	ErrorMsg ERR "nThere was an error extracting the update!"
+echo "OK!"
+
+echo -n "Verifying file integrity..."
+if [ "$(md5sum $APPNAME*.new)" != "$2" ]; then
+	rm $APPNAME*.new
+	ErrorMsg ERR "nUpdate failed MD5 check! Please try again later."
+else
+	# If MD5 passes, we move invoked script to .old and move the .new
+	# into it's place. This will work even if user has renamed the script
+        # to something else.
+	echo "OK!"
+	echo -n "Installing..."
+	mv $0 $0.old &&	mv $APPNAME*.new $0 || \
+		ErrorMsg ERR "nThere was an error installing the update!"
+	echo "OK!"
+	echo
+	echo "##################################"
+	echo "# Update installed successfully! #"
+	echo "##################################"
+	echo
+	echo "Old version saved as $0.old."
+	# Configuration is not copied over, maybe in future version?
+	echo "Configuration was NOT copied, please do so manually."
+	exit 10
+fi
+}
+
+#----------------------------------Chk_Update----------------------------------#
+Chk_Update ()
+{
+# Chk_Update <Action>
+# Checks for update, but does not actually make changes to system.
+# Relies on global variables "BASEURL" and "APPNAME", Argument determines what
+# action it will take:
+# 0 - Check only
+# 1 - Prompt for update
+# 2 - Automatically install update
+[ $1 -eq 1 ] && echo -n "Downloading update information..."
+wget $BASEURL$APPNAME/current.txt -q -O /tmp/$APPNAME-current.txt || \
+	ErrorMsg ERR "nUnable to contact update server! Please try again later."
+[ $1 -eq 1 ] && echo "OK!"
+
+# This reads the file into the variables and then removes file, no need to
+# leave it laying around.
+exec 6<&0   
+exec < /tmp/$APPNAME-current.txt
+read CAND_VER
+read CAND_FILE
+read CAND_MD5
+# Very important, close file descriptor or else user input won't work.
+exec 0<&6 6<&-
+rm /tmp/$APPNAME-current.txt
+
+if [[ "$VER" == "$CAND_VER" ]]; then
+	[ $1 -eq 1 ] && echo "You are running the latest version of $APPNAME."
+	return 10
+elif [[ "$VER" < "$CAND_VER" ]]; then
+	if [ $1 -eq 1 ]; then
+		echo "An update is available!"
+		echo 
+		echo "Installed version: $VER"
+		echo "Candidate version: $CAND_VER"
+		echo
+		read -p "Update? (y/n) "
+		if [ "$REPLY" = "y" -o "$REPLY" = "Y" ]; then
+			echo "Updating..."
+			# MD5 needs quotes or else it chops off filename.
+			Do_Update $CAND_FILE "$CAND_MD5"
+		else
+			echo "Update canceled, exiting."
+			exit 13
+		fi
+	elif [ $1 -eq 2 ]; then
+		Do_Update $CAND_FILE "$CAND_MD5"
+	else 
+		return 11
+	fi
+else
+	[ $1 -eq 1 ] && echo "You are running a development version!"
+	return 12
+fi
+}
+
+#-----------------------------Execution starts here----------------------------#
+echo "Experimental Net_Update Engine - Version: $VER"
+
+case "$1" in
+'auto')
+	echo "Automatically updating to latest version available..."
+	Chk_Update 2
+;;
+'check')
+	echo "Now checking for a new version, please wait..."
+	Chk_Update 0
+	
+	case "$?" in
+	'10')
+		echo "You are running the latest version of $APPNAME!"
+	;;
+	'11')
+		echo "There is an update available!"
+	;;
+	'12')
+		echo "You are running a development version!"
+	;;
+	*)
+		ErrorMsg ERR "An unknown error has occurred with the update!"
+	;;
+	esac
+;;
+'copy')
+	echo -n "Now duplicating $0 for backup purposes"
+	for ((i=1;i<=5;i+=1)); do
+		cp $0 ./$0.$i
+		echo -n "."
+	done
+	echo "Done."
+;;
+'update')
+	echo "Now checking for new version, please wait..."
+	Chk_Update 1
+;;
+'help')
+	clear
+	echo "This is an experimental build of net_update, a system to update"
+	echo "Bash scripts over the Internet/LAN. It was written for use with"
+	echo "the planned 2600 publication of linux_ics, but can be used in any"
+	echo "script due to it's modular nature."
+	echo ""
+	echo "Available arguments as of version $VER are as follows:"
+	echo ""
+	echo "auto   - Automatically perform update to latest version"
+	echo "update - Initiate an update"
+	echo "copy   - Duplicates net_update, for testing"
+	echo "check  - Just check for update, don't do anything"
+	echo "help   - What you are reading now"
+;;
+*)
+	echo "usage: $0 auto|check|copy|update|help"
+esac
+</code></pre>
+<h1>Server side code</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The server side of net_update is either an FTP or
+HTTP server with the appropriate files (at the correct path). Chk_Update looks
+for a file called current.txt in the designated URL, which gives it all of the
+information required to perform it's operations. You can easily create this
+file yourself, but I put together a quick little script to automate it:
+<pre><code>#!/bin/sh
+# Simple tool to generate "current.txt" file for net_update
+
+# Variables:
+# App-specific
+APPNAME=$(basename `pwd`)
+TARGET=$1
+VER=$2
+EXT=".sh.new"
+
+# Global tweaks:
+OUT="current.txt"
+
+#--------------------START--------------------#
+
+# Make sure we were called properly
+if [ "$TARGET" = "" -o "$VER" = "" ]; then
+	echo "You must provide both the target script and version number"
+	echo
+	echo "Example:"
+	echo "    $0 ./test.sh 1.2.3"
+	exit
+fi
+
+# Check to see if the target exists
+if [ -f $TARGET ]; then
+	# Now that we have the target, we delete the old current.txt
+	if [ -f $OUT ]; then
+		echo "Deleting old $OUT..."
+		rm $OUT
+	fi
+	
+	# Work on the files
+	echo "Performing file operations:"
+	echo "-----------------------------"
+	echo "Creating .new file"
+	cp $TARGET $APPNAME$EXT || exit
+	echo "Generating checksum..."
+	MD5=$(md5sum ./*.new) || exit
+	echo "Creating archive..."
+	tar cfz $APPNAME-$VER.tgz ./*.new || exit
+	echo "Removing old files..."
+	rm *.new || exit
+	echo "Done!"
+	echo ""
+	echo "Generating new $OUT..."
+
+	DATE="$(date "+%A %B %e, %Y - %r")"
+	cat << EOF > $OUT
+$VER
+$APPNAME-$VER.tgz
+$MD5
+############################################################
+# Generated by $0 on $DATE
+EOF
+	
+else
+	# No target, no script
+	echo "${TARGET} not found, bailing out!"
+	exit
+fi
+</code</pre>
+Now, to use this tool you must call it from the directory the update is being
+shared from. That's because it uses "basename" to fill in the APPNAME variable.
+You must also give it the file which will be delivered as the update payload,
+and finally the new version number. This script could be considerably refined,
+such as having a default payload filename and pulling VER out of the new script
+automatically, but as I said this was a quick little tool that I wrote once I
+got sick of writing out the files by hand.
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

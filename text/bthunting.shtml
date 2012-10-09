@@ -1,0 +1,339 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - Bluetooth Hunter's Guide</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Linux,Hacking,Bluetooth,2600,Bluelog,Spooftooph,btscanner" />
+<meta name="description" content="Guide for Bluetooth device scanning, published in 2600." />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="right"><img src="/images/text/bthunting1.jpg" alt="2600 Cover" /></span>
+<h1>Foreword</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The following is <i>Bluetooth Hunter's Guide</i>, as
+it appeared on page 6 of <i>2600</i> issue 29:2. This is a pretty straightforward
+guide that introduces the user to a number of Bluetooth scanning tools and methods,
+including my pet project <a href="/software/bluelog.shtml">Bluelog</a>.
+<p>
+The original ASCII text file for this document can be found in the "Text" section
+of the <a href="/misc/downloads.shtml">Downloads</a> page.
+<h1>Introduction</h1>
+Since the publication of my article “Bluetooth Hacking Primer” in 27:1, I
+have received quite a few questions from readers who were curious about
+the practicality of Bluetooth attacks in general. One of the most common
+questions is, understandably, how many vulnerable Bluetooth devices are out
+there in the first place?
+<p>
+That's not quite as straight forward a question as it might seem. It’s
+important to realize that not all discoverable devices are vulnerable to
+attack, nor are all vulnerable devices discoverable (more on that later).
+Discoverable devices are simply that, devices which we can easily detect. If
+nothing else, scanning for discoverable devices is useful for determining the
+density of Bluetooth devices in a given area. If an attacker can establish
+where the most users of Bluetooth devices are, they will know where to focus
+their efforts.
+<p>
+A lot of modern devices aren't discoverable at all unless specifically enabled,
+and even then, they usually only stay discoverable for a few minutes. While
+it's great that newer hardware and mobile operating systems are taking a more
+pragmatic approach to Bluetooth security, it doesn't do anything for the
+millions and millions of older devices already out in the wild. Of course, not
+all manufacturers are so enlightened either, so there are still some new
+devices that are shipping with questionable default policies. The end result is
+that there are still many Bluetooth devices happily announcing their presence
+to anyone who cares to listen.
+<p>
+This particular article will focus on the search for, and identification of,
+Bluetooth devices on a large scale. We’ll start by looking at the best hardware
+for long-range omnidirectional detection, and then talk about some different
+software options and techniques available. I’ll also be discussing some of the
+data I have personally collected to give you an idea of what you should expect
+in terms of number of results and the identifiable information therein.
+<h1>Hardware Setup</h1>
+My main workhorse is the <a href="/hardware/hostxr.shtml">AIRcable Host XR</a>,
+an extremely powerful USB Bluetooth device that is primarily designed for proximity marketing.
+It has a 200 mW radio (twice the power of a normal Class 1 device) and a standard RP-SMA
+antenna connector, which makes it perfect for long range applications. With the
+Host XR connected to a directional parabolic antenna, I have been able to
+establish a connection with a moving cell phone at over 350 meters, careful
+aiming and a more docile target would push that number even higher. As an added
+bonus, the Host XR uses the very well supported Cambridge Silicon Radio chipset
+that I mentioned in the previous article, so it will work out of the box on any
+modern OS as well as support the extended feature sets used in some software.
+<p>
+If there is any downside to the Host XR, it's cost; at $130 USD you need to be
+pretty into this sort of thing to make the purchase worth it. Luckily, older
+versions of the Host XR sell on eBay for around $60, which is considerably more
+reasonable for the experimenter. The older versions of the Host XR (XR1 and
+XR2) are identical to each other, the XR2 simply has a nicer case and a bit
+more mass-market friendly blister packaging (the XR1 I purchased from AIRcable
+literally came in a Ziplock Freezer bag). The current model, XR3, is claimed to
+be even more powerful than the XR1/2, but I haven't been able to personally
+verify this.
+<p>
+The parabolic antenna is great for range, but just a tad bit suspicious when
+sitting in the food court at the mall. For general scanning, I go with a 3 dBi
+"rubber ducky" antenna which makes the whole package easy to conceal in a
+standard laptop case. If I'm going to be scanning from a location where the
+hardware won't be visible, I bump the antenna up to a 9 dBi (the 9 dBi is
+about 16 inches long, and tends to get some glances) which pushes the
+range up to nearly 300 meters. Even with a tiny 3 dBi omni, the Host XR can
+pickup devices at around 250 meters, which is still twice the "maximum" range
+for Bluetooth.
+<p>
+That being said, there is no technical reason you couldn't use your machine's
+internal Bluetooth hardware or a cheap USB adapter. Any Bluetooth device is
+capable of scanning, the issue is one of power. Using low-power hardware is
+fine for testing and getting a hang of the software, but with a range of 10
+meters (or less), you aren't likely to get many results outside of the devices
+sitting on your own desk.
+<h1>Discoverable Device Scanning</h1>
+Discovery scanning is the most common and effective way of finding information
+on Bluetooth devices. Fundamentally, it's based on the same process that two
+Bluetooth devices use when attempting to make a legitimate connection, such as
+pairing a phone to a headset. Before Bluetooth devices can connect to each
+other, at least one of them has to publicly announce their presence; discovery
+scanning exploits that fact to collect information anonymously.
+<p>
+One of the interesting things about Bluetooth discovery scanning versus
+something like WiFi scanning is that there are three distinct steps required
+to collect all of the pertinent data for each device. The first step is to
+command the hardware to scan all available channels for discoverable devices
+and return their MAC addresses. Once the list of MAC addresses is gathered,
+each device will be queried individually to determine the device's human
+friendly name. With the device's MAC and name recorded, the system can then use
+Service Discovery Protocol to find out what high-level services the target
+device offers.
+<p>
+It's worth noting that only the first step, getting the MAC address, is
+technically required to establish a connection with the remote device. Since
+each subsequent step takes a few seconds to complete, it is often desirable to
+forgo the third and even second steps for the sake of time and accuracy. This
+is especially true when dealing with moving targets or when working with short
+range hardware; if there are 10 devices reported during the initial scan, and
+it takes 1-2 seconds to complete the second and third steps, the time required
+to gather all of the information for each device quickly compounds to the point
+that a particular device may have moved out of range since it's initial
+discovery.
+<p>
+The following are tools for Bluetooth discovery scanning which are worthy of
+your attention if you plan on doing experimentation of your own. There are a
+number of other tools available, but they tend to be only lightly featured or
+in some cases abandoned. 
+<h1>btscanner</h1>
+Arguably the best known Bluetooth scanner, btscanner [1] is even included in
+the package repositories of many Linux distributions. btscanner is very easy to
+use and collects an incredible amount of information without needing to pair
+with the target devices. The information is presented in a ncurses-based user
+interface that was clearly inspired by Kismet; something unique among Bluetooth
+scanners.
+<p>
+If there is any downside to btscanner, it's that it hasn't seen an update since
+2004 and it's age is starting to show. There are a number of rather annoying UI
+bugs, and the more advanced features present in the new breed of scanners is
+notably absent. An option to compile and run btscanner without ncurses is also
+sorely missed; and could be a serious problem depending on your requirements.
+<p>
+Stalled development aside, this legacy tool is still useful for the occasional
+quick scan and the fact that many distributions include it certainly helps keep
+it popular.
+<h1>SpoofTooph</h1>
+SpoofTooph [2] is not a Bluetooth scanner in the strictest sense; while
+scanning for Bluetooth devices is one of it's core features (and something it
+does very well), it's primarily designed to spoof or clone Bluetooth devices.
+<p>
+SpoofTooph first scans the area to locate devices which are in discoverable
+mode, then allows you to select one of them to spoof. Spoofing a Bluetooth
+device can be used for a number of purposes, such as attempting to circumvent
+applications which use a Bluetooth device (such as a mobile phone) as a
+security token. You can also load your Bluetooth device up with completely
+fictitious information, which could be used to make legitimate Bluetooth
+communication more difficult.
+<p>
+It's more advanced functions aside, SpoofTooph is an excellent scanner as it
+presents results in a very intuitive and easy to read format in the terminal
+with minimal configuration or interaction from the user. All discovered devices
+can be logged to a plain text file, and SpoofTooph even includes a log reader
+mode where it can reload a previous scan's results for later review and
+cloning.
+<h1>Harald Scan</h1>
+Harald Scan [3] is a modern Bluetooth scanner written in Python, perhaps best
+known for it's ability to determine device manufacturer via the largest known
+Bluetooth MAC address vendor list.
+<p>
+Harald Scan offers a number of very nice features not found in other scanners,
+such as the ability to update it's MAC vendor list via the Internet, optional
+service scanning, and metrics showing how many devices have been discovered in
+a given time frame. It's user interface is very simplistic, but gets the point
+across. Devices are logged in an easily parsed XML format which is ideal for
+exporting the data into other applications or formats.
+<p>
+Active development, cross-platform support, and unique features make Harald
+Scan an excellent tool for general Bluetooth scanning.
+<h1>Bluelog</h1>
+Alright, full disclosure time, Bluelog [4] has been my personal project for
+over a year now. I wrote Bluelog because all of the Bluetooth scanners I
+found seemed to be designed around the same basic idea: that you wanted to
+stare at a display of all the devices being discovered in real time, and maybe
+save a log at the end of the scan. But what I really wanted to do was scan over
+a long period of time and log directly to file without having to monitor the
+software or interact with it in any way.
+<p>
+Because of my rather specific goals, Bluelog is unique among Bluetooth scanners
+for a number of reasons. The major difference between Bluelog and other
+scanners is that it has no user interface to speak of, just some boilerplate
+and status information as it starts up. Though enabling verbose mode will let
+you see devices as they are discovered, Bluelog's primary method of output is
+real-time logging to file. By saving results in real-time, you can kill Bluelog
+at any time and be sure all of your data has been recorded. Bluelog is also (to
+my knowledge) the only Bluetooth scanner to feature a daemon mode, where it can
+drop into the background and log discovered devices to file indefinitely.
+<p>
+Probably it's most unique feature is Bluelog Live, a special mode where
+discovered devices are displayed via a constantly updating web page, with each
+device's pertinent information laid out in plain English. Inspired by the
+infamous "Wall of Sheep" display, the goal of Bluelog Live is to raise public
+awareness of the implications of discoverable Bluetooth devices. Running at a
+hacker convention or other public gathering, Bluelog Live should provide
+viewers with an eye opening look at the amount of identifying information they
+are broadcasting.
+<h1>Non-Discoverable Device Scanning</h1>
+Scanning devices in discoverable mode is easy enough, but what if you wanted to
+find devices that weren't actively transmitting their presence? While far from
+ideal, it is possible to scan for non-discoverable Bluetooth devices by
+exploiting a core concept in the Bluetooth protocol: even if a device is not
+in discoverable mode, it still has to answer to requests for information so
+that it can communicate with legitimate peers.
+<p>
+Instead of listening for broadcasting devices, non-discoverable scanning
+queries individual devices by MAC address for their configuration information
+(such as the "friendly" device name). The target device is obligated to respond
+to such requests, regardless of discovery settings and without so much as a
+prompt on the target device's screen. The problem is, this only works if we
+already know the MAC address of the target device; which at this point we
+don't. Since we don't know the MAC address of the target, and it isn't
+broadcasting, the only remaining way to find the MAC is by brute-forcing it.
+<p>
+To brute-force a Bluetooth MAC, the software will sequentially step through a
+pre-defined range of MAC addresses, pausing on each one to perform a device
+inquiry. When and if the scanner receives a response, it can log that MAC and
+associated information to file. The process can be sped up considerably by
+using multiple Bluetooth adapters to parallelize the operation, and the MAC
+range can be narrowed a bit if you know the manufacturer's OUI. Still, given
+the sheer number of possible MAC addresses and the fact that it takes a few
+seconds for the device inquiry (whether there is a response or not) to
+complete, brute force scanning is a very daunting task.
+<p>
+Realistically, scanning for non-discoverable devices is only practical if you
+are targeting a single device who's manufacturer and make you have already
+established visually. Even with enough information to narrow your MAC range
+and multiple adapters working the queue, it's going to take a very long time to
+complete a single pass. The scope of this method is exceptionally limiting, but
+if you are targeting something like a Bluetooth enabled desk telephone in an
+office building, it's possible.
+<p>
+If you want to experiment with brute force Bluetooth scanning, the best tool
+available is the one that introduced the concept in 2003, RedFang [5]. While
+it's rather simplistic and hasn't seen development in quite some time, it's
+still the most reliable tool for this type of device scanning.
+<h1>Real World Results</h1>
+While doing some research on past Bluetooth security talks and demonstrations,
+I found a very interesting white paper put out in May of 2006 by F-Secure and
+Secure Network entitled "Going Around with Bluetooth in Full Safety" [6]. The
+paper details how the group constructed a mobile Bluetooth scanning rig
+disguised as a pull-along piece of luggage and wandered around Milan with it
+during Infosecurity 2006. After 7 days of scanning at various high-traffic
+areas, the team recorded 1,405 devices; which at the time made something of a
+stir and grabbed a few headlines in various tech publications.
+<p>
+The paper goes on to say that their scanning rig never attempted to connect to
+any of the discovered devices, and that simply being discoverable does not
+necessarily mean the device is exploitable. The exercise was merely to gauge
+the proliferation of Bluetooth devices, specifically, those left in the ill
+advised discoverable mode. The paper concludes that the number of discoverable
+devices in the field is already high, and that as smartphones become the norm
+in the near future, this number is only going to go up.
+<p>
+Reading this article 5 years after it's publication, I couldn't help but wonder
+how the situation may have changed. The authors correctly predicted the era of
+the smartphone, but had manufacturer's wised up about Bluetooth security?
+<p>
+With this in mind, I setup my own similar experiment which I deemed "Operation
+Street Sweep" [7]. In my version, I installed Bluelog on an OpenWRT router and
+connected it to one of my AIRcable Host XR Bluetooth adapters; I then placed
+the rig within a hundred meters or so of a fairly busy intersection and
+shopping plaza. After only 5 days of scanning, my setup had recorded a
+staggering 2,596 unique Bluetooth devices.
+<p>
+I was completely blown away; first by how many devices I was able to record,
+but also how much information I could glean from them. Taking a close look at
+the records showed there were all kinds of identifying information hidden
+within the MAC addresses and device names. For example, Garmin in-car GPS units
+have their serial numbers in their device names, and the iPhone conveniently
+broadcasts the owner's full name. I also saw a number of devices who's owners
+had made the name their online handle; a quick search on Google, and I was well
+on my way to identifying the individual.
+<p>
+What's more, if we allow devices to be logged multiple times over a long
+duration scan, the timestamps can be compared each day and a timetable could be
+constructed for each individual MAC. This rough schedule, paired with the
+unique identifying information for a specific device, would allow an attacker
+to get a good idea as to where the target is at a particular time. In it's
+most basic form, this technique could be used to determine when a target is
+away from their home.
+<h1>Conclusion</h1>
+Experiments like this, performed with open source software and readily
+available consumer hardware, show just how much information is being beamed out
+for anyone who cares to listen. With thousands of devices eagerly announcing
+their presence and identifying their owners, even a very low success rate on
+attacks could be a real threat. Even if we assume that only 1% of discoverable
+Bluetooth devices are vulnerable to attack (through either social engineering
+or exploitable implementations), there are enough targets that it's still
+feasible to hit a few devices a day successfully.
+<p>
+Hopefully this article has given you enough information on the ideal hardware
+and available software to launch your own research. Keep in mind that the
+results I obtained in my experiment were not due to some magic combination of
+hardware, software, and location; I believe these results to be representative
+of average Bluetooth device density, and should be easily repeatable. I've also
+performed numerous scans at public locations such as malls, movie theaters, and
+restaurants. I've found that malls are very good places to conduct scans,
+especially at peak shopping times like the holidays. In a well populated mall,
+I've had no problem picking up upwards of 100 unique devices per hour, even
+with a standard Bluetooth adapter.
+<p>
+In fact, I'm willing to bet that in more densely populated areas my results
+would be put to shame. I'd be very interested in hearing from anyone who
+conducts similar experiments using the methods and software mentioned in this
+article; I've been thinking about a distributed effort to catalog and map
+Bluetooth devices and their relative density (like WiGLE [8] for Bluetooth),
+and would love to compare notes.
+<p>
+Good hunting!
+<h1>References</h1>
+1. <a href="http://www.pentest.co.uk/src/btscanner-2.1.tar.bz2">http://www.pentest.co.uk/src/btscanner-2.1.tar.bz2</a>
+<br>
+2. <a href="http://www.hackfromacave.com/projects/spooftooph.html">http://www.hackfromacave.com/projects/spooftooph.html</a>
+<br>
+3. <a href="http://code.google.com/p/haraldscan/">http://code.google.com/p/haraldscan/</a>
+<br>
+4. <a href="/software/bluelog.shtml">http://www.digifail.com/software/bluelog.shtml</a>
+<br>
+5. <a href="http://www.securiteam.com/tools/5JP0I1FAAE.html">http://www.securiteam.com/tools/5JP0I1FAAE.html</a>
+<br>
+6. <a href="http://www.securenetwork.it/ricerca/whitepaper/download/bluebag_brochure.pdf">http://www.securenetwork.it/ricerca/whitepaper/download/bluebag_brochure.pdf</a>
+<br>
+7. <a href="/research/streetsweep.shtml">http://www.digifail.com/research/streetsweep.shtml</a>
+<br>
+8. <a href="http://www.wigle.net/">http://www.wigle.net/</a>
+
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

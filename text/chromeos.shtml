@@ -1,0 +1,324 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - Introduction to Chrome OS</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Linux,Hacking,Bluetooth,BlueZ,2600" />
+<meta name="description" content="Introduction to Google's Chrome OS and an overview of the CR-48 hardware, published in 2600." />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="right"><img src="/images/text/chromeos1.jpg" alt="2600 Cover" /></span>
+<h1>Foreword</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The following is <i>Introduction to Chrome OS</i>, an
+introduction to Google's Chrome OS published on page 6 of <i>2600</i> issue
+28:3.
+<p>
+This is a very short article that I wrote up after using the
+<a href="/hardware/cr48.shtml">CR-48</a> I received as part of the Chrome OS test.
+While my articles are usually very technical, this one was more of an opinion piece
+about Google's plans for Chrome OS. Admittedly, this one went a little negative
+towards the end, which is somewhat of a first for me; I usually try to keep pretty
+neutral in these sort of things. 
+<p>
+The original ASCII text file for this document can be found in the "Text" section
+of the <a href="/misc/downloads.shtml">Downloads</a> page.
+<h1>Disclaimer</h1>
+As Chrome OS is a moving target, constantly evolving and changing, there is no
+guarantee that the information contained herein will still be 100% accurate,
+or for that matter even relevant, by the time you read this. It's even possible
+the Chrome OS project will have crashed and burned before these words make it
+to paper. Still, as a matter of historical record, I will describe in the
+following pages my early experience with Chrome OS as both a piece of
+technology and a new concept in computing.
+<h1>What is Chrome OS?</h1>
+Chrome OS is an experiment by Google to see if the average users' day to day
+computing needs could be met (or perhaps even exceeded) by pushing all of
+their applications and personal files into the "Cloud". By the way, before we
+get too far into this, let's clear up one thing from the start; the "Cloud" is
+just the Internet. So for the rest of this article I am going to dispense with
+the marketing buzzword and just call it that, if it's all the same to you.
+<p>
+Anyway, the concept of putting all of our documents and programs on a remote
+server is certainly nothing new. The mass market is already familiar with using
+the Internet as an application and data storage platform with immensely popular
+services like Facebook and Dropbox; and of course the very concept of the local
+machine being nothing more than a terminal that connects to a network of more
+powerful machines goes all the way back to the original mainframe computers. In
+fact, you could even make the argument that putting all of our assets onto
+server's out of our control is a step backwards in computing, something that
+the community once fought hard to break free from.
+<p>
+Issues of freedom and privacy aside (don't worry, we will be back to that
+shortly), Google does make a strong case for the Chrome OS concept. The fact of
+the matter is, the vast majority of average computer users don't do a whole lot
+on their machines other than access web-based services like GMail, Facebook,
+Twitter, etc. If we go along with the claim made in some of the Chrome OS
+promotional videos, that the average computer user spends 90% of their time in
+the web browser, it's logical that a machine which has only a web browser
+could fulfill the majority of their needs.
+<p>
+The startup tutorial that plays when you first login to the system also makes
+frequent references to the idea of a "Steamroller Attack", which is how Google
+describes the sudden and unavoidable destruction of a Chrome OS device. It goes
+on to explain that, since everything is stored online, the local machine itself
+is nothing more than a disposable portal through which you access their
+services. Therefore, the destruction or otherwise loss of the machine isn't a
+problem, since you can return right where you left off with a new unit.
+<p>
+But theory is just that, and without a real world test there is no way to be
+sure if the Chrome OS concept holds up with actual users. Accordingly, Google
+announced they would be mailing out test machines loaded with the current build
+of Chrome OS to lucky applicants.
+<p>
+I would like to think that somebody from Google looked me up and decided that
+my website and published works were so well written and researched that they
+simply had to award me one of these new prototype machines, but realistically I
+am sure it was just the luck of the draw. In any event, I now have in my
+possession Google's idea of the future, so let's take a look at it.
+<h1>The Hardware</h1>
+As the hardware itself (known as the CR-48) is a reference device, and almost
+certainly will never see a commercial release in it's current form, I won't
+dwell too long on it here. But it is worth a mention as it does echo many of
+the same ideals of Chrome OS itself, and regardless of how close hardware
+manufacturers decide to follow it's example, it does say a lot about how Google
+envisions computers of the future.
+<p>
+If you asked me to picture what a mobilized, 21st century version of a
+mainframe terminal would be like, the CR-48 would be it. It's simple, sleek,
+perfectly suited for it's task, and at the same time wholly forgettable. It is
+a disposable computer if there ever was one, completely devoid of bells,
+whistles, or branding. There is only a single USB port, a VGA connector for an
+external monitor, and an SD reader. Even the original ASUS Eee 701 netbooks had
+more connectivity options.
+<p>
+The untrained eye may look at the CR-48 and assume that Google was simply
+trying to put out the cheapest machine they could for the purposes of the
+Chrome OS test, but a glance at what's under the hood tells another story. The
+CR-48 is powered by Intel's Atom N455 processor, paired with 2GB of DDR3 RAM
+and a 16GB SSD. In addition to the expected WiFi, it has an integrated 3G modem
+with free data service of up to 100MB per month, and Bluetooth 2.1. At the time
+of this writing, the closest consumer netbook I could find with similar
+specifications was over $400, and even then, didn't have as large a screen or
+3G.
+<h1>The Software</h1>
+Chrome OS is an incredibly simple platform from a software standpoint. It is
+literally just a standard GNU/Linux system that boots directly into the Chrome
+browser.
+<p>
+Of course, the build of Chrome OS that ships on the CR-48 is very far from
+completion, and it could be that things will change significantly before the
+mass market gets their hands on it. But as it stands, I am struck by how
+absolutely normal the Linux system is. I was expecting something similar to
+Android, where the system powers a heavily customized and stripped down
+userland with the Linux kernel. In Chrome OS, the only thing the system is
+missing to be a standard Linux desktop is a proper window manager and local
+applications.
+<p>
+There are however some added security features not normally found on desktop
+Linux. For example, the /home directory and all removable devices are mounted
+with the "noexec" option, which means it isn't (normally) possible to execute
+binaries stored on these volumes. This effectively prevents any executable
+programs from being run on the machine unless they were included in Chrome OS.
+<p>
+If you are the tinkering type, which if you are reading this you likely are,
+you will probably want to put Chrome OS into Developer Mode. Developer Mode
+enables some nice features like "crosh" (Chrome OS's debug shell), and Linux
+terminal access. On the CR-48 there is a physical switch under the battery
+cover that puts the machine into Developer Mode, but the Chrome OS
+documentation seems to indicate other machines may have different methods to
+enable this special mode. 
+<h1>The Experience</h1>
+Part of the agreement you have to accept when applying for a CR-48 is that you
+will use the machine as your primary computer for awhile and send as much input
+back to Google as you can through the built-in feedback system. I complied with
+the agreement and spent a week using, or perhaps more accurately attempting to
+use, the CR-48 as my main computer. The experience was more or less what I
+expected, and certainly made for an interesting experiment.
+<p>
+I should start off by saying that I am clearly not the intended audience for
+Chrome OS, and I would go so far as to say neither are the vast majority of
+2600 readers. Chrome OS in it's current form is simply not suitable for anyone
+who does more than browse the Internet and use social networking sites. But
+as it just so happens, those people are actually in the majority, so I don't
+know that the situation is a problem for Google.
+<p>
+I found that by enabling the aforementioned Developer Mode and getting access
+to the Linux terminal I was able to improve upon the situation immensely. From
+Linux I was able to do things like mount USB storage devices and run X over
+SSH, which let me display the output of graphical Linux applications in
+Chrome OS's WM. Being able to Alt+Tab into Firefox had a fun irony to it, but
+more importantly it let me run some graphical applications which simply don't
+have a Chrome OS parallel yet. Of course, this is cheating, and the average
+user wouldn't be in Developer Mode, and certainly won't know enough about the
+Linux command line environment to mount his USB flash drive.
+<p>
+Which brings us to Chrome OS "Apps"; surely, missing functionality in the core
+OS could be supplemented with third-party applications? As it turns out, no.
+<p>
+As Chrome OS is built on the principle that most users simply want to access
+web-based services, it's idea of applications are, accordingly, things that you
+are able to do from within the browser itself. But if the service is held
+entirely on the Internet, what exactly needs to be installed on the local
+Chrome OS machine? Well, just what you would think, actually. A bookmark.
+<p>
+That's right, as of this writing, the majority of Chrome OS "Apps" are simply
+bookmarks. Google is so hell-bent on proving that the Internet is an
+applications platform that they have gone so far as to trick the user into
+thinking they are installing an application when they are really just making
+a bookmark to an existing website. It's really rather ridiculous, the Web Store
+(where Chrome OS users go to download and purchase Chrome OS Apps) is scarcely
+more than a repository of bookmarks that the user can search through and rate.
+Oh, and purchase too; you can literally sell bookmarks on the Chrome OS Web
+Store.
+<p>
+The closest you can get to real applications on Chrome OS are Chrome
+Extensions, which are simply add-ons to the Chrome browser itself. These vary
+from the handy to the inane, but on the whole they are all very simplistic.
+There is only so much a browser add-on can do, after all. These are also the
+same Extensions you can get on the desktop version of Chrome, which means none
+of them are really making use of Chrome OS's APIs or unique features.
+<p>
+Even though I was faced with what seemed like intolerable limitations, I
+carried on with my duty to run Chrome OS and give Google feedback. I found that
+after a few days I really did begin to adapt to a browser-only computer. I even
+started to use more of Google's services, like Google Talk, since they were so
+tightly integrated into Chrome OS itself; surely part of Google's larger plan
+with Chrome OS. Everything was going relatively well, until the night the
+Internet went out.
+<p>
+I was working on the CR-48, and when I clicked on the GMail App I found it was
+unable to load. I switched over to a tab that had Google open and tried a
+search, and sure enough that failed as well. As a Comcast Internet customer,
+I am well accustomed to the Internet going out at random, and a quick glance
+over at the router showed that this was once again the case. My first instinct
+was to simply work on something that didn't need the Internet, such as writing
+this article. So I clicked on the Google Docs App so I could start 
+writing...and then it hit me.
+<p>
+A wave of 21st century Lovecraftian horror grew over me as I realized that,
+without the Internet, the device in front of me was completely useless. Write
+a document? Not without Google Docs. Play music? Can't store anything on the
+local machine. Play a game? Surely you jest. Write software? Hell, I had a hard
+enough time with that when the Internet was still working.
+<p>
+It was a sobering wakeup call that the device sitting in front of me was most
+definitely not a computer in the sense I have become accustomed to. It also
+reminded me that, while the Internet is certainly a very large part of what
+people do on their computers, it is assuredly not the only thing they do. Not
+being able to write a document because the Internet is out is already absurd,
+but without the Internet I couldn't even get access to any of my files, which
+is absolutely unacceptable.
+<h1>Cloud Conundrum</h1>
+The night the Internet went out was a turning point for me and my CR-48, and
+not simply because I couldn't write a document. With Chrome OS, I couldn't
+even get access to my own files unless I was on a decent Internet connection.
+Which brings up a very interesting question: if I can't get to my files when
+I want them, are they still really my files? If not, who's are they?
+<p>
+As far as impossibly large corporations go, Google has done a decent job of
+keeping itself on the side of good. I don't really believe that Google
+themselves would somehow claim ownership of my documents, or allow a third
+party to access them in their entirety. But, Google makes it's money by selling
+targeted advertisements, and most of us are already aware of some of the ways
+Google matches the user with the ad.
+<p>
+By signing up for GMail, for example, you agree to let Google pick keywords out
+of your messages and use those to show relevant advertisements. My wife and
+infant daughter recently got into a car accident, and while I was writing an
+email to friends and family explaining what had happened, I noticed an
+advertisement for a sale at "Babies R Us" on new car seats. Many people, maybe
+even most, would let something like that go without a second thought. But the
+experience left me troubled, and I have to admit I am worried about that sort
+of technology being applied to my full text documents.
+<p>
+It isn't hard to imagine advertisers using keywords generated from text
+documents created with Google Docs in new and even more intrusive ways. Typing
+up a letter of resignation? Perhaps you would be interested in a career
+consultation? Writing a journal entry about some stress you are having at work?
+Perhaps you need suicide counseling!
+<p>
+Most of us have already been lulled into complacency by Google. If you aren't
+one of the millions of users that have a GMail account, you have still probably
+used Google's ubiquitous search engine. Even if you have avoided using Google's
+services directly, the sites you access online have surely been using Google
+Analytics to gather information about their visitors' browsing. By using
+Google's software, directly or indirectly, we have silently agreed to let
+personalized advertisements be generated for us. But at least it has always
+been a choice; with your own computer you could make a concious decision to
+avoid and block all of Google's software and replace it with alternatives.
+<p>
+With Chrome OS, that choice is largely removed. The computer is no longer a
+possession of the user, it's importance as an object has been taken out of the
+equation. In the Chrome OS model, the computer is simply a portal through
+which Google can push advertisements with greater efficiency than ever before.
+Purchasing a Chrome OS device is akin to signing away your online identity to
+Google; some will balk at the prospect, but many more will accept the terms
+just to get a low cost computer. Only time will tell which group made the right
+choice.
+<h1>Beyond the CR-48</h1>
+As I write this, third parties have finally started announcing their own
+Chrome OS devices intended for the mass market. These new machines are being
+referred to collectively as "Chromebooks", which seems to indicate that the
+focus (at least for now) is to keep Chrome OS relegated to netbooks only.
+Google has mentioned a desktop Chrome OS device being in the works, but I
+imagine it's release greatly depends on Chrome OS's success with mobile
+devices.
+<p>
+Since I have been in the Chrome OS pilot group since day one, I would like to
+think I have a fairly good idea where the Chrome OS project is going, and how
+it will get there. But we are only a few weeks out from when the first official
+Chromebooks are supposed to start shipping, and I honestly don't see how the
+build of Chrome OS running on my CR-48 is ready for public consumption. So many
+basic functions are missing or broken, it's hard to believe Google would risk
+such a poor first impression with their initial wave of devices. If a bad first
+wave was enough to permanently damage the reputation of Windows Vista, I can
+only imagine it's effect on a fledgeling OS that is already pushing the
+boundaries of what the consumer expects from a computer.
+<p>
+One of the key elements of the Chrome OS initiative going forward is the fact
+that the devices will be made available to enterprise and educational customers
+as a monthly lease. Enterprise users will pay $28 per month, while educational
+leases will cost $20. Both require a three year contract, which includes
+hardware warranty and technical support. This is an extremely aggressive
+pricing scheme, and it's pretty clear that this is where Google thinks Chrome
+OS is most likely to succeed. I would be inclined to agree that schools and
+businesses are good candidates for low-cost subscription based computing;
+though I am not so convinced either of those groups will be too keen to sign
+up for a three year contract with a machine that still can't perform simple
+tasks such as printing a document.
+<h1>Conclusion</h1>
+As I said in the opening of this article, Chrome OS is a rapidly moving target,
+so I hesitate to make any judgement calls about it in terms of functionality
+or maturity. Indeed, I have had to go back to edit and remove parts of this
+article as I was writing it, as Chrome OS goes through periods where updates
+are pushed out daily.
+<p>
+But some parts of Chrome OS are not going to change, as they are not a fault
+of the software but instead a conceptional limitation; Chrome OS is a platform
+for consumers, not creators. You won't be developing software, rendering video,
+or mixing audio on Chrome OS machine. Even though there are some simplistic
+attempts at those sort of applications, these are tasks which just don't lend
+themselves to this style of computing.
+<p>
+What's more, you will never escape Google's grasp when using a Chrome OS
+computer, no matter how far the software is developed. At the end of the day,
+the goal of Chrome OS is to push more targeted advertisements to the user, so
+don't expect an option to "Opt Out" of Google's services and run the machine
+on your own terms (unless you want to wipe it and install your own OS).
+<p>
+As it stands, possible privacy issues notwithstanding, Chrome OS machines do
+make a lot of sense for schools or businesses where everyone needs to have a
+computer to access the Internet, send email, and do basic word processing. On
+the other hand, I cannot fathom an individual purchasing a Chrome OS computer
+for anything near the cost of a more traditional system.
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - Xbox Internal Wireless Controller Mod</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Logitech,Wireless,Microsoft,Xbox,controller" />
+<meta name="description" content="A very rough project to add an internal
+wireless controller to the Microsoft Xbox" />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="center"><img src="/images/fails/xboxmod1.jpg" alt="Xbox and controller" /></span>
+<h1>What was it?</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Back when I was still actually using the original
+Xbox, I became increasingly unhappy with the tangle of wires that was always
+involved when storing or getting out the controllers. There were third party
+products available to add wireless capability to the console, but by this
+time the 360 was already on the market, and I couldn't help but feel silly
+with an ugly little box connected to the front of my console.
+<p>
+One day, I decided to take apart one of these third party external wireless
+controller units and try to integrate it into the console itself. Having
+previously done work inside the Xbox, I knew the thing was a beast with
+plenty of space inside to mount additional components.
+<p>
+The finished product was rather poor, but I would stress this was one of
+my very first "organized" projects, so I don't feel that bad about the
+amateurish attempt. Also note that I had to recently pull the console
+apart to take the images you see here, as I didn't take any pictures
+while originally working on it. You will have to use your imagination a
+bit with this one.
+<h1>Preparing the Receiver</h1>
+<span class="right"><img src="/images/fails/xboxmod2.jpg" alt="Logitech Controller" /></span>
+&nbsp; &nbsp; &nbsp; &nbsp;To start this project, I went to my local
+GameStop and picked up a used "Logitech Cordless Attack Controller" for
+about $18. The Internet told me this was the best wireless controller for
+the Xbox, and the receiver seemed small enough that I could reasonably
+fit it inside of the console once properly stripped down.
+<p>
+To start with, I took it out of it's plastic case, removed the memory card
+connectors, and desoldered the lead coming into the board (remember when I
+said you needed to use your imagination?). This left me with a flat PCB that
+was only a few inches wide, though admittedly in an odd horseshoe shape. The
+PCB had an SMD LED on one leg of the horseshoe, which I also removed (smashed).
+<p>
+Once everything was off the board, I got a scrap piece of CAT5e cable and
+soldered the wires on one side to where the controller and LED leads originally
+connected. This let me run both the controller signals and the status LED power
+down the same wire to a remote location (I.E. the front of the console). I then
+coated the wires in hot glue to make sure they didn't work themselves loose.
+<p>
+<span class="center"><img src="/images/fails/xboxmod3.jpg" alt="PCB Closeup" /></span>
+<p>
+I think I mentioned this was an early work of mine...right?
+<h1>Controller Interface</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;OK, that is just a fancy way to say "soldered the
+thing into the back of the controller port". Luckily the Xbox controller ports
+are on easily removable little brackets, and the individual ports themselves
+are easily pulled open to reveal the pins from the rear. It was only a matter
+of soldering the new wires from the CAT5e onto the existing wires. In addition,
+I jammed a little green LED into the space between the inner wall of the
+controller socket and the internal connector, which was obviously attached to
+the two wires from the SMD LED pad. This would give me a nice little status
+light that would be invisible unless lit. Finally, another generous
+application of hot glue (I must have really liked this stuff when I was
+younger).
+<p>
+<span class="center"><img src="/images/fails/xboxmod4.jpg" alt="Port connection" /></span>
+<p>
+In the following image, you can see the controller port module installed
+back into the front panel of the Xbox, with the new CAT5e wiring going to the
+left of the image, and the original controller leads going towards the right:
+<p>
+<span class="center"><img src="/images/fails/xboxmod5.jpg" alt="Controller module" /></span>
+<h1>Installing the Receiver</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;All that remained now was actually finding a spot
+inside of the console to mount the receiver PCB, and safely run the wires back
+to it. I was exceptionally fortunate in this case, as the PCB fit perfectly
+behind the DVD drive, sitting right on top of the Ethernet port. I then simply
+routed the CAT5e from the front panel to the location of the receiver, which
+again proved very easy thanks to the ridiculous size of the Xbox hardware.
+<p>
+<span class="center"><img src="/images/fails/xboxmod6.jpg" alt="Wide shot" /></span>
+<p>
+When the Xbox was put back together, the only part of the whole installation
+that was even visible was the very top of the receiver PCB:
+<p>
+<span class="center"><img src="/images/fails/xboxmod7.jpg" alt="Installed" /></span>
+<h1>So what happened?</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Well, first of all, it certainly <i>did work</i>.
+But there were two rather major problems with that project that forced me to
+put it into the "Fail" pile, both of which are embarrassingly obvious in
+hindsight, but as I said, I was quite young here.
+<p>
+The biggest problem was that the Faraday-cage case they have on the Xbox
+almost completely blocked the signal of the controller, so range was very.
+very short, around 3 to 5 feet. To make matters worse, the close proximity
+of the receiver board to the optical drive and IDE cable meant that the
+controller would suffer vicious interference whenever a game would load
+either from DVD or the HDD. This could be confirmed by simply looking at
+the activity LED I added, it would flash madly whenever the console was
+doing anything but sitting idle.
+<p>
+Slightly less of a concern was the fact that the front controller port
+was now useless for real wired controllers, as the Xbox couldn't
+understand two controllers connected to the same port.
+<p>
+Both of these issues could be fixed easily enough if one was so inclined.
+The poor range could be remedied (or at least improved upon) by running a shielded
+wire outside of the metal casing of the Xbox to a small antenna mounted to
+the back. Wired controllers could be supported by the use of a relay-type
+device to switch between the different connected devices depending on the
+open or closed state of the sense wire in the controller port.
+<p>
+While these improvements are easy enough to implement, I no longer use the Xbox
+so I have no reason to do so personally. Even though I technically consider
+this project a failure in it's current form, I do take some pride in the fact
+that, to my knowledge, this is the only documented modification of it's type
+for the Xbox.
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

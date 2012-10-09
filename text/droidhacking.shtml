@@ -1,0 +1,514 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - Mobile Hacking with Android</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="MITM,tether,Android,ConnectBot,2600,Shark" />
+<meta name="description" content="An introduction to the Android operating system, and a look at how it can be used as a mobile platform for attackers." />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="right"><img src="/images/text/droidhacking1.jpg" alt="2600 Cover" /></span>
+<h1>Foreword</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The following is <i>"Mobile Hacking with Android"</i>, as it
+appeared on page 15 of <i>2600</i> issue 28:2. This article starts off by
+taking a look at the origins of Android, and a basic rundown on the internal
+structure of the OS. It then moves on to some choice software selections, and
+finally, details a real-world man in the middle attack using a rooted Android
+smartphone.
+<p>
+This is the first article in which I actually detail a functional attack; in
+this case I thought it was important to demonstrate the capabilities of
+Android in an offensive capacity. It is also the first article featuring QR
+codes to appear in <i>2600</i>. I was happy the QRs made it into the final
+print, though not without issue. Between the time I wrote the article and the
+time it was published, <i>Wireless Tether</i> was removed from the Android
+Market, making it's QR a dead link. I made the concious decision to not use
+a URL shortener when generating the QR codes, as I believe the <i>2600</i>
+readers would be rightly suspicious of a QR pointing them to a shortener
+service. A shortener would have allowed me to fix the link after publication,
+but I am still not sure it is worth the risk to the reader. Chalk this one up
+to a learning experience I guess.
+<p>
+The original ASCII text file for this document can be found in the "Text" section
+of the <a href="/misc/downloads.shtml">Downloads</a> page.
+<h1>Introduction</h1>
+If you have been following the mobile industry for the last year or so, you
+have already heard about Android. Google's mobile Linux operating system has
+taken the industry by storm, and analysts predict that by the end of 2011 it
+will have overtaken Apple's iOS as the number two mobile operating system in
+the world. Some even say that by 2015, it should overtake Nokia's Symbian OS
+as the number one mobile OS. 
+<p>
+The continued success of Android is of particular importance to hackers, as it
+is more proof that a large scale open source project can not only compete with
+proprietary software, but excel beyond it if properly supported. Perhaps more
+importantly, the open nature of Android allows it's more technically inclined
+users to peer into the workings of their mobile devices and modify them however
+they wish. Finally, the dream of an open mobile device that started with the
+OpenMoko FreeRunner is very close to realization for the mass market.
+<p>
+Of course, we know that every story has two sides. With increased hardware
+performance, storage capacity, and software capability, mobile devices have
+become increasingly tantalizing targets for attackers and criminals over the
+last few years. But with flexible operating systems like Android under the
+hood, mobile devices are now becoming practical attack platforms; allowing an
+attacker to scan for and engage targets from the palm of his hand.
+<p>
+This article will take a look at a few Android applications of interest to both
+the hacker and the criminal alike, and detail a proof of concept attack using
+nothing more than a rooted Android mobile phone and publicly available
+software. The information herein is provided entirely for educational purposes
+so that the reader may have a better understanding of the capabilities and
+realistic applications of this technology. It in no way condones or suggests
+attempting to use these techniques in a malicious manner.
+<h1>What is Android?</h1>
+To get a better understanding of what Android is capable of, we should first
+get a good handle on what it actually is.
+<p>
+In 2005, Google acquired a little known company called "Android, Inc", which
+had been developing software for mobile phones. Soon after, Google began filing
+various patents with a focus on mobile phone technology. This prompted the
+media to begin speculating that Google was planning on releasing a "G-Phone" to
+go head-to-head with Apple's immensely popular (and largely unchallenged)
+iPhone.
+<p>
+But in 2007, rather than announcing a single phone they intended to bring to
+market, Google brought together a group of some of the most important companies
+in the mobile industry and created the Open Handset Alliance (OHA), a
+consortium designed to develop open standards for mobile devices. The OHA
+revealed that their first product would be an open source mobile OS, called
+Android, designed to run on the full gambit of mobile devices (phones, tablets,
+netbooks, etc), rather than an OS tied to a specific piece of hardware (like
+Apple's iOS). In October of 2008, the HTC Dream (more commonly referred to as
+the G1) was released and became the first official Android device.
+<p>
+Android is made up of several software layers which are intended to make the
+OS more modular and easier to develop for. Android is based on the 2.6.x Linux
+kernel which handles hardware interaction, GNU userspace utilities for
+low-level system management, and various open source libraries such as OpenGL,
+SQLite, and FreeType.
+<p>
+While this technically makes Android a GNU/Linux OS, Android applications (or
+"apps" as they are usually referred to as) are not native Linux binaries.
+Rather, Google has developed a Java virtual machine called Dalvik and a large
+framework of libraries which developers can use without ever touching the
+underlaying Linux system. This means that developing for Android requires no
+previous knowledge of Linux programming, and allows the developer to work
+within a well documented and defined environment, regardless of what device
+their code will eventually run on.
+<p>
+The idea that a developer should be able to write one application and be able
+to deploy it on essentially every piece of hardware Android itself supports is
+a core element of the OHA. In theory, this should be a boon for developers, but
+in practice it introduces a number of problems, one of which being that Android
+applications are never truly optimized for a specific device, and are always
+limited by the capabilities of the Dalvik VM. Updates to Dalvik and the
+introduction of the Native Development Kit (NDK), which allows developers to
+bundle in native C code with their Java applications, are beginning to
+alleviate the issue, but hardware intensive applications like 3D games are
+still noticeably absent from Android's software library.
+<p>
+While not a viable option for large-scale Android development, it is also
+possible to write (or adapt) Linux C code for use with Android. In theory,
+this means you could take existing Linux tools and applications and
+cross-compile them for the ARM architecture most Android devices are running
+on. In practice however, there are a number of limitations imposed by the
+abridged nature of Android's Linux implementation that make things more
+difficult. Most notably, Android doesn't include libc, but rather uses it's
+own library known as Bionic. All native Linux code must be compiled against
+Bionic, but as Bionic is not 100% compatible with libc, there is no guarantee
+code will work as expected (or at all). In addition, Android doesn't use an X
+server, so graphical Linux applications are out of the question.
+<p>
+As with all Unix-like operating systems, Android has a very strict set of
+permissions; which in this case extend from the core Linux components all the
+way up to the Dalvik VM. Since anyone can write an Android application and
+publish it in the Android Marketplace, it is extremely important for the system
+to monitor and limit the capabilities of everything the user installs. Every
+application must list it's capabilities in regards to the Dalvik VM for the
+user upon installation, and Linux's standard per-user filesystem permissions
+prevent even rogue applications from accessing the underlaying OS and doing
+system-wide damage.
+<p>
+While that is fine for the average user, those of us who want more control
+over our systems can start to feel a little caged in. Just like in a full Linux
+OS, if you want to get complete access to the system you need to elevate your
+user level to root. Gaining root privileges is not technically supported by
+Android, and doing so usually requires making use of some exploit or glitch in
+that particular device's build of Android. Accordingly, the process of
+"rooting" an Android device differs greatly depending on the hardware and what
+version of Android it's running, which makes it considerably out of the scope
+of this particular article. I can say that, as far as I am aware, all Android
+devices currently on the market can be rooted, with varying degrees of
+difficulty or Linux knowledge required. A simple Google search of your device
+name along with the term "rooting" should get you started.
+<h1>Android Software</h1>
+Even though Android has been on the market since 2008, it wasn't until
+relatively recently that it started to take off. Android's surge in popularity
+(at least in the US) is considered to be due in large part to Verizon Wireless
+and their DROID lineup of phones, specifically the Motorola Droid which more or
+less became the de facto Android 2.0 handset. With an increased userbase comes
+more developers, and as such, Android software has started to mature and offer
+legitimate tools and applications rather than the drivel that populated the
+Android Marketplace for the first couple years of the OS's life.
+<p>
+At the same time, Google's release of the NDK and the fact that Google doesn't
+prevent or discourage rooting Android has lead to some very powerful and
+useful software that anyone can install and run without fear of persecution
+from Google or their device's manufacturer.
+<p>
+In the following sections I will briefly go over some applications of
+particular interest to the hacker. All of these applications are available on
+any Android device that has access to the Android Marketplace, though some do
+require your device to be rooted as mentioned in the previous section.
+<h1>WiFi Analyzer</h1>
+<b>&nbsp; &nbsp; &nbsp; &nbsp;QR Code:
+<a class="thumbnail" href="#thumb">Show<span><img src="http://chart.apis.google.com/chart?cht=qr&chs=135x135&chl=market://details?id=com.farproc.wifi.analyzer" /></span></a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Android Market:
+<a href="http://market.android.com/details?id=com.farproc.wifi.analyzer" target="_blank">View</a>
+</b>
+<p>
+WiFi Analyzer is one of the most popular applications in the Android
+Marketplace, which is really a testament to how wildly useful this tool is for
+both the average user and the more technically inclined. In the most basic of
+terms, WiFi Analyzer is a tool to scan the area for WiFi networks and determine
+which channel is the least populated so you can adjust your own hardware to a
+less congested part of the spectrum.
+<p>
+But as the application has evolved, it has picked up a number of other helpful
+features. For every detected network it offers multiple detailed graphs of
+signal strength (strength over time, comparison to other networks in the area,
+etc), MAC address, and encryption used. There is even a function where you can
+lock on to a specific network and view the signal strength as an analog gauge,
+complete with an audio tone which increases in frequency as the signal gets
+stronger; an absolutely invaluable tool for locating WiFi devices in the field.
+<p>
+That said, it is important to realize that WiFi Analyzer is NOT a full fledged
+WiFi scanner or "wardriving" tool. As of this writing, there is no method to
+export the list of detected networks to file, and some functions (like the
+signal strength versus time graph) won't even retain their data when switching
+to one of the application's other modes.
+<h1>ConnectBot</h1>
+<b>&nbsp; &nbsp; &nbsp; &nbsp;QR Code:
+<a class="thumbnail" href="#thumb">Show<span><img src="http://chart.apis.google.com/chart?cht=qr&chs=135x135&chl=market://details?id=org.connectbot" /></span></a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Android Market:
+<a href="https://market.android.com/details?id=org.connectbot" target="_blank">View</a>
+</b>
+<p>
+ConnectBot is an exceptionally well done SSH/Telnet client, which also acts
+as a terminal emulator for the local Linux sub-system. While there are better
+terminal emulators (though not for free), there is no question that ConnectBot
+is the absolute best SSH client available for Android.
+<p>
+In addition, ConnectBot also allows you to setup SSH port forwarding from your
+device to a remote server, otherwise known as SSH tunneling; a topic that has
+been covered numerous times on these pages. Tunneling is an exceptionally
+useful technique for circumventing firewalls or protecting your data on public
+networks, both of which are very useful on mobile devices. The SSH forwarding
+in ConnectBot is not quite as polished as I would like, such as needing to keep
+an interactive shell open when using the tunnel instead of doing it in the
+background, but it works well enough.
+<h1>Network Discovery</h1>
+<b>&nbsp; &nbsp; &nbsp; &nbsp;QR Code:
+<a class="thumbnail" href="#thumb">Show<span><img src="http://chart.apis.google.com/chart?cht=qr&chs=135x135&chl=market://details?id=info.lamatricexiste.network" /></span></a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Android Market:
+<a href="https://market.android.com/details?id=info.lamatricexiste.network" target="_blank">View</a>
+</b>
+<p>
+Network Discovery is a handy tool for finding and enumerating devices on public
+WiFi networks. Network Discovery uses a simple ping scan to find hosts on the
+network, and then allows the user to select one of the found hosts to target
+for a TCP connect() scan.
+<p>
+The execution is pretty basic, but Network Discovery does have a few nice
+touches such as a NIC vendor database which shows who manufactured the network
+interface of the discovered devices, service detection (by reading the service
+banner), and the ability to directly connect to services which Android supports
+or has known applications for (WWW, FTP, SSH, etc). Future plans include
+database storage for scan results, OS fingerprinting, NAT traversal, and
+root-enabled functions like SYN scans.
+<h1>Wireless Tether</h1>
+<b>&nbsp; &nbsp; &nbsp; &nbsp;QR Code:
+<a class="thumbnail" href="#thumb">Show<span><img src="http://chart.apis.google.com/chart?cht=qr&chs=135x135&chl=http://code.google.com/p/android-wifi-tether/" /></span></a>
+</b>
+<p>
+Wireless Tether is a mainstay of rooted Android phones, as it allows any
+Android phone to share it's cellular Internet connection out over either
+Ad-Hoc WiFi or Bluetooth PAN. It does this in such a way that prevents your
+carrier from differentiating between the traffic generated from the Android
+device itself and any devices connected to it, the upside being that you are
+able to share the cellular Internet access you already pay (dearly) for without
+having to sign up for the nonsensical "tethering" charges which many carriers
+have begun implementing. This is an excellent tool for setting up temporary
+Internet access for small groups of people, such as at hackerspaces or 2600
+meetings.
+<h1>Shark for Root</h1>
+<b>&nbsp; &nbsp; &nbsp; &nbsp;QR Code:
+<a class="thumbnail" href="#thumb">Show<span><img src="http://chart.apis.google.com/chart?cht=qr&chs=135x135&chl=market://details?id=lv.n3o.shark" /></span></a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Android Market:
+<a href="https://market.android.com/details?id=lv.n3o.shark" target="_blank">View</a>
+</b>
+<p>
+Shark for Root is a port and front-end for the venerable tcpdump. I suspect the
+use and function of tcpdump is well known enough that I don't need to go into
+explicit detail, but to put it briefly, it allows the user to examine and log
+all of the TCP/IP packets going into and out of the Linux kernel. As the name
+implies, Shark only works properly if it is run as the root user, which allows
+it complete access over the kernel's networking subsystems.
+<p>
+Shark isn't much to look at, and in fact has a few rather annoying bugs in the
+user interface, but the UI itself is the last thing you are going to be worried
+about. Installing Shark is the easiest way to get a working tcpudmp binary
+installed on an Android device (though some custom ROMs do include it out of
+the box), so it's an absolute must have if you want to do any kind of mobile
+network analysis.
+<h1>Remote Exploit Applications</h1>
+This is more of an "Honorable Mention" category; there are currently a handful
+of applications in the Android Market which are designed to use documented
+remote exploits against various operating systems and server applications. For
+example, there are a few applications designed to use the recent Windows Vista
+and Windows 7 remote SMB exploit. These applications can be used to trigger a
+BSOD on any unpatched Windows system on the same WiFi network as the Android
+device.
+<p>
+While this type of software is still fairly rare on Android, it is going to
+become more common as developers get better acquainted with the intricacies of
+developing software for Android. This area of development certainly warrants
+a close watch from the community, both offensively and defensively.
+<h1>Mobile MITM Attack</h1>
+So we have covered a few very useful tools you can download on your Android
+device, but you still might be wondering how these seemingly innocuous
+applications could possibly be used maliciously. A powerful mobile device
+running Android could be used by an attacker in thousands of different ways,
+but for this example we will be focusing on a specific case that involves a few
+of the applications we just discussed; using a rooted Android phone as part of
+a man-in-the-middle attack.
+<p>
+The idea is really rather simple, we will be setting up Wireless Tether to make
+our phone appear to be a public WiFi AP (access point) to our victims, and then
+once they connect to our phone (and through it, the Internet) we can capture
+their traffic for later analysis and data retrieval.
+<p>
+The first step is to scout out a good location. Tools like WiFi Analyzer are
+helpful here as they can be used to find important information about the
+existing WiFi coverage in the area. Ideally, the best place to attempt an
+attack like this would be locations with a high density of users, and a
+relatively low number of existing WiFi APs. Once an attacker finds a location
+where there are many potential targets, he can use WiFi Analyzer to determine
+the signal strength of surrounding APs and how many of them are currently
+running open networks. If there are many strong and free APs in the area, the
+attack will be less likely to work, but if the only APs with strong signal are
+encrypted, users will be much more likely to connect to the attacker's open AP
+with excellent signal strength. Therefore, areas such as coffee shops and
+hotels would be particularly good candidates for this sort of attack as the
+users in the building will quickly jump at the chance for free WiFi when
+presented with the paid access model the business is likely running.
+<p>
+Once a location has been selected, Wireless Tether needs to be configured
+to appear as an innocent public AP. The SSID can be changed from within
+Wireless Tether by pressing the Menu key, selecting "Setup", then scrolling
+down to "Change SSID". Wireless Tether doesn't allow spaces in SSID names, and
+also has an unusually short character limit, but in practice you can still get
+the point across. Changing the SSID to something like "free_wifi" should get
+the desired results, but for added effect it could be more contextually
+relevant to the target location, such as "hilton_wifi". With the SSID set as
+something sufficiently approachable, start Wireless Tether by pressing the
+large icon in the center of the screen (Wireless Tether must be running to
+complete the next steps).
+<p>
+With Wireless Tether up and running, the next step would be to get Shark setup
+and begin logging packets. Normally, tcpdump will listen on the default
+interface, which in the case of a phone would be the 3G radio. Capturing
+packets from 3G is just going to get us a big log file of gibberish, so Shark
+needs to be setup so that it runs tcpdump against the phone's WiFi interface
+where the victims will be connecting.
+<p>
+To do that, you need to figure out what the WiFi interface is actually called.
+Just like on desktop Linux, some WiFi drivers rename the interface instead of
+leaving it as the standard wlan0, so you need to do a little digging to figure
+out what your particular phone is running. The easiest way to do this is by
+using a terminal emulator (such as ConnectBot) and running the command
+"netcfg", which will list the device's networking interfaces like so:
+<p>
+<pre><code># netcfg
+lo       UP    127.0.0.1       255.0.0.0       0x00000049
+dummy0   DOWN  0.0.0.0         0.0.0.0         0x00000082
+usb0     DOWN  0.0.0.0         0.0.0.0         0x00001002
+ppp0     UP    75.206.123.22   255.255.255.255 0x000010d1
+tiwlan0  UP    192.168.2.254   255.255.255.0   0x00001043
+</code></pre>
+Here we can see the two important interfaces, ppp0 which is the 3G Internet
+connection, and the tiwlan0 interface which is running Wireless Tether. You can
+tell them apart easily as one is running a public IP (ppp0), and the other is
+using a private IP (tiwlan0). The WiFi interface in this case is called tiwlan
+because the phone in question is using a Texas Instruments chipset. Different
+devices will be running different hardware, so don't be surprised if you see
+something completely different.
+<p>
+With the WiFi interface name in hand, you can start up Shark and add in the
+proper tcpdump parameters. To specify a different interface from the default,
+you use the "-i" option, so add "-i tiwlan0" to the parameters already listed
+in Shark (substituting your particular WiFi device name, if necessary). Then
+press "Start", and make sure it begins logging packets. You should see a line
+at the bottom that says "Got xx", where "xx" is the numbers of packets
+currently captured.
+<p>
+<span class="center"><img src="/images/text/droidhacking2.png" alt="Shark Capture" /></span>
+<p>
+Now all that is left to do is wait. With patience and a little luck, a client
+device should connect to the phone and attempt to get online. Wireless Tether
+can be setup with various notifications when new devices connect, including a
+vibrate option that would let the attacker know a client has connected without
+making a sound or even having to glance at the phone. Once a client device
+connects, they will be routed to the Internet just as they expected. Their
+experience will be identical to that of a regular public WiFi connection, and
+they would have no reason to suspect anything is wrong.
+<p>
+Obviously, there are some constraints due to the device's relatively
+limited processing power and bandwidth, but as long as you keep your
+expectations reasonable (such as using Wireless Tether's access control options
+to limit yourself to 2 or 3 simultaneous connections) the illusion will hold
+together well enough for the victims.
+<p>
+Once you feel you have captured enough data, simply stop Shark and shutdown
+Wireless Tether. You can then open up the PCAP file that was created under
+/sdcard in Shark Reader (a basic PCAP analyzer created as a companion for
+Shark), or better yet, pull the file off of the phone's SD card and open it up
+in Wireshark. Assuming everything went according to plan, you should be looking
+at a complete log of everything your victim(s) did while connected to your
+"free" WiFi AP.
+<h1>A Step Further: Data Siphon</h1>
+Being able to log all of the plain text traffic to and from the victim's
+computer is certainly bad, but there are limitations to the Android platform
+that keep the attack from moving much beyond that. As flexible and widely
+supported as it is, Android still only has a fraction of the tools available
+for x86 operating systems. Even if more advanced tools were available for
+Android, the processing and storage limitations of mobile devices would make it
+difficult to do much in the way of real-time data manipulation while still
+delivering the content fast enough to keep the victim from suspecting anything.
+<p>
+But what if, rather than attempting to manipulate the data stream on the mobile
+device itself, he simply redirected all of the traffic from his rogue AP to
+another network of which he had full control over; a network which housed
+machines with the software and processing capability to manipulate the victim's
+data in real-time? As it turns out, it only takes a few more steps to adapt
+the man-in-the-middle setup from the previous example into a "siphon" which can
+redirect all of the traffic on the rouge AP to any network the attacker wishes.
+<p>
+The first step is to bridge the connection between the Android device and the
+destination network by way of a VPN. Android comes with support for various
+types of VPNs out of the box, but there are some long-standing bugs in it's
+implementation that make it all but useless in many software configurations.
+Luckily, the community rose to the challenge and ported over OpenVPN, which
+offers incredible amounts of customization and capability. Some custom Android
+ROMs include OpenVPN, but if yours doesn't you can download it from the
+Marketplace by way of the "OpenVPN Installer" application by Friedrich
+Schaeuffelhut. The same developer also put out an application called "OpenVPN
+Settings" which aims to make configuring and managing OpenVPN connections as
+easy as the built-in VPN functions, which you may also want to grab.
+<p>
+The actual configuration of an OpenVPN server is outside the scope of this
+document, but the general idea is that you setup an Internet-facing server in
+bridge mode; this will let you connect your VPN client (the Android device) to
+the server from a remote location and give it an IP that is within the subnet
+of the destination network. I personally used a Linksys WRT56GL running DD-WRT
+as my OpenVPN server, but any other implementation will work just as well.
+<p>
+With OpenVPN correctly configured on both sides, and Wireless Tether running,
+the output of "netcfg" should now look something like this:
+<pre><code># netcfg
+lo       UP    127.0.0.1       255.0.0.0       0x00000049
+dummy0   DOWN  0.0.0.0         0.0.0.0         0x00000082
+usb0     DOWN  0.0.0.0         0.0.0.0         0x00001002
+tap0     UP    192.168.1.50    255.255.255.0   0x00001043
+ppp0     UP    75.206.123.22   255.255.255.255 0x000010d1
+tiwlan0  UP    192.168.2.254   255.255.255.0   0x0000104
+</code></pre>
+Notice the addition of the "tap0" interface, with an IP address in the middle
+of the WRT54G's 192.168.1.x network. The Android device is now connected to
+three separate networks simultaneously: the primary 3G Internet connection on
+ppp0, the rouge AP running on tiwlan0, and now the VPN on tap0.
+<p>
+The goal now is to get traffic from our rouge AP on tiwlan0 to go through the
+VPN, rather than straight through 3G to the Internet. If we run a traceroute
+from the Android device now, we will see this is currently not the case:
+<pre><code># traceroute 75.206.123.22            
+traceroute to 75.206.123.22 (75.206.123.22), 30 hops max, 38 byte packets
+ 1  66.174.112.129 (66.174.112.129)  143.097 ms  75.959 ms  70.312 ms
+ 2  66.174.112.127 (66.174.112.127)  62.164 ms  85.510 ms  69.916 ms
+ ...
+</code></pre>
+So what we need to do now is setup a new default route that will take all
+traffic out through the 192.168.1.x network's primary router (in this case,
+192.168.1.1) To do this you will use the "route" command:
+<pre><code># route add default gw 192.168.1.1 dev tap0</pre></code>
+Note that, unlike the desktop Linux equivalent, the Android "route" command
+requires you give it an interface name.
+<p>
+Re-running the traceroute command from before, we can see that the path packets
+are taking through the phone has changed:
+<pre><code># traceroute 75.206.123.22            
+traceroute to 75.206.123.22 (75.206.123.22), 30 hops max, 38 byte packets
+ 1  192.168.1.50 (192.168.1.50)  300.831 ms 365.326 ms  265.656 ms
+ 2  66.174.112.127 (66.174.112.127)  257.843 ms  257.507 ms  265.930 ms
+ ...
+</code></pre>
+The first hop is now the tap0 interface, so we can see that data is traveling
+through the 192.168.1.x network to get to the Internet, rather than directly
+out 3G. The keen eye will also note the increased travel time, as data now has
+to run through the VPN before it gets out to the Internet. Though it is worth
+noting that the travel times shown here are rather high because my phone had
+poor signal when I ran this particular test. In ideal conditions, performance
+over the VPN is not much different than 3G alone.
+<p>
+With the victim's data now traveling through the attacker's personal network,
+there is no limit to what he can do. A server on the network could provide the
+victims spoofed DNS entries and forged login pages, or sslstrip could be used to
+hijack HTTPS connections and get their plain-text content. A combination of
+these techniques could be used to present the victim with a convincing looking
+"Critical Update" page that instructs the user to "Download and install the
+following important system update..." before allowing them to continue on to
+the Internet at large.
+<h1>Conclusion</h1>
+For those of us interested in technical exploration, Android offers nearly
+unlimited possibilities. Not only can an Android device be used to explore and
+examine the world around us, we are even given the freedom to explore and
+modify Android itself by virtue of its open nature. While the installation
+and use of security related tools on a mobile device is certainly nothing new,
+older devices primarily used close source proprietary operating systems the
+user had no control over. Even in the few previous mobile devices that actually
+shipped with an open source OS, you were still limited by the relative rarity
+of supported devices and the small userbase. The fact that you can walk into
+the store of essentially every cellular carrier in the US and purchase a
+handset that runs an open source OS with development tools baked right in is
+completely without precedent.
+<p>
+Of course, the same opportunity is available for criminals, and if Android
+continues it's meteoric rise in popularity as analysts predict, it won't be
+long until they start getting on the Android bandwagon too. Whether it is to
+develop malicious applications or remote exploits (at the time of this writing,
+proof of concepts exist in both cases), criminals will attempt to exploit
+Android's open nature for their own gains.
+<p>
+For hackers, Android represents not only an excellent platform for personal
+use and an ideal worthy of our support, but also a future battleground. As
+smartphones approach the ubiquity that was once reserved for wristwatches,
+mobile security research and development will be key in protecting user's data
+and privacy. The hacker ethics of exploration, experimentation, and
+dissemination of knowledge can aid in Android's evolution just as they once
+helped shape the telephone itself.
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

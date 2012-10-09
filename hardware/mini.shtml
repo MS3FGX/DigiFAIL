@@ -1,0 +1,210 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - AIRcable Mini</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Bluetooth,AIRcable,AIRcable Mini,AIRcable SMD" />
+<meta name="description" content="AIRcable Mini hardware information and Linux startup guide." />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="center"><img src="/images/hardware/mini1.jpg" alt="AIRcable Mini" /></span>
+<h1>What is it?</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Probably not what you think, if you had some
+preconceived idea when you looked at that picture. The AIRcable Mini, despite
+what it might look like, is not a Bluetooth adapter for your computer's serial
+port (though AIRcable does make <a href="http://www.aircable.net/serial.html"
+target="_blank">such a device</a>). In fact, as I came to find out the hard
+way, you can't even directly connect it to a standard RS-232 port.
+<p>
+While the <a href="/hardware/hostxr.shtml">AIRcable Host XR</a> is just a super
+powered USB Bluetooth adapter, the Mini is one of AIRcable's "mote" devices.
+From the AIRcable documentation:
+<p>
+<h2>&nbsp; &nbsp; &nbsp; &nbsp;"AIRmotes are mesh network capable, autonomous,
+wireless devices with sensor interfaces that are programmable and configurable
+over air based on Bluetooth technology and are able to manage more than one
+connection at a time."</h2>
+<p>
+What all this means is that the Mini, once properly programmed, is a fully
+autonomous Bluetooth-enabled computer in the same form factor as a standard
+Bluetooth adapter. It requires absolutely no computer to function, only a
+steady source of power. Maybe it is because I have a deep love for all things
+Bluetooth, but I personally consider these devices one of the most incredible
+little pieces of hardware I have ever come across. The possibilities are nearly
+limitless. Forget the Arduino connected to an XBee, this device combines both a
+programmable controller with hardware I/O and an <i>industry standard</i>
+short-range wireless communication technology for less than half the price.
+<p>
+But to answer "What is it?" more literally, the AIRcable Mini is actually a
+breakout board for the <a href="http://www.aircable.net/smd.html" target="_blank">AIRcable SMD</a>. If you open up the case you will see an AIRcable SMD
+perched on top of the board, which houses the nice little touches like LEDs and
+associated circuitry.
+<p>
+<span class="center"><img src="/images/hardware/mini2.jpg" alt="Internal" title="Top and Bottom" /></span>
+<p>
+This makes prototyping much easier as the SMD is already on an easily handled
+and interfaced board, rather than having to hook it all up yourself. It also
+means any code you write for the Mini will be instantly portable to the SMD, as
+they are actually the same device.
+<h1>What can you do with it?</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;To take a realistic example, let's say you hooked
+the Mini up to a power source and put a pager motor on one of it's I/O pins.
+You could then write software which constantly scanned the area for devices in
+discoverable mode, and set off the pager motor when one was found. At the same
+time, it could log the time and name of the device to a text file and send that
+to your cell phone periodically so you could have a log of what devices you saw
+during the day. To take it even farther, the Mini could simultaneously be
+pulling data in from a Bluetooth GPS module, adding GPS coordinates to each
+device discovery. You could use this data to generate a Bluetooth heatmap for
+your campus, showing which areas had the highest concentration of discoverable
+devices.
+<p>
+Or maybe you have some project that requires logging the output of various
+sensors, perhaps you are trying to monitor a greenhouse from indoors. You could
+do this with an Arduino and a pair of XBees, or you could simply hook the Mini
+up to your sensors and a solar panel, and let it broadcast your data out to any
+PC, PDA, or phone that got within range; no additional hardware or software
+libraries required. You could even hook it up so the Mini receives commands
+over the Bluetooth link, to do things such as turning on a vent fan.
+<h1>I (don't) got the Power!</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;My biggest problem working with the Mini was getting
+the thing turned on... I suppose I just misunderstood how the device itself was
+designed to work, but the first thing I did was plug the Mini into my serial
+port and wait patiently for it to do something. No LED...no serial
+connection...no discoverable Bluetooth...huh?
+<p>
+I sent off an email to AIRcable's support division, and within 7 minutes I had
+a reply that said, basically <i>"You are doing it wrong, do you want me to
+process the return for this item? Because you clearly don't even know what it
+is."</i> He was actually quite a bit nicer than that, but it was clearly the
+idea he was going for. After explaining to me how to actually use this device,
+I learned that, despite having a serial connector, the Mini can't actually be
+connected to a PC. The RS-232 port is simply a widely-accessible industry
+standard connector, so they ran with it.
+<p>
+So the first step is getting the thing powered on. To do this you need to
+provide 5 to 15 volts DC to pin 9 (negative on pin 5) on the DB9 connector.
+The first thing that came to mind was simply wiring up a 9 volt battery to a
+spare serial connector I had laying around.
+<p>
+<span class="center"><img src="/images/hardware/mini3.jpg" alt="9V Connector" title="The easy way" /></span>
+<p>
+This certainly works, but is less than ideal. To reboot or power off the Mini
+you need to yank out the serial connector or the battery clip, and the whole
+thing felt pretty flimsy. Besides, I wanted a way to break out the RX and TX
+lines that are also in the connector. So I decided to build a more permanent
+breakout board that I could use while developing for this device.
+<h1>Breakout Board</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The goals for the breakout board were pretty
+simple. I wanted something that wouldn't fall apart while working with it,
+something that had a power switch so I could easily reboot the device, and some
+way of connecting up to the data lines provided in the serial connector. While
+a 9 volt battery could certainly provide the required power, I wanted something
+a little more trustworthy, so I also added a regulated power supply circuit
+into the mix. The board is still powered by a 9 volt battery, but at least now
+it is being stepped down to the proper voltage with filtered output. I quickly
+came up with something like this:
+<p>
+<span class="center"><img src="/images/hardware/mini4.png" alt="Diagram" title="The hard way" /></span>
+<p>
+This is a very simple circuit that uses an 7805 regulator to step the input
+voltage down to 5 volts, and some electrolytic capacitors to filter out any
+slight voltage spikes. The LED is added simply to verify the circuit is powered
+on, and the binding posts are used to connect external hardware to the RX/TX
+UART lines exposed on pins 2 and 3. I put the whole thing together on a bit of
+proto board and attached the appropriate serial connector to one end.
+<p>
+<span class="center"><img src="/images/hardware/mini5.jpg" alt="Final Product" title="Breakout board connected to Mini"></span>
+<h1>First Contact</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Regardless of how you actually get your Mini powered
+up, you should now have a green LED and a blinking blue LED lighting up under
+that stylish plastic case. All you need to do now is connect to it, which can
+be slightly tricky if you don't get the timing down right.
+<p>
+The first thing you need to do is establish an RFCOMM link with the Mini over
+SPP. The default PIN for the Mini (and all the AIRcable devices, I believe) is
+the standard 1234. The easiest thing is to simply set your outgoing PIN as 1234
+initially, you can setup a stronger PIN or a specific PIN for the Mini's MAC
+later on if you wish. Assuming your PIN is already setup, establishing a
+connection to the Mini will look something like this:
+<pre><code>bash:~# hcitool scan
+Scanning ...
+	00:50:C2:7F:XX:XX	AIRcable Mini
+bash:~# rfcomm bind rfcomm0 00:50:C2:7F:XX:XX
+</code></pre>
+Notice I did "bind", and not "connect". Bind establishes the connection and
+creates the rfcomm0 device node only when something requests it, whereas
+connect performs and interactive link that remains even if you aren't using it.
+Both would technically work, but I find getting the timing right is much easier
+with bind. AIRcable OS only enables the command line for about 5 seconds after
+a connection is detected, so if you use bind you can be sure that when you
+start your terminal emulator, you will have just created the SPP connection.
+<p>
+Now you need to setup minicom to work over the Bluetooth SPP link. You could
+use any terminal emulator, but minicom is pretty much the standard and I can
+confirm it works with the following settings, so we will go with that. Start
+minicom with the following command:
+<pre><code>bash:~# minicom -s aircable</code></pre>
+When you see the menus, go down to "Serial port setup", and configure the
+options there as follows:
+<p>
+<span class="center"><img src="/images/hardware/mini6.png" alt="Config" title="Minicom configuration" /></span>
+<p>
+Then select "Modem and dialing", and change the line "A - Init string" to "+++"
+(without quotes). What this does is replace minicom's default modem
+initialization string with the +++ used by the AIRcable OS to start it's
+terminal. Alternately, you could launch minicom with the "-o" parameter, which
+disables modem initialization. In this case, you would have to manually type
+"+++" every time you start the connection. Finally, select "Save setup as
+aircable", and once it shows you the configuration has been saved, select "Exit
+from Minicom".
+<p>
+If everything goes right, you should now have access to the AIRcable OS command
+line when the Mini boots. Restart your Mini, give it about 10 seconds to boot
+(wait until the blue LED starts to flash), and execute the command:
+<pre><code>bash:~# minicom aircable</code></pre>
+If you get an error about /dev/rfcomm0 not not existing, just wait a second and
+try again. Once minicom starts you should see +++ printed on the screen, hit
+Enter and you should see the AIRcable OS command line banner come up, which
+will show the software version your device is running. The AIRcable OS command
+line has a minimal help function which consists mainly of listing the commands
+available; for a better idea of what you can do, take a look at AIRcable's
+online <a href="http://docs.google.com/View?docid=ddwnvg4z_1fchxg3" target="_blank">command line reference manual</a>.
+<pre><code>+++                                                  
+                                                     
+AIRcable OS command line v0.9SPP                     
+Type h to see the list of commands                   
+AIRcable> l
+Command Line v0.9SPP
+Name: AIRcable Mini
+Pin: 1234
+Class: @0000 = 00C2 0104 0020 
+Baud Rate: 9600 bps
+Date: 20070917T160600Z
+BT Address: 0050C27FXXXX
+Name Filter: 
+Addr Filter: 
+Mode: Service - Slave
+Unpaired                                                                        
+AIRcable> 
+</code></pre>
+<h1>So now what do I do?</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;From the AIRcable OS command line you can do some
+neat things like set the device's PIN and friendly name, change name and MAC
+filters (to limit which devices the Mini will accept connections from), and
+even scan the local area for discoverable Bluetooth devices. You can even drop
+down into the shell and debug the running program, listing it line-by-line,
+displaying variables, and changing execution flow.
+<p>
+All that's missing now is some programs! You can start with AIRcable's <a href="http://code.google.com/p/aircable/wiki/Tutorial_Index" target="_blank">tutorial section</a>, or check out the <a href="/research/aircable.shtml">AIRcable OS Research</a> page.
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

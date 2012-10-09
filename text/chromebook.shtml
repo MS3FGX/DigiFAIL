@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - So...I bought a Chromebook</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Linux,Hacking,Google,ChromeOS,2600" />
+<meta name="description" content="Discovering the true value of the Chromebook, published in 2600." />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="right"><img src="/images/text/chromebook1.jpg" alt="2600 Cover" /></span>
+<h1>Foreword</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The following is <i>So...I bought a Chromebook</i>, as
+it appeared on page 18 of <i>2600</i> issue 29:1. This is the somewhat tail between
+the legs sequel to my mostly negative look at Chrome OS from
+<a href="/text/chromeos.shtml">issue 28:3</a>. I explain what happened that made me
+change my mind about Chrome OS and the Chromebook devices, and how Google may have
+succeeded in more ways than they realized with Chrome OS.
+<p>
+The original ASCII text file for this document can be found in the "Text" section
+of the <a href="/misc/downloads.shtml">Downloads</a> page.
+<h1>Introduction</h1>
+When writing, at least about technology, I try to obey a few simple rules I've
+setup for myself. First, be as neutral as possible and keep opinions out of the
+piece, and second, never use absolutes when dealing with developing technology.
+So I should have known I was setting myself up for failure when in 28:3 I
+wrote:
+<p>
+<i>"I cannot fathom an individual purchasing a Chrome OS computer for anything
+near the cost of a more traditional system."</i>
+<p>
+Well, here I am just 3 months after my somewhat negative article "Introduction
+to Chrome OS" went to print, and I'm about to pull the trigger on purchasing a
+new Acer Chromebook. How did I get here? What changed my mind? Funny story...
+<h1>A Holiday to Remember</h1>
+On December 21st, 2011 my home was broken into and essentially everything
+electronic was stolen. Being the good little digital warrior that I am, I had
+backups of pretty much everything, though there were a few notable exceptions.
+Due to an oversight on my part, I lost an article I was writing for 2600 that
+was about 90% complete (sorry folks).
+<p>
+Once I verified I had more or less all of my data safely backed up, and got one
+of my older machines ready to take on the role of my primary computer, it was
+time to consider what I should do about my stolen CR-48 Chromebook. Over the
+past year the CR-48 had become an increasingly useful item in our household, as
+my wife got very used to the ability to jump on the Chromebook while I was
+working on the primary computer (especially since "working" on the computer
+often meant it would not, in fact, be working for some time afterwards).
+<p>
+My first thought was to simply get a cheap netbook and install Linux on it, but
+as I looked online I was surprised to see that the entry price of netbooks had
+somewhat inflated since the last time I looked, to the point that I wasn't
+going to get a machine worth owning for anything less than $300. Then of course
+there was the anxiety about hardware support; would I be able to use all of
+the device's hardware without relying on proprietary binary blob drivers which
+may decide to stop functioning with a new kernel release? Then I would have to
+do the maintenance on it, making sure I kept the machine updated and hoping
+none of the upgrades go wrong...
+<p>
+It was right around here that I realized what the value of the Chromebook
+actually was. It wasn't that it allowed tighter integration with Google's
+services, or allowed me to keep all my information in the "cloud", it's real
+value was that it ran open source software, kept itself updated without asking,
+and it always worked.
+<h1>Linux for Grandmothers</h1>
+This realization about Chrome OS got a few other ideas going around in my head.
+For years, the Linux community has been waiting and hoping for the "Year of
+Desktop Linux", that magical day when the average consumer could walk into a
+Best Buy, purchase a Linux powered machine, then go home and actually know how
+to use it. Needless to say, we've never gotten there and honestly I didn't
+think the day was ever going to happen; until the Chromebook that is.
+<p>
+I get the sneaking suspicion that Google managed to deliver on the promise of
+a desktop Linux for the masses without even realizing it, and apparently,
+without anyone in the community noticing either. While the argument could be
+made (perhaps by Google themselves) that Chrome OS is anything but a desktop
+OS, there is no debating that it puts GNU/Linux into a package that nearly
+anyone can use. With a Chromebook, you can now use an open source operating
+system without actually knowing what an open source operating system is.
+<p>
+Technically it's not the first time this has happened, as you may recall that
+all the first generation netbooks shipped with various Linux distributions to
+help bring the end-user cost as low as possible (though later Microsoft
+developed an aggressive pricing scheme for XP and managed to remove the price
+advantage of going with Linux). It's not the first big break for desktop Linux,
+but it's unquestionably the best supported, as the coffers and advertising
+might Google brings to the table can be used to great effect to push a new
+product or service.
+<p>
+While I can now appreciate the value a Chromebook offers, especially since the
+price for the entry level Acer model is down to $300, I still don't necessarily
+agree that it's ready for primetime. It's admittedly an excellent device for
+rapidly accessing the Internet, as it's boot time and low overhead can get you
+online in literally seconds. Beyond that, even my Android tablet (well, before
+it was stolen at least) is still infinitely more capable.
+<h1>I'm not a Grandmother</h1>
+I would like to tell you that in the time since I wrote my last article to now,
+Chrome OS has made leaps and bounds in terms of functionality. But honestly, I
+can't think of a single major feature that has been added since then which
+impacts usability. Things haven't gotten worse, and there have been incremental
+touch ups and improvements throughout the OS, but nothing groundbreaking.
+<p>
+Accordingly, I still stand by more or less everything I said in 28:3; Chrome OS
+is at best a secondary operating system. There is still no way I could use a
+Chromebook as my primary machine, and if I didn't have a backup computer in
+place to take over for my stolen machine, I would have spent the $300 on a
+cheap laptop and dealt with flaky hardware and questionable software support. I
+would much rather suffer through some aggravation and end up with a proper
+computer that I could actually use for development and content creation.
+<p>
+That said, I do have to give credit where it's due, and mention that Google
+has still not made any attempt to block the installation of alternate operating
+systems on Chromebook hardware or impede the more technical user from
+installing native Linux programs and libraries. At this point, I suppose it's
+safe to assume that Google doesn't have a problem with the more advanced user
+modifying their Chromebook software a bit. Of course, as Google doesn't make
+any money on the hardware itself, I suppose they couldn't care less if you buy
+a Chromebook from Acer or Samsung and blow Chrome OS off of it; so long as you
+eventually use some of Google's services and let them make ad revenue off of
+you.
+<p>
+Motivation aside, the upshot of Google's indifference is that I'm still able
+to go into Developer Mode on a Chromebook and drop a few choice Linux programs
+into /home. This lets me have my few must-have tools while still keeping the
+machine usable to the rest of my household. While there are a few annoying
+hoops to jump through (like not being able to launch local software from the
+GUI itself), I find there's just enough capability there to keep me from
+formatting the thing and installing a different OS.
+<h1>Conclusion (Second Attempt)</h1>
+I ended "Introduction to Chrome OS" in 28:3 on a rather sour note, so I'm going
+to use this do-over Conclusion as a chance to clarify my thoughts on Chrome OS
+a bit.
+<p>
+Some of the things I took issue with at the beginning of the year have started
+to waver a bit, such as the conceptual limitations on what you can do from
+within the web browser. That is still mostly true, though Google has started
+experimenting with "Native Client", a way for web applications to run native
+code on the local machine (rather than having to use some interpreted language
+from within the web page). Native Client, when it becomes more developed,
+should allow for considerably more advanced web applications than what we're
+used to. There have already been a few demonstrations, such as a port of MAME
+that runs in the browser, that show what's possible once developers get
+onboard with it.
+<p>
+On the other hand, some of my gripes look like they are here to stay. For
+example, while the aesthetics of the Chrome Web Store have changed quite a
+bit, it's still riddled with glorified bookmarks. Even after a year, I have yet
+to see an "app" in the Web Store which really takes advantage of Chrome OS and
+presents something you couldn't do just as easily on any other system capable
+of running the Chrome browser.
+<p>
+With all that being said, I have to concede that a Chromebook does have it's
+place, and yes, you may even pay "near the cost of a more traditional system"
+for one.
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

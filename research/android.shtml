@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - Android</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Linux,Android,adb,Java,SDK" />
+<meta name="description" content="Information on setting up the Android development environment, modifying Android, and developing Android applications." />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="center"><img src="/images/research/android1.png" alt="Android Construction" title="Copyright Richard Racz"/></span>
+<h1>I, Robot</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Android is an open source mobile operating system
+initially released in October 2008 by Google. It is made up of a forked version
+of the Linux kernel and a Java framework designed for rapid application
+development. Android contains numerous Google-developed Java APIs and
+frameworks for interfacing with every component of the system, hardware and
+software. This allows developers to write device-agnostic code, letting Android
+sort out the mundane details of things like hardware interfacing. In other
+words, a developer writes one application using the well documented and
+supported APIs, and each individual device knows how to apply that code to it's
+specific hardware. In this way, only one version of the application is required
+to run on any device that supports Android, greatly simplifying development.
+<p>
+Android was designed from the ground up to be an "open" operating system. As
+such, it offers freedoms completely unheard of in the mobile device market. Any
+component of the Android OS can be replaced with a different program or module,
+allowing device manufacturers and end users to completely customize the way
+Android works. Google also had the foresight of allowing any Android device to
+operate as a development unit, with optional features such as USB debugging
+built right into every copy of the OS. This means that a developer doesn't have
+to buy an expensive development kit to get started working with Android, they
+simply need to download the free SDK from Google and enable development mode on
+their own personal device.
+<p>
+These features, among many others, has made Android one of the most popular
+mobile operating systems on the market in just a few years. It is not only
+exceptionally popular with the general public for it's capability, ease of use,
+and selection of compatible hardware, but is also extremely popular with all
+manner of hackers, modders, and technology enthusiasts. Being able to write code
+for your mobile device without limitations is a powerful proposition for many,
+myself included.
+<p>
+I got interested in Android right after it was initially released with the
+<a href="http://en.wikipedia.org/wiki/HTC_Dream" target="_blank">HTC Dream (G1)</a>,
+but had to wait until the release of the
+<a href="/hardware/droid.shtml">Motorola Droid</a> on Verizon Wireless before
+I could actually get my own device. As the Droid was running the much improved
+Android 2.x series, I missed a lot of the early stages of Android's growth, but
+did get on at the ground floor of Android's explosive popularity. This page
+will document information regarding how you can setup the Android development
+environment on your system, modify Android, and eventually even create your own
+Android applications from scratch. As I have absolutely zero experience with
+Java, this should prove to be quite a learning experience for me, so expect
+this page to start at the <i>very</i> beginning.
+<h1>Installing Android SDK</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The first step to working with Android is installing
+the free Android SDK from Google. This will give you the software environment
+required for building Android applications, as well as invaluable tools for
+working with Android devices. The Android SDK is available for Windows, Linux,
+and Mac OS, and the installation process is much that same on each operating
+system. I will detail the specific steps for Linux, but it should be obvious
+how to adapt this to whatever you are running.
+<p>
+To start, download the appropriate version of the Android SDK from the
+<a href="http://developer.android.com/sdk/index.html" target="_blank">Android Developers</a> site.
+You will then need to extract it to somewhere convenient on system. The
+following will download and extract the Android SDK to /opt:
+<pre><code>bash:~# cd /opt
+bash:/opt# wget http://dl.google.com/android/android-sdk_r06-linux_86.tgz
+Saving to: `android-sdk_r06-linux_86.tgz'
+100%[==========================================>] 16,971,139 2.29M/s in 7.1s
+bash:/opt# tar xf ./android-sdk_r06-linux_86.tgz</code></pre>
+This is enough to get the Android SDK installed in the most basic sense, and
+you could now navigate into it and use the individual tools. But it would be
+easier to add the Android SDK to your PATH variable. Adding the following line
+to your ~/.bash_profile file will allow you to use the Android SDK tools from
+anywhere on the system:
+<pre><code>PATH=$PATH:/opt/android-sdk-linux_86/tools</code></pre>
+With the Android SDK tools installed system-wide, you can now move on to
+exploring what they can do. Let's take a quick look at a few of the SDK tools
+and what you can do with them.
+<h1>Using adb</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Easily the most useful tool included in the Android
+SDK is adb, a program that lets you control and modify physical and emulated
+Android devices. With adb you can do things like install programs, add and
+remove files, capture log files, and open up a terminal on the device.
+<p>
+To begin, you need to start up the adb daemon and detect connected devices.
+The daemon will start itself if it isn't already running, so really you just
+need to run the following command:
+<pre><code>bash:~# adb devices
+* daemon not running. starting it now *
+* daemon started successfully *
+List of devices attached 
+040232611010B11F        device</code></pre>
+If you get the following line on your list of devices: "????????????    no permissions",
+then the daemon doesn't have permissions for the USB device. The best solution
+would be to adjust your UDEV configuration so the device node created for the
+device has appropriate permissions for your user, but the more immediate fix is
+to simply start the adb daemon with a higher permission level and simply interact
+with it from your normal user. Like so:
+<pre><code>bash:~# sudo adb start-server
+[sudo] password for tom:
+* daemon not running. starting it now *
+* daemon started successfully *
+bash:~# adb devices
+List of devices attached 
+040232611010B11F        device</code></pre>
+With the adb daemon running and your device connected, you are ready to start
+playing with the various adb functions. A quick run down of some of the
+more useful commands:
+<p>
+<b>adb shell</b><br>
+&nbsp; &nbsp; &nbsp; &nbsp;This starts an interactive shell on the device. The
+capabilities of the shell will depend on the software environment of the device
+itself. Realistically, this is the most useful on rooted phones with BusyBox,
+otherwise you won't have many commands to use. Alternately, you can give the
+remote device a command to run rather than starting an interactive shell by
+invoking "<b>adb shell <i>command</i></b>". Anyone who has used SSH will be
+familiar with how this works.
+<p>
+<b>adb install/uninstall <i>file/package</i></b><br>
+&nbsp; &nbsp; &nbsp; &nbsp;As you might expect, these commands will install or
+uninstall a package on the device. If using "install", the second argument will
+be the local file you want to install. If using "uninstall", the second
+argument will be the name of the package you want to remove.
+<p>
+<b>adb push <i>local remote</i></b><br>
+&nbsp; &nbsp; &nbsp; &nbsp;This option allows you to copy the <i>local</i> file
+to the location given by <i>remote</i> on the device's filesystem.
+<p>
+<b>adb pull <i>remote local</i></b><br>
+&nbsp; &nbsp; &nbsp; &nbsp;The opposite of the previous command, this allows
+you to copy the <i>remote</i> file from the device to the to the location given
+by <i>local</i> on the local filesystem.
+<p>
+<b>adb remount</b><br>
+&nbsp; &nbsp; &nbsp; &nbsp;This command remounts /system to be read/write, rather
+than the default read-only. Useful when modifying system applications or other
+root-only operations. It is advised to reboot after using this option so that
+the system will mount /system read-only again (for whatever reason, running
+"adb remount" a second time does not return /system to read-only status).
+<p>
+<b>adb logcat</b><br>
+&nbsp; &nbsp; &nbsp; &nbsp;Prints the running system log from the device in the
+local terminal. Absolutely invaluable for developing on real hardware, it allows
+you to see exactly what is happening in the OS as the program runs.
+<p>
+<b>adb reboot <i>bootloader/recovery</i></b><br>
+&nbsp; &nbsp; &nbsp; &nbsp;This will reboot the phone normally if not given any
+additional options, but more importantly will boot into the bootloader or
+recovery systems when given those options.
+<h1>Replacing system apps</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Like I mentioned earlier, one of the advantages of
+Android is that it is completely modular and you can change any part of the OS
+you want. Carriers do have a tendency to block this sort of thing on their
+phones though, so performing operations like these will require your phone
+being rooted. The method for gaining root access is different for every device
+(head to the <a href="/hardware/droid.shtml">Motorola Droid</a> page for
+instructions pertaining to that particular phone), so you will have to do some
+research and see what you will need to do to unlock your device.
+<p>
+If your device is rooted, you can use the adb shell to get a local root shell
+on the device, which will allow you to simply move existing applications out of
+the system directory and replace them with your own. Here is an example of
+replacing the default "Messaging" application with one saved to the SD card:
+<pre><code>bash:~# adb shell
+# mount -o remount,rw -t yaffs2 /dev/block/mtdblock4 /system
+# cp /system/app/Mms.apk /sdcard/Mms.apk.bak
+# cp /sdcard/Mms.apk /system/app/
+# mount -o remount,ro -t yaffs2 /dev/block/mtdblock4 /system
+# reboot
+bash:~#</code></pre>
+In the previous example we first connected to the device with "adb shell", once
+connected we remounted the /system partition to be read/write, backed up the
+old Mms.apk to SD, copied the new one into /system, remounted /system as
+read-only, and finally rebooted the device. Once it comes back up, you should
+see that at first glance nothing would have changed, but when selecting the
+"Messaging" icon, the new application will run in place of the old default.
+<p>
+Alternately, you can do much the same thing with just adb, never using the root
+shell on the device itself at all:
+<pre><code>bash:~# adb remount
+bash:~# adb pull /system/app/Mms.apk ./Mms.apk.bak
+bash:~# adb push ./Mms.apk /system/app/
+bash:~# adb reboot
+</code></pre>
+This is a little quicker and doesn't require the extra step of getting the new
+application on the SD card.
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

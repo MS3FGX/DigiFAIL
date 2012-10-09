@@ -1,0 +1,240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - GameFAQs Guides</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Nintendo,DS,Wii,WiFi,X-Files,Battlefield,SEGA,GameFAQs" />
+<meta name="description" content="Collection of various game guides written for GameFAQs.com" />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="center"><img src="/images/text/guides1.png" alt="GameFAQs Logo" /></span>
+<h1>GameFAQs Guides</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;When I was a younger man, I spent many an hour
+working on guides for which I dutifully submitted to
+<a href="http://www.gamefaqs.com" target="_blank">GameFAQs</a>. I wouldn't go
+so far as to say this time was wasted (after all, I have received untold
+numbers of emails thanking me for each of them), but I do feel that they are
+slightly out of my current realm of interest. Still, as I intended DigiFAIL
+to be a collection of all of my work I feel obligated to put them up, even if
+it is just for the sake of completion. They certainly don't need the exposure,
+as collectively these documents are mirrored on more sites than any of my other
+projects could ever hope to be.
+<p>
+Unfortunately, GameFAQs had (and may still have, I have not been on the site in
+a few years) a strict set of guidelines for all of their submissions; one of
+which being that no document could be over 80 characters wide. As such, all of
+my guides were written and formatted to exactly 80 columns. I experimented with
+expanding this a bit for the site, but it was simply too frightening a prospect
+to seriously consider.
+<p>
+As such, I will not put the actual text of each document on this page, but
+rather a small foreword for each. The full ASCII files for all of these guides
+are available in the "Text" section of the
+<a href="/misc/downloads.shtml">Downloads</a> page.
+<h1>DS Networking Guide</h1>
+<span class="right"><img src="/images/text/guides2.jpg" alt="Nintendo DS" /></span>
+&nbsp; &nbsp; &nbsp; &nbsp;The <i>"Nintendo DS Wireless Networking Guide"</i>,
+was my life from 2005 into 2008; it is a massive document that quickly got
+far, far, away from the scope of the original work. It started as a simple
+guide which would document the various WiFi settings and functions of the newly
+released Nintendo DS. However it quickly became an obsession, and I began
+branching out into completely new territory as I saw more and more people fail
+to grasp the ins and outs of wireless technology. I started documenting ways of
+sharing an Internet connection out from a desktop PC, which expanded to cover
+all three major operating systems. I then started documenting the different
+ways to secure a wireless network in relation to the DS. So on and so on.
+<p>
+The main reason I continued development for so long past the original goal was
+the tremendous amount of support I got from people who read the Guide and got
+some use out of it. I received hundreds of emails about the Guide, ranging from
+the expected requests for help to people suggesting I take up a career in
+writing technical documentation. I received assistance from a number of people
+as well, who were listed among the "Credits" or at least the "Version
+Information" ChangeLog.
+<p>
+All told, the <i>"Nintendo DS Wireless Networking Guide"</i> clocks in at
+36,988 words and has been downloaded over 100,000 times on GameFAQs alone (I
+have long since lost track of how many sites mirror it). But even with as large
+as it is, there could still be additions. For example the Guide does not cover
+the newer DSi system, which adds WPA support and vastly improved Internet
+connectivity functions. Though I think somebody else is going to have to handle
+that one...
+<h1>Wii Networking Guide</h1>
+<span class="right"><img src="/images/text/guides3.jpg" alt="Nintendo Wii" /></span>
+&nbsp; &nbsp; &nbsp; &nbsp;The <i>"Nintendo Wii Networking Guide"</i> is very
+similar to it's DS counterpart. So similar in fact that I was initially worried
+it would not get accepted due to about 80% of it being identical to the DS
+version. I will admit it, I only did it because submitters on GameFAQs were
+often judged by the disk space their contributions used, so by duplicating the
+already massive DS Guide, I could get myself some easy e-cred. Of course, the
+Wii Guide does cover things that the DS one doesn't, most notably the addition
+of Ethernet support and all of the things that entails (such as much easier
+ways of sharing an existing Internet connection with it).
+<p>
+The Wii was also a paradigm shift of sorts for Nintendo, as they began to
+seriously persue various forms of digital distribution on their home consoles.
+With the Wii, users could not only download their favorite classic games, but
+also get information like news and weather downloaded automatically into their
+consoles, they could even surf the web with the included Opera-based web
+browser. The up-side to all of this is that even more people wanted to get
+their Wii's online than they did their DS's, which comparatively had very
+little in the way of online functionality (until the DSi that is, but that's
+another story entirely).
+<p>
+The <i>"Nintendo Wii Networking Guide"</i> is a strong second in terms of
+overall popularity, which is simply because the
+<i>"Nintendo DS Wireless Networking Guide"</i> had a large head-start. Not bad
+for a copy-and-paste job, if I do say so myself.
+<h1>Battlefield Strategy</h1>
+<span class="right"><img src="/images/text/guides4.jpg" alt="Battlefield Cover" /></span>
+&nbsp; &nbsp; &nbsp; &nbsp;Anyone who knows me will tell you that one of the
+greatest passions in my life is playing Battlefield. I have logged hundreds of
+hours into every game in the series, starting with 1942 and continuing right on
+to the newest releases. There is just something about these games which works
+so well, even when I am doing bad in a match I still want to keep coming back
+for more.
+<p>
+<i>"Battlefield: Modern Combat"</i> was the first Battlefield game for home
+consoles, launching on the PS2 and Xbox (with a vastly superior Xbox 360 build
+coming a few years later, and yes, I have both versions), which was great for
+me since I hate PC games anyway. Out of all the games in the series, I would
+have to say that I spent the most with this one, simply because I could come
+home, boot the PS2, and get right into a helicopter. DirectX be damed.
+<p>
+After a few hundred hours logged, I started to see the maps as real
+battlefields, visualizing the movements of enemy combatants based on the
+geographical layout of the region and the outcomes of past engagements. Once I
+began to notice and react to these trends, my game got noticeably improved. I
+started telling my teammates about some of these patterns, and began giving
+them mission briefings before we started the match, predicting which points
+would be captured in which order, and which ones would be the most difficult to
+attack and defend at any given point in the battle. I even started to analyze
+the performance of the various vehicles in the game, and could identify the
+weak spots or shortcomings of a particular vehicle on it's approach, giving my
+squad the competitive edge in the engagement.
+<p>
+Eventually I decided to start documenting all of the things I noticed, and the
+result was the <i>"Battlefield: Modern Combat Online Strategy Guide"</i>. This
+document aimed to cover everything I learned about combat in this game, from
+the most likely sniper positions on each map to how to best deal with an enemy
+tank.
+<p>
+I say <i>aimed</i>, because I never finished it. After working on it for
+months, I eventually didn't have the energy to continue. I noticed that a lot
+of the strategies became repetitive, and the fact of the matter was that I got
+much more detailed than necessary on a lot of aspects. Me being obsessive? Who
+knew?
+<p>
+I did finish enough of the guide to publish it online, and as a matter of fact
+the version hosted here on DigiFAIL is a bit more complete than the versions
+floating around on other sites, so we can consider this one a bit of an
+exclusive.
+<h1>Tomcat Alley Guide</h1>
+<span class="right"><img src="/images/text/guides5.jpg" alt="Tomcat Alley Cover" /></span>
+&nbsp; &nbsp; &nbsp; &nbsp;You remember this game, don't you? Well? No, of
+course you don't. That is because very few people in the world gave this game
+enough attention to warrant remembering it any longer than absolutely
+necessary, and that includes it's developers (more on that in a second).
+<p>
+<i>"Tomcat Alley"</i> is a product of a very awkward phase in video game
+development. SEGA had just introduced their SEGA CD console, marking (sort of)
+a quantum leap in game technology. SEGA gave developers the relatively
+unlimited storage capacity of CDs and the processing power necessary to play
+full motion video. The problem was, not a whole else changed about the console,
+so basically you had the ability to play movies tacked on to a regular SEGA
+Genesis. Accordingly, that is what most SEGA CD games ended up being, and
+<i>"Tomcat Alley"</i> is a prime example of this long-dead game genre.
+<p>
+Essentially, <i>"Tomcat Alley"</i> is just a bunch of videos of F-14's zipping
+around the sky and with poor actors wincing their way through an equally
+underwhelming script. These video clips are played in different order depending
+on what you do during the brief times you are able to actually select something
+on the screen. For example, when engaging an enemy fighter you need to move
+your targeting reticle onto the plane flying around in the video. If you hit
+the plane, a clip of a jet exploding will play, otherwise a video of your
+missile missing and the enemy plane circling back around you will play. So
+technically you do control the game, but it is more like a chose your own
+adventure than an interactive air combat game; in fact you never even fly the
+plane, you just shoot the weapons (for which their can obviously be only two
+possible outcomes).
+<p>
+You may be wondering why anyone would possibly write a guide for a game that
+is essentially the same as hitting the chapter select on a DVD. That is an
+excellent question, and one which I don't really have an answer for. I figured
+I might as well document the order the missions progress in, and how many
+enemies you could expect to face at a certain waypoint.
+<p>
+However, there was at least one part of the game that needed legitimate
+documentation, the secret mission. One day I noticed on the back of the box
+that it advertised having 7 missions, while I had only ever done 6. I went
+online and tried to find some information about this hidden mission, but not
+surprisingly there was very little online in regards to this game, let alone
+any secrets it may hold. After searching for weeks I eventually tracked down
+the game's developers "The Code Monkeys", and sent them an email about it. A
+few weeks later they responded that nobody on the staff could remember much
+about it. Amazing.
+<p>
+So I put the guide up as it was with 6 missions, and made a note at the end
+about looking for information about the 7th mission. Within a few months I had
+received a few emails about it with hazy details, and then finally received
+the exact requirements for triggering the mission from somebody who managed to
+do it accidentally. I was then able to play through the mission and document
+what happens for anyone who manages to get there.
+<p>
+While I don't think anyone who grew up on the modern generation of game
+consoles could possibly enjoy <i>"Tomcat Alley"</i>, it will always hold a
+special place in my heart. I remember the first time I put the disc in and saw
+real live actors on the screen, I was simply blown away. Keep in mind that the
+game console I was playing on before I got the SEGA CD was an Atari 2600, so
+the jump was a bit of a shock to say the least. I do occasionally wonder if we
+will ever see such a huge leap in interactive entertainment in the future as
+we did in the early days, and if so, will our current games eventually be as
+ridiculous to us then as <i>"Tomcat Alley"</i> is now? Yeah, probably not.
+<h1>The X-Files Game Guide</h1>
+<span class="right"><img src="/images/text/guides6.jpg" alt="X-Files Cover" /></span>
+&nbsp; &nbsp; &nbsp; &nbsp;If <i>"Tomcat Alley"</i> represents everything that
+was wrong with the FMV point-and-click genre, then <i>"The X-Files Game"</i>
+could easily be considered it's antithesis. This game is one of the last major
+entries into the genre before it sulked away into a niche, and it is
+interesting to see just how far the technology had come; only to get utterly
+squashed by the 3D powerhouses that would soon end the need for live actors in
+video games.
+<p>
+<i>"The X-Files Game"</i> is essentially an interactive episode of the show. In
+fact, it even has an episode number and was written by the shows writers. While
+it isn't in the X-Files mythology (I.E. nothing of importance to the overall
+timeline or story occurs), it is still recognized as part of the series. If
+that isn't enough of an incentive for fans of the series to play this game,
+then I don't know what is.
+<p>
+Oh yeah, maybe it is because you don't play as either Agents Mulder or Scully,
+and even when those characters do show up it is only for a few brief scenes.
+Still, all of the principle actors from the series are here, and they give an
+excellent performance that wouldn't be out of place in a regular episode.
+<p>
+The game itself I found very entertaining, both from the standpoint of the
+story and how well it was all presented. Everything from the opening title
+sequence to the font used in the credits (which roll by even as you are playing
+the game, just like in the beginning of the show) is exactly the same as in the
+series. If you are a fan of the <i>"X-Files"</i>, you are going to want to play
+this game. Even the box is worth the purchase price, are you seeing how cool
+that thing looks?
+<p>
+While the game was released for both the PC and PlayStation, my guide only
+covers the PC version. I understand that the PlayStation version is missing
+some content, and that the video quality is considerably reduced. The PC
+version is a massive 7 discs (only 4 on PlayStation, that should tell you
+something), and runs relatively well on modern computers. I wrote the guide
+using WINE on Linux, but I included information on how to get it running under
+recent releases of OS X and Windows as well.
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

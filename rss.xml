@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<rss version="2.0">
+<channel>
+<title>DigiFAIL Updates</title>
+<link>http://www.digifail.com</link>
+<description>Latest updates to DigiFAIL.com</description>
+<language>en-us</language>
+<managingEditor>MS3FGX@gmail.com (Tom Nardi)</managingEditor>
+<image>
+<title>DigiFAIL Updates</title>
+<link>http://www.digifail.com</link>
+<url>http://www.digifail.com/images/site/logo.png</url>
+</image>
+
+<item>
+<title>Hackers In Space</title>
+<link>http://www.digifail.com/text/spacehackers.shtml</link>
+<description>2600 article on hacker run satellite network.</description>
+<pubDate>Mon, 8 Oct 2012 21:00:00 EDT</pubDate>
+</item>
+
+<item>
+<title>Bluetooth Crib Speaker</title>
+<link>http://www.digifail.com/fails/btcrib.shtml</link>
+<description>Bluetooth speaker for my daughter's crib, but not.</description>
+<pubDate>Mon, 8 Oct 2012 21:00:00 EDT</pubDate>
+</item>
+
+<item>
+<title>PWN SDR Added</title>
+<link>http://www.digifail.com/projects/pwnsdr.shtml</link>
+<description>Project to use Pwn Plug as remote RTL-SDR station.</description>
+<pubDate>Sun, 8 Jul 2012 21:37:00 EDT</pubDate>
+</item>
+
+<item>
+<title>Bluetooth Hunting Guide page added</title>
+<link>http://www.digifail.com/text/bthunting.shtml</link>
+<description>Paged added for latest 2600 article "Bluetooth Hunters Guide"</description>
+<pubDate>Sun, 8 Jul 2012 21:37:00 EDT</pubDate>
+</item>
+
+<item>
+<title>Bluelog 1.0.4 Released</title>
+<link>http://www.digifail.com/software/bluelog.shtml</link>
+<description>Bluelog now updated to 1.0.4.</description>
+<pubDate>Mon, 18 June 2012 12:00:00 EDT</pubDate>
+</item>
+
+<item>
+<title>Bluelog 1.0.3 Released</title>
+<link>http://www.digifail.com/software/bluelog.shtml</link>
+<description>Bluelog now updated to 1.0.3.</description>
+<pubDate>Mon, 14 May 2012 12:00:00 EDT</pubDate>
+</item>
+
+<item>
+<title>So I bought a Chromebook page added</title>
+<link>http://www.digifail.com/text/chromebook.shtml</link>
+<description>Page added for latest 2600 article "So...I bought a Chromebook".</description>
+<pubDate>Fri, 06 Apr 2012 18:28:00 EDT</pubDate>
+</item>
+
+<item>
+<title>Bluelog 1.0.1 released</title>
+<link>http://www.digifail.com/software/bluelog.shtml</link>
+<description>Minor update to 1.0.1 to address Linux 3.0.x bug.</description>
+<pubDate>Tue, 31 Jan 2012 12:51:00 EST</pubDate>
+</item>
+
+<item>
+<title>Bluelog 1.0.0 released</title>
+<link>http://www.digifail.com/software/bluelog.shtml</link>
+<description>After nearly 2 years in development, Bluelog 1.0.0 is ready.</description>
+<pubDate>Mon, 19 Dec 2011 14:00:00 EST</pubDate>
+</item>
+
+<item>
+<title>Introduction to Chrome OS page added</title>
+<link>http://www.digifail.com/text/chromeos.shtml</link>
+<description>Added page for recent 2600 article "Introduction to Chrome OS"</description>
+<pubDate>Wen, 12 Oct 2011 16:40:00 EST</pubDate>
+</item>
+
+<item>
+<title>Mobile Hacking with Android page added</title>
+<link>http://www.digifail.com/text/droidhacking.shtml</link>
+<description>Added page for recent 2600 article "Mobile Hacking with Android"</description>
+<pubDate>Sat, 09 Jul 2011 07:05:00 EST</pubDate>
+</item>
+
+<item>
+<title>Bluelog page updated</title>
+<link>http://www.digifail.com/software/bluelog.shtml</link>
+<description>Minor update to Bluelog page. Can now view associated tagged blog posts.</description>
+<pubDate>Sun, 15 May 2011 11:44:00 EST</pubDate>
+</item>
+
+<item>
+<title>Operation Street Sweep page added</title>
+<link>http://www.digifail.com/research/streetsweep.shtml</link>
+<description>Added page for "Operation Street Sweep", a long term Bluetooth scan project.</description>
+<pubDate>Fri, 13 May 2011 22:12:07 EST</pubDate>
+</item>
+
+<item>
+<title>Android Apps page updated</title>
+<link>http://www.digifail.com/software/droidapps.shtml</link>
+<description>Updated Android Apps page with links to Android Market webstore.</description>
+<pubDate>Sat, 02 Feb 2011 21:08:00 EST</pubDate>
+</item>
+
+<item>
+<title>Google CR-48 page added</title>
+<link>http://www.digifail.com/hardware/cr48.shtml</link>
+<description>Added a page for the Google CR-48. General hardware and usability info.</description>
+<pubDate>Mon, 27 Dec 2010 22:11:00 EST</pubDate>
+</item>
+
+<item>
+<title>Chrome OS page updated</title>
+<link>http://www.digifail.com/research/chrome.shtml</link>
+<description>Chrome OS page updated with X over SSH info.</description>
+<pubDate>Tue, 21 Dec 2010 21:22:00 EST</pubDate>
+</item>
+
+</channel>
+</rss>

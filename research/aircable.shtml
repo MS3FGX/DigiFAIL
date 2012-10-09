@@ -1,0 +1,353 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - AIRcable OS Research</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Bluetooth,BASIC,AIRcable, AIRcable OS" />
+<meta name="description" content="AIRcable OS Research and Development. Programming information and example BASIC programs." />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="center"><img src="/images/research/aircable1.png" alt="AIRcable Logo" /></span>
+<h1>What is AIRcable OS?</h1>
+<span class="right"><img src="/images/research/aircable2.png" alt="AIRcable Diagram" title="Copyright AIRcable" /></span>
+&nbsp; &nbsp; &nbsp; &nbsp;AIRcable OS is the operating system and programming
+environment that runs on AIRcable's line of programmable Bluetooth devices
+known as "motes", or "mesh nodes". In the words of AIRcable themselves:
+<p>
+<h2>&nbsp; &nbsp; &nbsp; &nbsp;"Revolutionary in design and function, the
+AIRcable OS products unite three cutting-edge technologies -- programmable,
+autonomous mesh nodes (motes), with data loggers and industry-standard
+Bluetooth® 2.0 compatibility.
+<p>
+Based on our AIRcable operating system, these versatile devices gather data
+using intelligent sensors, run computations, transfer files, and communicate
+using Bluetooth technology. These units can be clustered together to create a
+low-power, highly flexible mesh communications network that can interact with
+other nodes and with other Bluetooth compatible devices such as PCs, cell
+phones, laptops, and handhelds."</h2>
+<p>
+Basically, AIRcable OS devices are tiny embedded computers (complete with
+read/write filesystem) coupled to a Bluetooth radio. You write a program for
+the device to run in BASIC, which is uploaded into it's filesystem over OBEX
+FTP. The BASIC software controls everything from the Bluetooth radio, to
+sensors that you can attach to the various I/O pins connected to the processor.
+Even though you are limited to BASIC, the AIRcable OS implementation is
+considerably more powerful than you might expect, supporting basic forms of
+multi-tasking, with rudimentary hardware and software interrupts. For example,
+there are interrupts that trigger when a client connects to the device or if a
+new Bluetooth device has been discovered. Your software can use these
+interrupts to stop what it is doing and immediately process a new set of
+instructions relative to that particular event.
+<p>
+Perhaps best of all, AIRcable OS wraps up all the complicated bits like
+transferring files over OBEX and pairing with other devices into simple to use
+BASIC commands. AIRcable OS does all the hard work of actually interfacing with
+the Bluetooth stack, leaving the programmer with a much simpler task. You don't
+have to know <i>how</i> the AIRcable device scans for discoverable devices, all
+you need to do is run "inquiry", and the discovered device's name and MAC pops
+up in a global variable ready for your program to process.
+<p>
+While a lot of people might be groaning at the thought of returning to BASIC
+after being spoiled by powerful languages like C/C++, using BASIC does have
+it's advantages. AIRcable has done a good job packing their OS with enough
+built-in functions to get almost any application rolling in a relatively short
+amount of time, so you don't need to hunt around for any additional libraries
+like you do on other embedded platforms.
+<p>
+You don't need any sort of compiler or cross-compiling development environment
+to get working with AIRcable OS, any basic text editor will work just fine. In
+fact, you can write software and program an AIRcable device from most modern
+cell phones. All you need is a basic text-editor application and support for
+OBEX FTP. In a pinch I have used my Android phone to pull down the current
+BASIC file from a running AIRcable, edit it, and push it back.
+<p>
+All in all, considering the type of work the AIRcable devices are expected to
+be doing, the programming environment is robust enough to get the job done
+while still being simple enough for even a person without much programming
+knowledge to understand.
+<h1>AIRcable BASIC Structure</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;I sometimes forget that not everyone started
+programming back when BASIC was about as advanced a programing language as the
+home user could expect to ever see like I did. I still have fond memories
+of getting my Apple II to conditionally flash lines of text for the first time.
+Today, a lot of people might not even know what a BASIC program looks like, let
+alone the little nuances that I would take for granted. Of course it doesn't
+help that BASIC is specifically avoided in most beginning programming courses,
+as it teaches some admittedly dangerous concepts that you need to be careful
+of. So with that in mind, let's take a step back and look at some
+basic...BASIC.
+<p>
+<span class="center"><img src="/images/research/aircable3.png" alt="Code example" title="Example BASIC code" /></span>
+<p>
+The first thing you need to understand is that every line in the program has
+to have a line number proceeding it. You will want to be careful when you first
+start writing BASIC programs, as the logical thing to do is simply to number
+each line in sequential order. That is fine, until you realize that you need to
+add in an additional function between lines 6 and 7...of a 200 line program. It
+is therefore extremely important, especially when you are just learning the
+programming language and syntax, to number lines <i>at least</i> by 5's, and
+ideally by 10's. So now you have the capability of adding 4 - 9 additional
+lines between each of the original lines if the need arises, and it almost
+certainly will. The only reserved line number is zero, which is used for
+comments in the code. These comment lines will be ignored by the AIRcable
+device, but are extremely useful for documenting the code and helping yourself
+remember why you did certain things or how some function is supposed to work.
+<p>
+After the line number, the actual code begins. If you are looking at AIRcable's
+example programs, you will probably notice that almost all lines start with
+something like "A =", the function of which might not be immediately obvious.
+What that part does it save the output of the following command to the variable
+A. Not that "A" has any specific importance, it could be any variable you wish.
+What this allows you to do is examine the contents of "A" after a line has been
+executed to see what was returned. In the following example, we see how the
+return variable from "exist" is evaluated. If "exist" returns anything other
+than a "0" (meaning the file exists), the program branches execution to another
+line.
+<p>
+<span class="center"><img src="/images/research/aircable4.png" alt="Return example" title="Using a return variable" /></span>
+<p>
+Return variables are the only way to use commands like "exist", as they have to
+return some information to the program. We don't have the luxury of a screen to
+dump output to, or a standardized system for return values, so we need to
+capture them as they happen. But even for commands that don't necessarily need
+to return data to function, return variables can be useful in debugging. The
+AIRcable OS's shell allows you to check the current contents of any variable as
+the program is running, which can be very helpful when trying to track down
+that one command that doesn't seem to be working the way you expected.
+<p>
+Finally, the last part of the line (shown as red in the examples) is the
+argument to the command. In the first example you can see we have executed the
+"slave" command with the argument of 5, which means the AIRcable device will
+wait for an incoming connection for 5 seconds. Almost all commands have at
+least one argument, so make sure you check the AIRcable documentation to see
+what the appropriate argument is for each command. Without the correct
+argument, the code isn't going to work and you might not realize at first what
+the problem is.
+<h1>Limitations</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;AIRcable OS has a number of limitations imposed on
+the complexity of the code you can write, which you are going to want to get
+familiar with before you go any farther. In this image from AIRcable's
+documentation, we can see the vital statistics of the programming environment. 
+<p>
+<span class="center"><img src="/images/research/aircable5.png" alt="Limitations" title="Copyright AIRcable" /></span>
+<p>
+As you can see, you are limited to a maximum number of 2047 lines. This is not
+that big of a deal in terms of raw source code, but keep in mind that in some
+cases you might want to store data in the program as individual lines. It is
+much easier and faster to load lists of information from inside the program
+itself than from an external file, so it could be that your code plus data goes
+over the 2047 line limit. Take note of that 32 character line length limit as
+well, complicated expressions could go over if you are not careful.
+<p>
+The variables are probably what most people are going to be concerned with. You
+are limited to 25 total variables, the letters A through Y. There are no
+variable names, you just have to use the available letters. 25 individual
+variables isn't too bad for most applications, but the fact that you can't name
+them is going to be a painful change of pace for many programmers. You need to
+make sure you are commenting your code carefully so you can remember what does
+what. The variable length limitation can be tricky as well. For example,
+parsing NMEA sentences from GPS devices needs some special handling.
+<p>
+Perhaps the biggest limitation under AIRcable OS is speed. AIRcable devices
+execute code at an average speed of 10 lines per second (maximum is 250 lines
+per second). It is hard to put into words how slow this really is compared to
+even a very old x86 computer, but let's just say that things you expect to be
+instantaneous on modern hardware could very easily grind AIRcable OS to all but
+a complete halt. I've found out the hard way, I wrote a program that had a
+buggy subroutine which was executing constantly. The hardware was so bogged
+down I had trouble getting the OBEX FTP service to even respond when I tried
+to send a fixed version.
+<h1>Tips and Tricks</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;While most of the this is pretty straight forward
+for anyone with any BASIC experience, there are a few AIRcable OS specific
+concepts I would like to point out.
+<p>
+First is the immensely useful debug function. If you put the line "Z = 1" in
+your program's @INIT routine, AIRcable OS will output every line of your
+program to the UART upon execution. This is invaluable when trying to figure
+out why your program isn't behaving quite as you intended it to. The debug mode
+even shows the line numbers, so you will always know exactly where the program
+is at any given time.
+<p>
+You will probably notice that all programs have an @ERASE routine at the very
+beginning. This is very important, and you need to remember to include it when
+you are writing your code. What this does is clear out the old program code
+before loading your new code into memory. If you don't have this line, your new
+and old code can get jumbled together, which is almost certainly not going to
+go well.
+<p>
+While AIRcable OS is pretty limiting with your variables, it <i>does</i> let
+you do some interesting things with your strings. Under AIRcable OS, strings
+(other than the $0 system string) are actually lines of code in your program;
+any changes you make to these strings are written immediately into system
+memory, which essentially means you can create software that dynamically
+rewrites itself on the fly. Your code can "evolve" in real-time without
+rebooting the AIRcable device, which could have some interesting applications
+in mesh networking.
+<p>
+On the other hand, this also means you always need to allocate enough lines in
+your program to store any data you might collect during execution. If you are
+logging something to strings starting at line 350, you need to make sure you
+don't accidentally write your program too large and cross over into the data
+area. Otherwise, your code would start getting deleted as soon as data began
+getting logged (and would surely crash soon after).
+<p>
+Finally, a little note which took me awhile to figure out myself. To enable
+reading and writing of the AIRcable device's internal filesystem to your
+program, you need to modify the "security" line in your config.txt file to
+read: "@0006 = 0000 0000 0000 0000". This turns off all of the filesystem
+safeguards, which seems like it would be unsafe, but this is the method that
+AIRcable support advises.
+<h1>Uploading Code</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Assuming you have come to terms with using BASIC and
+the AIRcable OS-specific peculiarities that entails, it's time to get code
+uploaded into your device.
+<p>
+AIRcable devices have internal storage that can hold up to 4 files, two of
+which are required by AIRcable OS to function. One is "AIRcable.bas", which is
+the program the firmware will load when it boots, the other is "config.txt",
+which is a plain text configuration file that holds various system parameters
+such as PIN and device name. AIRcable OS will load <i>only</i> "AIRcable.bas",
+so you need to make sure your filename is correct. It is possible to load a
+second .bas file from inside of "AIRcable.bas", but we will get into that
+later.
+<p>
+Files are uploaded into the AIRcable device via OBEX FTP. You can configure a
+few parameters for the OBEX FTP service from the command line, but by default
+FTP will be running for 2 minutes after each boot. All you need to do is power
+up your device, and run a few commands like:
+<pre><code>bash:~# hcitool scan
+Scanning ...
+	00:50:C2:7F:XX:XX	AIRcable Mini
+bash:~# obexftp -b 00:50:C2:7F:XX:XX -p ./AIRcable.bas
+Browsing 00:50:C2:7F:XX:XX ...
+Connecting...done
+Sending "./AIRcable.bas"...\done
+Disconnecting...done
+</code></pre>
+Uploading code is pretty slow, and the transfer may appear to stop early on due
+to the AIRcable device erasing it's flash storage to load the new code. Just
+let it run, a large program can take up to 30 seconds to transfer completely.
+<h1>AIRscanner</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;As an example, here is a program I wrote that allows
+you to use your AIRcable device to scan for discoverable Bluetooth devices and
+log them to a file autonomously. This program makes a good example as it shows
+a large array of AIRcable OS functions, from reading and writing files to
+conditional statements. I tried to be as descriptive as possible in the
+comments, so it shouldn't be too hard to follow along.
+<p>
+To use this code, simply upload it to your AIRcable OS device as described in
+the previous section. Once your device reboots, it will immediately begin
+scanning the area for discoverable devices and log them to the file
+"found.log". Entries will be written until the file reaches 1000 bytes in size,
+to prevent filling the device's storage. However, I am still a little unclear
+as to how much space is actually available on the AIRcable devices, so it is
+possible this value could be raised considerably.
+<p>
+A single blink on the LED signifies the program has detected a discoverable
+device, and a double blink immediately afterwards means it is a new device and
+has logged it to the file. Scanning is a bit slow, and the storage space is
+limited, but this gives you an idea of the sort of things that are possible.
+<pre><code>@ERASE
+
+0 REM AIRscanner Version 1.0
+0 REM Simple Bluetooth scanner written for AIRcable OS
+
+@INIT 5
+0 REM Set LED on
+6 A = pioset 20
+0 REM Baud rate for serial line
+7 A = baud 96
+0 REM Start of result table
+8 L = 900
+0 REM Result Index
+9 M = 0
+0 REM Debug toggle
+10 Z = 0
+11 RETURN
+
+@IDLE 15
+0 REM Booted OK, turn off LED
+15 A = pioclr 20
+0 REM Delete old log, should only be done once
+16 A = delete "found.log"
+17 ALARM 1
+18 RETURN
+
+@ALARM 20
+0 REM Use ALARM to keep INQUIRY running forever
+20 A = inquiry 10
+21 ALARM 1
+22 RETURN
+
+@INQUIRY 25
+0 REM Single LED blink to show device found
+25 A = pioset 20;
+26 A = pioclr 20
+0 REM Compare result to current table
+27 GOSUB 50
+0 REM Check table size
+28 GOSUB 100
+29 RETURN
+
+0 REM Search result table
+50 FOR C = 0 TO M;
+0 REM If $0 matches string in table, go to RETURN
+51 B = strcmp $(L+C);
+52 IF B = 0 THEN 55;
+53 NEXT C
+0 REM If we get here, then there was no match, so write to table
+54 GOSUB 60
+55 RETURN
+
+0 REM Write current hash value to table
+60 $(L+M) = $0
+0 REM Increment table index
+61 M = M + 1
+0 REM Double flash to indicate new result
+62 A = pioset 20;
+63 A = pioclr 20
+64 A = pioset 20;
+65 A = pioclr 20
+66 GOSUB 110
+67 RETURN
+
+0 REM Check size of table, every 100 devices it will start back from 0.
+100 IF M > 100 THEN 102
+0 REM If under 100, do nothing
+101 RETURN
+0 REM Getting a little big, let's reset
+102 M = 0
+103 RETURN
+
+0 REM File handling code
+110 A = exist "found.log"
+111 IF A <> 0 THEN 114
+112 F = open "found.log"
+113 GOTO 115
+0 REM File exists, so we start at end
+114 F = append "found.log"
+0 REM Add newline
+115 PRINTV "\n"
+0 REM Find bytes length, write to file, then close
+116 B = strlen $0
+0 REM Before we write, check the file size
+117 Q = size
+0 REM If file is too large, we just have to let the results go :(
+118 IF Q > 1000 THEN 120
+0 REM File size is OK, write the data then close the file
+119 F = write B
+120 F = close
+121 RETURN
+</code></pre>
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

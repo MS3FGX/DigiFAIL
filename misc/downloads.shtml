@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - Downloads</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Linux,software,Hacking,Bluetooth,2600,GameFAQs" />
+<script type="text/javascript">
+function updateObjectIframe(which)
+{
+	document.getElementById('filelist').innerHTML = '<'+'object id="pkgs" type="text/html" data="'+which.href+'"><\/object>';
+}
+</script>
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="center"><img src="/images/misc/downloads.jpg" alt="Downloads" /></span>
+<ul id="filetabs">
+<li><a href="/var/bluelog.html" onclick="updateObjectIframe(this); return false;">Bluelog</a></li>
+<li><a href="/var/bt_rng.html" onclick="updateObjectIframe(this); return false;">bt_rng</a></li>
+<li><a href="/var/pwn_sdr.html" onclick="updateObjectIframe(this); return false;">pwn_sdr</a></li>
+<li><a href="/var/scripts.html" onclick="updateObjectIframe(this); return false;">Scripts</a></li>
+<li><a href="/var/spectra.html" onclick="updateObjectIframe(this); return false;">Spectra</a></li>
+<li><a href="/var/text.html" onclick="updateObjectIframe(this); return false;">Text</a></li>
+</ul>
+<!-- Fix for Internet Explorer --!>
+<br style="clear: left;" />
+<div id="filelist">
+<!-- Default data to load --!>
+<object id="pkgs" type="text/html" data="/var/bluelog.html"></object>
+</div>
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

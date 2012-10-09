@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta name="google-site-verification" content="IONC8C8stZMEHUa6VITVTO5huDZxoO7JYgltSMruWZs" />	
+<title>DigiFAIL.com - Info</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Linux,Slackware,Hacking,Bluetooth,WiFi,Bash" />
+<meta name="description" content="DigiFAIL.com: The personal site of Tom Nardi, better known on the Internet as MS3FGX." />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<h1>QOTD</h1>
+<pre><code><!--#exec cmd="/usr/games/fortune /opt/fortune" --></code></pre>
+<h1>About DigiFAIL.com</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Welcome to DigiFAIL, the personal site of Tom Nardi,
+better known on the Internet as MS3FGX. This site is a collection of things I
+thought there was a chance people might find interesting. Be it Bash scripts,
+guides, information on hardware I have, projects I am working on, or even the
+projects that have miserably failed.
+<p>
+Which brings us to the name of the site itself. DigiFAIL stands for <i>Digital
+Failure</i>, which I believe is a fairly good description for many (but,
+thankfully, not all) of the things I work on. Not that the concept or execution
+of these projects are necessarily flawed, but rather I have a tendency to take
+on too many projects at once and by the time I get back to something, the idea
+is often not quite as appealing as I once thought it was. It is this charming
+character trait that lead me to create DigiFAIL and document the things I am
+working on, in hopes that the information I have collected and work I have done
+even on partially completed projects will serve somebody out there on the
+Internet. It may be that something I got bored with is exactly the starting
+point that another intrepid hacker has been looking for. That's the idea,
+anyway...
+<p>
+If you have any thoughts, comments, or questions about this site or the
+information and projects it contains, please don't hesitate to
+<a href="/misc/contact.html" onClick="window.open('/misc/contact.html','Contact','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,width=500,height=640,left=50,top=50'); return false;">contact me</a>.
+I always like to hear from people who have found my work online, and may have
+even gotten some use out of it.
+<h1>General Information</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;This site was written 100% by hand in a combination
+of <a href="http://www.vim.org/" target="_blank">vim</a> and (when things got
+really wild) <a href="http://www.geany.org/" target="_blank">Geany</a>. When I
+decided to make this site I had absolutely no knowledge of HTML or CSS, and in
+about 3 weeks I had created more or less the site you are viewing now. I mainly
+did this by throwing a bunch of bits and pieces together and experimenting with
+it until I broke something. As far as I know the site works properly on current
+versions of Firefox, Opera, Chrome, and Internet Explorer. If you have problems,
+and especially if you know how to fix them, please let me know.
+<p>
+All source code that appears on this site (such as it is) is licensed under
+GPLv2 unless otherwise noted.
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

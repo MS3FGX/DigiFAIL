@@ -1,0 +1,385 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - Motorola Droid</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Android,root,Motorola,Droid,RSD,SPRecovery" />
+<meta name="description" content="General information about the Motorola Droid and installing custom ROMs." />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="right"><img src="/images/hardware/droid1.png" alt="Droid" /></span>
+<h1>Hardware Specifications</h1>
+<b>
+&nbsp; &nbsp; &nbsp; &nbsp;CPU: 550 MHz TI OMAP 3430
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;GPU: PowerVR SGX 530
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;DSP: 430MHz TMS320 C64x 
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;RAM: 256 MB
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;ROM: 512 MB
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;OS: Android 2.x
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Storage: 512 MB onboard, removable microSD
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Display: 854 x 480 TFT LCD (16:9)
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Battery: 1400 mAh Lithium-ion polymer
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Dimensions: 115.8 mm x 60 mm x 13.7 mm
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Weight: 169 g
+</b>
+<h1>Droid Does</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The Motorola Droid, released on November 6th, 2009
+is arguably one of the most important pieces of consumer electronics ever released.
+It marked the transition of Google's Android mobile operating system into it's second
+generation (greatly improving upon the already impressive 1.x series), it was the first
+Android phone on the US's largest mobile carrier Verizon Wireless, and singlehandedly
+brought Motorola's mobile phone division back from the brink of extinction. On release,
+the Droid was so incredibly popular that many analysts believe this single phone (backed
+by the unprecedented "Droid Does" advertising campaign by Verizon) kicked off Android's
+explosive growth in 2010.
+<p>
+Not to say the device is perfect. There were some complaints about it's keyboard being
+less responsive and harder to use than it should have been, and the phone's hard and
+almost military look combined with the admittedly odd choice of gold accents was not
+as universally acceptable as the smooth and neutral design of the iPhone. Still, the
+Droid showed the world what a high-end Android phone could do, and the market
+responded.
+<p>
+It's no wonder than that, aside from being exceptionally popular with the general
+public, the Droid garnered a considerable following in the hacking and modification
+scene. Leveraging the open nature of Android with the Droid's considerable power,
+it wasn't long until unofficial builds of Android were made available for the device,
+adding new features along the way like WiFi tethering and overclocking.
+<p>
+This page serves as a small tribute to an incredible piece of technology, and a collection
+of information I have gathered while modifying my own Droid.
+<h1>SPRecovery</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The easiest and quickest way to get into rooting
+your Droid and installing custom ROMs is to use SPRecovery, which is a
+replacement for the default Droid bootloader. It adds a number of new options
+such as being able to create and restore system backups, read system partitions
+over USB, and most importantly, install unofficial system images. By using
+SPRecovery you will not only be able to safely install custom ROMs, but fix
+your phone in the event that something goes wrong.
+<p>
+I haven't found an official homepage for SPRecovery with a proper download, so
+until then I am going to host the copy of the file I used here on the site.
+Before continuing on, download the following file and hold onto it until you
+need it:
+<a href="ftp://ftp.digifail.com/downloads/software/android/A855/SPRecovery_ESE81.sbf">SPRecovery_ESE81.sbf</a>.
+<p>
+In the following sections, I will cover how to install SPRecovery under both
+Windows and Linux. Both methods will get you the same result, so use whatever
+OS you are more comfortable with. For Mac OS users, I am not currently aware of
+a way to flash an SPF file under your operating system, so until I hear
+otherwise you will have to ask a friend running Windows/Linux for help.
+<p>
+<h2>Note:
+<br>
+As of the Droid 2.2 OTA upgrade (FRG01B and beyond), SPRecovery is no longer
+compatible with official firmware images. You can still use SPRecovery to flash
+a custom ROM of your choice, but it will not work properly with the stock
+firmware; there is an incompatibility with the baseband software so you will
+have no signal and the phone will reboot constantly. This means that you must
+immediately flash a custom ROM after installing SPRecovery. Don't even bother
+trying to boot back into the stock firmware if your Droid is running 2.2 or
+later.</h2>
+<h1>Installing on Windows</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Unfortunately, as with the
+<a href="/hardware/6555.shtml">Nokia 6555</a>, modifying the phone's firmware
+under Windows requires proprietary software (though you only need it once,
+after that, you won't need to use any software at all). The software in
+question is known as "RSD Lite", which has been a standard in the Motorola
+modding and hacking scene since the RAZR days. Truth be told, I am not sure
+(and a few quick Google searches didn't clear the issue up for me either) if it
+is legal to redistribute RSD Lite. For that reason I won't host it or give any
+direct links, but you will have absolutely no trouble finding it online as it
+is exceptionally well spread for apparently pirated software.
+<p>
+<h2>Note:<br>
+To properly detect the Droid and flash the SBF file, you will need RSD Lite
+Version 4.6 or above. Older versions will fail to identify the Droid's hardware
+and will refuse to flash the file</h2>
+<p>
+Once you have RSD Lite, you will need to install the Motorola drivers for the
+Droid. There are two versions of the Motorola drivers, one for
+<a href="http://direct.motorola.com/hellomoto/Common/Drivers%20and%20Plug%20ins/USB_Drivers_32_bit_4.2.0.zip">32 bit</a>
+Windows systems and the other for
+<a href="http://direct.motorola.com/hellomoto/Common/Drivers%20and%20Plug%20ins/USB_Drivers_64_bit_4.2.0.zip">64 bit</a>
+systems. Download the appropriate ZIP archive and extract it. Inside the
+archive you will find a single executable file, which you need to run. You
+should see the following screen:
+<p>
+<span class="center"><img src="/images/hardware/droid2.png" alt="Driver Install" /></span>
+<p>
+This is a very straight-forward process, just click "Next", agree to the
+license, and let it run though. Once it has installed, you will have the
+drivers necessary to handle the Motorola specific diagnostic capabilities
+of the phone rather than just using it as a USB storage device (though
+these drivers will <i>not</i> interfere with using your phone normally
+either).
+<p>
+Now that the drivers are installed, plug the Droid into the computer and
+power off the phone. Powering off the phone and then plugging it in won't
+work as the phone just turns itself on once USB is connected. With the
+phone turned off, start "RSD Lite" and leave it running.
+<p>
+With the phone off and RSD waiting, open up the Droid's slide, press and
+hold the "Up" button on the directional pad (the direction facing the screen),
+and then press and hold the power button until the screen lights up. After a
+few seconds the stock bootloader screen will appear which should look like
+this:
+<pre><code>Bootloader 2C.6C
+
+
+
+Battery OK
+OK to Program
+Transfer Mode:
+USB</code></pre>
+Once you see this screen on the phone, RSD should say "Connected" on port 1.
+You are now ready to flash the actual SPRecovery image to the phone. Click the
+button on RSD marked "..." and then select the .sbf file. You should see the
+top right pane of RSD fill in with some information like the following image
+shows:
+<p>
+<span class="center"><img src="/images/hardware/droid3.png" alt="RSD Lite" /></span>
+<p>
+If everything looks good, click the "Start" button. In a few seconds your phone
+should show the following message on the screen:
+<pre><code>Hacking your phone -mbm</code></pre>
+During this time, Windows will probably be making a lot of noise about devices
+being detected and removed from the system as the phone reboots a few times and
+changes modes. The percent complete in RSD should steadily be going up this
+whole time, so make sure you don't touch anything and let it go through the
+whole process.
+<p>
+Eventually, RSD should show "Executed: 100%". By this time, your phone will
+have likely booted back up all the way and is now sitting at the lock screen
+(in fact, this process takes long enough that the phone has probably gone into
+sleep and the screen will be off). At this point it is safe to disconnect the
+phone and close RSD, but you may get the following message when you exit out of
+RSD:
+<p>
+<span class="center"><img src="/images/hardware/droid4.png" alt="RSD Error" /></span>
+<p>
+The process has already been completed, so I am not sure if this message is a
+bug or perhaps just a warning to be safe, but having personally performed this
+operation on multiple Droids, I can tell you that it is harmless. With that
+frightening message out of the way, your phone has now been updated with
+SPRecovery!
+<h1>Installing on Linux</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Originally, using RSD Lite on Windows as the only
+way to get SPRecovery installed on your Droid (and the method I had to use),
+but since then a Linux tool has been written that will allow you to flash an
+SPF file to your phone, sbf_flash. Personally, I find this tool much quicker
+and easier to use than RSD Lite, plus it has the nice advantage of not being
+illegal to download. Unfortunately, the source has not been released for this
+tool, nor has the author stated what license it is released under, so you will
+need to do to his own site to download it: <a href="http://blog.opticaldelusion.org/2010/05/sbfflash.html" target="_blank">OPTICALDELUSION</a>
+<p>
+To start the installation process, we first download the sbf_flash tool from
+the author's site and make it executable:
+<pre><code>bash:~# wget http://dl.opticaldelusion.org/sbf_flash
+Saving to: `sbf_flash'
+100%[=========================================================>] 11,392 in 0.02s
+bash:~# chmod +x ./sbf_flash</code></pre>
+Once you have sbf_flash downloaded and executable, put your phone into the
+bootloader as described above in the Windows installation section. With the
+phone waiting at the bootloader, install the SBF file you downloaded previously
+like so:
+<pre><code>bash:~# ./sbf_flash ./SPRecovery_ESE81.sbf
+SBF FLASH 1.08 (mbm)
+
+=== SPRecovery_ESE81.sbf ===
+00: RDL03 0x80500000-0x8054CFFF FE66 AP
+01:  CG35 0xC0680000-0xC08E37FF ABCB AP
+02:  CG47 0xC0A00000-0xC0D5C7FF 02C0 AP
+
+waiting for phone: Droid found.
+ >> uploading RDL03
+Uploading: 100% OK
+ >> verifying ramloader
+ -- OK
+ >> executing ramloader
+Droid (ramloader) found.
+ >> sending erase
+ >> uploading CG35
+Uploading: 100% OK
+ >> uploading CG47
+Uploading: 100% OK
+ >> verifying CG35
+ -- OK
+ >> verifying CG47
+ -- OK
+ >> rebooting</code></pre>
+
+
+
+<h1>Using SPRecovery</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;It is important to realize that installing SPRecovery
+does <b>NOT</b> mean you have rooted your phone. In fact, you have made
+absolutely no changes at all to the Android OS, and you will notice nothing at
+at all has changed while the phone is running normally. To actually use
+SPRecovery, you need to boot up the phone with a special key combination during
+boot up.
+<p>
+To start, turn your phone back off and open the slide. With the phone off, press
+and hold "X" and then press and hold the power button until the screen lights up.
+This time, after a few seconds the normal Motorola boot logo will appear,
+followed by the main screen of SPRecovery:
+<p>
+<span class="center"><img src="/images/hardware/droid5.png" alt="SPRecovery" /></span>
+<p>
+From here you will be able to access all the functions of SPRecovery, such as
+creating and restoring system backups, mounting different system partitions for
+recovery operations, and installing new ROM images. You navigate though
+SPRecovery with the volume, camera, and power buttons, so at this point you can
+close the slide and just hold the phone in portrait mode.
+<h1>Installing a Custom ROM</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Now that SPRecovery is installed and you are able to
+boot into it, you are ready to install a custom rooted ROM and really unlock
+the potential of the Droid. There are <i>many</i> ROMs out there for the Droid,
+so I won't even begin to tackle which one you should use. For what it's worth,
+I have been using <i>"Bugless Beast"</i> by
+<a href="http://www.peteralfonso.com/" target="_blank">Peter Alfonso</a> and
+have been very happy so far, but you should do some research and see what works
+best for you.
+<p>
+<h2>Note:<br>
+Backing up your currently installed OS to SD and installing a new system
+image is fairly processor and storage intensive. Whenever backing up or
+installing ROMs, it is a good idea to keep the Droid plugged in to prevent
+the possibility of the battery dieing midway through.</h2>
+<p>
+The first step to installing a custom ROM is <i>technically</i> optional, but
+is highly recommended: making a full system backup to SD. This will allow you
+to restore to the state your Droid was in before you installed the new ROM,
+which you may want to do if installation doesn't go well or you simply don't
+like the new ROM. To start the backup, navigate to the "backup/restore"
+option, and then select "Advanced Nandroid backup". You will be presented with
+the following display:
+<p>
+<span class="center"><img src="/images/hardware/droid6.png" alt="SPRecovery Backup" /></span>
+<p>
+On this screen the first thing you will want to do is enter in a name for your
+backup using the hardware keyboard (note: the orientation of the display won't
+change when you open the slide to use the keyboard). Next, go down the list and
+select each entry on the list with the camera button so they all have an asterisk
+next to them. This will make sure every part of the system is backed up.
+Finally, go back up and select "Perform backup"...and wait. There will be a
+loading bar on the bottom of the screen as well as some textual information
+showing what part of the system is currently being backed up. This process
+takes a few minutes, so go get a drink or start looking up what custom ROMs you
+want to try out while it is working.
+<p>
+The next step is, again, technically optional but highly recommended. Once your
+system is backed up, it is suggested that you perform a complete system wipe to
+get you back to the factory defaults. This prevents the possibility of your old
+software or settings causing a compatibility issue with the new firmware. It
+should be noted that this is suggested mainly when moving between very
+different firmware versions (like stock Android 2.1 to a rooted 2.2 custom),
+but if you are moving between relatively similar builds (like different custom
+2.2 ROMs), then you can probably go ahead without the wipe. To perform a
+factory reset, you simply select "Wipe data/factory reset", wait for it to
+complete, and then select "Wipe cache partition". At this point, your phone is
+now completely backed up and restored to the state it was went if left the
+factory, which is the perfect condition to begin experimenting with other ROMs.
+<p>
+Custom ROMs are generally distributed in a ZIP archive which you need to
+rename to "update.zip" and place on the root of your SD card. The easiest
+way to do this is by going to the "mount options" screen of SPRecovery and
+selecting "Enable USB Mass Storage", then mounting it and copying the ROM
+ZIP to the card and renaming it, something like this:
+<pre><code>bash:~# dmesg | tail
+usb-storage: device found at 28
+usb-storage: waiting for device to settle before scanning
+usb-storage: device scan complete
+scsi 24:0:0:0: Direct-Access     Motorola A853             0001 PQ: 0 ANSI: 2
+sd 24:0:0:0: Attached scsi generic sg2 type 0
+sd 24:0:0:0: [sdb] Attached SCSI removable disk
+sd 24:0:0:0: [sdb] 31116288 512-byte logical blocks: (15.9 GB/14.8 GiB)
+sd 24:0:0:0: [sdb] Assuming drive cache: write through
+sd 24:0:0:0: [sdb] Assuming drive cache: write through
+  sdb: sdb1
+bash:~# mkdir /mnt/droid
+bash:~# mount /dev/sdb1 /mnt/droid
+bash:~# cp customrom.zip /mnt/droid/update.zip
+bash:~# umount /mnt/droid</code></pre>
+Then navigate back to the main screen and select "install", followed by
+"Allow update.zip", and finally "Install /sdcard/update.zip (depreciated)".
+After the installation process is complete, reboot your phone and you will be
+running your new custom ROM!
+<h1>Baseband Update</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The firmware for a phone's radio hardware is known
+as the "baseband". It operates below the Android OS and is in direct control
+over the phone's hardware. Occasionally, baseband updates are released, and
+running the latest baseband is always recommended as it can potentially improve
+things like your 3G signal and battery life.
+<p>
+Unfortunately, if you are using custom ROMs your baseband is not getting
+updated like it would be if you were running the over the air (OTA) firmware
+upgrades. This is due to the fact that baseband updates require reactivating
+your phone, which is simply too much of a hassle when dealing with custom
+ROMs (many people switch between different ROMs, try out different versions,
+etc) so it isn't included. Luckily, upgrading your baseband is as easy as
+downloading the appropriate ZIP file and applying it to your phone with
+SPRecovery.
+<p>
+To get the latest baseband file, I would direct you once again to the personal
+site of Peter Alfonso, specifically the
+<a href="http://www.peteralfonso.com/p/downloads.html" target="_blank">Downloads</a>
+section. You may find baseband files floating around on different forums,
+but personally I would stick with a trusted authority in the community with
+this sort of thing.
+<p>
+Once downloaded, move the file to your phone as /sdcard/update.zip as you would
+with a custom ROM image, then reboot the phone into SPRecovery. Something like
+the following should get you going (if you don't have the Android SDK, you can
+use the method mentioned previously for installing custom ROMs):
+<pre><code>bash:~# wget http://androidoverdrive.com/pete/OEM/C_01.43.01P.zip
+Saving to: `C_01.43.01P.zip'
+100%[============================================>] 4,965,122 1.16M/s in 4.4s
+bash:~# adb push ./C_01.43.01P.zip /sdcard/update.zip
+1915 KB/s (4965122 bytes in 2.531s)
+bash:~# adb reboot recovery</code></pre>
+<p>
+After the phone boots into SPRecovery, select "install", followed by "Allow
+update.zip", and finally "Install /sdcard/update.zip (depreciated)". After
+SPRecovery says that installation has been completed, back out of the "install"
+screen using the power button and select "reboot system now". Once your Droid
+has booted back up, you need to reactivate it and update the Preferred Roaming
+List (PRL). Luckily, this sounds a lot more complicated than it really is. All
+you need to do is dial <b>*22899</b> and then wait a few minutes while the
+phone reprograms itself. That's it!
+<p>
+Wether or not you actually see a benefit from updating the baseband is
+debatable, but as there is no reason <i>not</i> to run the latest version, you
+might as well do it. Personally, when going from the initial baseband the Droid
+shipped with to C_01.43.01P, I noticed an immediate bump in signal quality. On
+the other hand, if you were making a smaller version jump or if you already had
+strong signal where you live, you might not notice anything at all.
+<h1>Now what?</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;At this point your phone is running a custom ROM,
+almost certainly with root enabled. This gives you exceptional control over
+your phone and the software it runs. Getting root on your Android phone is
+just the beginning, head over to the
+<a href="/research/android.shtml">Android</a> research page to learn about
+installing the Android SDK, changing components of the OS, and even developing
+your own programs for Android.
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

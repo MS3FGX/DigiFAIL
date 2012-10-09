@@ -1,0 +1,9 @@
+html, body, table
+{
+	margin: 0; 
+	padding: 0;
+	color: #DDD;
+	background-color: #545454;
+}
+table {border:style 5px}
+td,th {border:inset 1px} 

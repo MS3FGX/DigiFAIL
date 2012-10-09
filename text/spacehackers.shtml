@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - Hackers In Space</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Hacking,2600,Space,Ham,Satellite,HGG" />
+<meta name="description" content="Details of a theoretical satellite communication network built and operated by hackers." />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="right"><img src="/images/text/spacehackers1.jpg" alt="2600 Cover" /></span>
+<h1>Foreword</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The following is <i>Hackers In Space</i>, as
+it appeared on page 21 of <i>2600</i> issue 29:3. This article is one of my personal
+favorites, since it deals with something that I have a great personal interest in:
+amateur space communication and technology.
+<p>
+As the cost of launches come down, and electronics get smaller and smaller, it's
+finally possible for groups other than world superpowers to get a spacecraft into
+orbit. This article presents a theoretical roadmap of sorts, which would take a
+dedicated and suitably funded group through the steps required to research and
+develop a small communications satellite.
+<p>
+The original ASCII text file for this document can be found in the "Text" section
+of the <a href="/misc/downloads.shtml">Downloads</a> page.
+<h1>Introduction</h1>
+While those of us in the United States have managed to fight off large scale
+Internet censorship in the form of PIPA and SOPA (at least, for the time
+being), the battle to maintain an individual's unfettered access to the
+Internet is still raging all over the globe. Is it any wonder? With social
+networks becoming an increasingly indispensable tool for protesters and
+freedom fighters, the governments of many foreign countries are looking to
+actively censor, or even deactivate, the Internet at their discretion.
+<p>
+Now imagine plugging a device about the size of a standard USB WiFi adapter
+into your computer, setting up an antenna, and being able to receive news and
+information from orbiting satellites even when you can't get access to the
+Internet. But instead of these satellites being owned and operated by a
+government or corporation, imagine they were completely under the control of
+ordinary citizens. Such a network would be indispensable for combating corrupt
+governments, organizing rescue operations in areas stricken by natural
+disasters, and providing information to third world countries that don't have
+a telecommunications infrastructure. But, can it be done?
+<p>
+At Chaos Communication Camp 2011, a talk was given detailing a "modest"
+proposal for putting a
+<a href="http://events.ccc.de/camp/2011/Fahrplan/events/4551.en.html">hacker on the moon by 2034</a>.
+While I can't say I am too optimistic about that particular goal (there is some
+debate if even NASA will be able to get anyone off this rock before then); the
+first phase of their plan, to build a free and globally accessible satellite
+communications network, is something completely different. With the rapid
+commercialization of space transport and operations, it's now possible for
+a group of individuals, using open source software and hardware, to construct,
+launch, and operate their own communications satellite; though certainly not easy.
+<h1>First Steps</h1>
+When dealing with hardware intended for space flight, there is no such thing as
+being over-prepared. Anyone attempting to build a device and accompanying
+software destined for low Earth orbit (LEO) would be wise to start a bit closer
+to the surface of the Earth, by way of a high altitude balloon. Using readily
+available weather balloons, it's possible to send a small payload up to
+100,000 feet (30 km). At this altitude, the sky turns black and the
+temperatures can drop down to nearly -100 F (-73 C), an excellent dress
+rehearsal for a space mission.
+<p>
+Operating a craft in near-space, generally considered to be anywhere between
+65,000 feet (20 km) and 350,000 feet (107 km), demands many of the same design
+paradigms of a true spacecraft: reliability, redundancy, energy efficiency,
+thermal protection, mass and dimensional constraints, etc. Operating such a
+craft would also require the ability to track and effectively communicate with
+a high altitude object, one of the most important aspects of creating a
+practical communications network. In fact, the
+<a href="http://www.hgg.aero">Hackerspace Global Grid</a> is a project dedicated
+to just that subject, the tracking and identification of satellites via open
+source software and hardware. You can't talk to something you can't find, so
+this subject is getting a lot of research and development now in preparation
+of future projects.
+<p>
+While you'll never construct a global communication network with balloons
+alone, they may have a future in temporary or emergency networks. The LVL1
+hackerspace in Louisville, Kentucky is working on the
+<a href="http://whitestarballoon.com/">White Star Balloon project</a>,
+a self-ballasting weather balloon capable of maintaining its
+altitude and staying airborne for days at a time. While LVL1's goal with White
+Star is to send the balloon across the Atlantic Ocean via the jet stream, it's
+not unreasonable to imagine a similarly designed balloon equipped with some
+type of propulsion system being able to maintain its position (roughly) over
+an area for extended periods of time. Being able to place a balloon over a
+target area for use in communications or even surveillance has some very
+obvious uses. Incidentally, the US military is currently experimenting with
+this very concept using manned and unmanned balloons.
+<h1>Getting Into Space</h1>
+Building a high altitude balloon is certainly a challenge, but not outside the
+grasp of even a clever high school student. It's a good demonstration, but it's
+a far cry from building and launching a proper satellite. So what now? How do
+you actually get something into space if you aren't a world superpower?
+<p>
+Not that long ago, you didn't. It just wasn't happening. But as commercial
+spaceflight started to emerge as a viable enterprise, a new class of satellite
+quickly started to gain popularity: the
+<a href="http://www.cubesat.org/">CubeSat</a>. CubeSats are miniature 
+satellites, sometimes referred to as picosats or nanosats, which adhere to
+specifications written by the California Polytechnic State University and
+Stanford University. CubeSats are 10x10x10 cm cubes with a mass of 1 kg,
+scalable along one axis up to 3 cubes. This allows for a satellite (known in
+this configuration as a 3U CubeSat) with a maximum size of 10x10x30 cm and a
+maximum mass of 3 kg. The mass and dimensional constraints are tight, but with
+ever smaller components and manufacturing techniques, it should be within the
+capabilities of a well equipped hackerspace.
+<p>
+Of course the next question is: how much does it really cost to build and
+launch a CubeSat? There are a lot of variables involved here, from the size of
+the satellite to the orbit it's placed in. A realistic estimate for getting a
+1U CubeSat (a single 10x10x10 cm cube) into orbit would likely be around
+$80,000 to $100,000 USD, though depending on who you talk to the number can be
+as low as $40,000. While $100,000 is surely a lot of money for us in the "99%",
+it's not an unreachable goal. Consider that the TikTok project managed to
+raise $942,578 on Kickstarter...and its a watchband for the iPod Nano. If the
+hacker community could raise that much money, a fleet of communication
+satellites would be well within the budget.
+<p>
+For the hacker on an even tighter budget, Interorbital Systems plans on
+beginning launches for their
+<a href="http://interorbital.com/TubeSat_1.htm">"TubeSats"</a> this year.
+The TubeSat is advertised as "the low-cost alternative to the CubeSat", costing
+only $8,000 for the construction kit, including the launch. The steep discount
+does come with a penalty however, as the TubeSat offers only three-quarters the
+total mass of the 1U CubeSat, and is placed in an orbit which will decay after a
+month or so. Still, there's something to be said for being able to build and
+launch your own personal satellite for the cost of a decent used car.
+<h1>Ears To The Sky</h1>
+A lot of people seem to be under the impression that communication with
+satellites requires a 10 foot wide satellite dish and a room full of radios. In
+reality, you can receive the downlink of low altitude satellites
+with nothing more than a handheld scanner and a simple "rubber duck" antenna.
+Naturally this isn't an ideal solution, and a more permanent installation with
+motorized high gain antennas would get much better results, but it does give
+you an idea of what's possible in a pinch.
+<p>
+Another common misconception is that satellite communication requires a
+license. While transmitting to an orbiting satellite would require an amateur
+radio license from your government of choice, simply receiving broadcasts on
+the common satellite bands can be done by anyone with the appropriate
+equipment. Naturally, this means that communication with our theoretical hacker
+satellite network would be one-way for unlicensed individuals, but that really
+isn't a problem. The immediate goal of such a project would be to spread news
+and information to people who would otherwise be cut off from the world, so in
+that case it would be enough to receive a downlink of the latest pertinent
+information. Of course, anyone with the appropriate license and adequate
+equipment could use the satellite network in a bi-directional fashion as well,
+so both use cases could be served simultaneously.
+<p>
+With recent advancements in Software Defined Radio (SDR), you don't even need
+a traditional radio to receive broadcasts anymore. Products like the
+<a href="http://www.funcubedongle.com/">FUNcube dongle</a> are low cost
+SDR devices specifically designed for amateur satellite communication.
+Coming in at under $300 USD and controlled by freely available open
+source software, SDR devices like this bring satellite communication
+within reach of even the most modestly funded hackerspaces or groups
+of individuals. As the market for satellite-oriented SDRs grows, we will
+see those prices come down even farther; to the point that within a few years
+a radio capable of receiving satellite transmissions might not cost much more
+than WiFi hardware.
+<h1>Reasonable Expectations</h1>
+With talk of satellite ground stations and launching home-built spacecraft,
+it's easy to get carried away. A look at any of the mainstream media coverage
+of projects like the Hackerspace Global Grid will give you a good idea of how
+easily the imagination wanders (or runs) when taking about anything to do with
+space.
+<p>
+The major thing to understand is that nobody is suggesting a "parallel
+Internet". That was an idea the media glommed onto almost immediately, but it's
+wildly impractical. Establishing a meaningful TCP/IP connection to an amateur
+satellite would be a challenge for even a well-equipped ham radio operator, so
+the idea that this could be a service offered to the masses is out of the
+question right now.
+<p>
+Most likely, the early versions of a hacker satellite network would only be
+able to broadcast simple text messages. Think of an orbiting serial terminal,
+and you'll have a pretty good idea of what's possible. Licensed radio operators
+with the appropriate equipment could upload the message to be broadcast, and
+the satellites would then repeat it to anyone who cares to listen until they
+receive new instructions.
+<p>
+Perhaps not as exciting and glamorous as some people might like, but it's a
+start. Such a system could be invaluable for individuals whose government
+censors (or cuts off) their Internet access or in emergency situations.
+<h1>Conclusion</h1>
+It'll be quite some time before we can surf the web on our own hacker-built
+satellite ISP. But with the proper research, funding, and skill, it's not
+unreasonable to think we could see low cost receivers pulling down data from
+civilian built satellites within the next two years; assuming there are enough
+people motivated to make it happen.
+<p>
+As John F. Kennedy said of the Apollo program in 1962, we do these things <i>"not
+because they are easy, but because they are hard, because that goal will serve
+to organize and measure the best of our energies and skills"</i>.
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

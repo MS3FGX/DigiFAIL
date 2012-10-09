@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - Google CR-48</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Linux,Google,netbook,Chrome" />
+<meta name="description" content="General information about Google's CR-48, the first Chrome OS netbook" />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="right"><img src="/images/hardware/cr48_1.png" alt="CR-48" /></span>
+<h1>Hardware Specifications</h1>
+<b>
+&nbsp; &nbsp; &nbsp; &nbsp;CPU: 1.66 GHz Atom N455
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;GPU: Intel GMA (Pineview)
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;RAM: 2 GB DDR3 (1333)
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Storage: 16 GB SATA SSD
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Display: 12.1 inch 1280 x 800 LCD (16:10)
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;WiFi: 802.11a/b/g/n
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Bluetooth 2.1 +EDR
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Cellular: CDMA EVDO (Verizon)
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Battery: 63 Wh Lithium-ion (8 hours)
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Dimensions: 300 mm x 22 mm x 23 mm
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Weight: 1.7 kg
+<br>
+</b>
+<h1>The Future</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Well, Google's idea of the future, at least. The
+Google CR-48 is considered a "reference device", which is to say that it isn't
+a retail product itself, but rather the example of what future retail Chrome
+OS devices should be like. The CR-48 will never go on sale to the public, and
+is only available to testers selected at random by Google.
+<p>
+As you may have guessed, I was selected as one of those testers in December
+2010, and have had the opportunity to test drive both Chrome OS and Google's
+vision of what a netbook should be. This page will talk primarily about the
+CR-48 as a hardware device, not Chrome OS itself. If you are interested in
+Chrome OS, head over to the
+<a href="/research/chrome.shtml">Chrome OS Research</a> page. You might also
+want to check out the CR-48 related posts on my
+<a href="http://blog.digifail.com/tagged/cr-48">Blog</a>.
+<h1>First Impressions</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The first thing that strikes you about the CR-48 is
+how plain it looks, but that isn't necessarily a bad thing. Since the CR-48 is
+not a retail device, it is blessedly free of the branding, stickers, and other
+miscellaneous text that we have become so accustomed to on consumer electronics.
+Every inch of the case is matte black with a soft, almost rubberized texture. It
+reminds me of the old IBM Thinkpads.
+<p>
+The second thing you will probably notice is how simplistic the design is. The
+CR-48 only has a VGA port, SD reader, headphone jack, USB port, and of course
+the port for the charger. Even the original ASUS Eee 701 had more ports than
+the CR-48. If the CR-48 was a normal netbook, this would be a concern, but with
+Chrome OS, there is very little you are going to be doing with peripherals on
+the local machine anyway, so loading it up with USB ports or card readers just
+doesn't make a whole lot of sense.
+<P>
+The 12.1 inch display running at 1280x800 is easily visible and looks great.
+The hinge action feels sturdy, as does the rest of the machine. While the CR-48
+is a lightweight machine, it doesn't feel like it will break in your hands.
+<p>
+Speaking of hands, the CR-48 uses a "chicklet" style keyboard, which I can't
+say I am a big fan of in general. While the keyboard is decent enough for the
+sort of use this machine will be getting, I found it isn't quite as sensitive
+as I would like; if I start typing too fast, the board seems to have trouble
+registering all of my key presses.
+<h1>Under the Hood</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;While the outside might give you the impression that
+Google was just trying to push out a budget netbook as cheaply as possible, the
+CR-48's hardware specifications tell another story. It is powered by an Intel
+Atom N455 running at 1.66 GHz, with 2 GB of DDR3 RAM. Storage is provided by a
+way-overkill 16 GB SSD.
+<p>
+But the CR-48's biggest assets are it's connectivity options. It features
+dual-band 802.11a/b/g/n WiFi, Bluetooth 2.1, and integrated 3G cellular modem
+running on Verizon's CDMA network. The CR-48 comes with 100 MB fee data per
+month for 24 months, but you can also sign up for daily and monthly data plans
+if the 100 MB just isn't going to cut it for you.
+<p>
+If there is any component of the CR-48 that's lacking, it seems to be the GPU.
+The Intel GMA chipset just doesn't seem to have the power to play HD videos
+smoothly, and game performance (in what little games are available for Chrome
+OS) is pretty rough. Even the most simplistic of games stutter and run at low
+FPS. This might be something that gets addressed later in an updated driver,
+but for the time being, video leaves a lot to be desired.
+<h1>Practical Performance</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The CR-48 is a decently powerful machine for a
+netbook, and Chrome OS is optimized to be as light and agile as possible. The
+cumulative effect creates a machine that is exceptionally usable and
+convenient.
+<p>
+It's clear that a lot of effort went into the CR-48's startup and power
+management. Startup and shutdown are incredibly fast, but the CR-48's long
+runtime battery and excellent power saving capabilities mean you won't
+really have to shut it down very often anyway. You can leave the CR-48 in
+standby mode for up to a week, and in practical use you can simply leave the
+machine sleeping in between uses and just put it on charge every few days.
+<p>
+In terms of usability, I found that the trackpad takes awhile to adjust to.
+The entire pad acts as a button, so clicking is performed by physically pushing
+down on the pad. This works pretty well, and I have found myself missing the
+feature on more traditional laptop trackpads. The trackpad also supports limited
+multi-touch and gesture controls, though these are considerably less enjoyable.
+<p>
+Scrolling is pretty nice in theory: simply drag two fingers down anywhere on the
+pad. But for some reason, this action is not always detected properly, and
+sometimes doesn't seem to work while a webpage is still loading. I found in many
+cases it was easier to simply use the scrollbars rather than wrestling with the
+scroll gesture.
+<p>
+Right-clicking is performed by pushing the trackpad down with two fingers, an
+operation that Chrome OS seems to have incredible difficulty detecting properly.
+Even when the system detects that you have used two fingers to push the pad, most
+of the time it will pick up the slight movement between your fingers as a motion
+of the cursor, and take focus away from whatever you right-clicked.
+<h1>Developer Switch</h1>
+<span class="right"><img src="/images/hardware/cr48_2.png" alt="Developer Switch" /></span>
+&nbsp; &nbsp; &nbsp; &nbsp;First and foremost, the CR-48 was designed to be a
+research and development tool, not necessarily a consumer marketable device.
+Accordingly, it has one feature which is unlikely to ever see the light of
+day in a consumer-oriented Chrome OS device: the "Developer Switch". The
+Developer Switch is a small switch hidden in the battery compartment of the
+CR-48 which puts Chrome OS into Developer Mode. More information about
+Developer Mode can be found on the
+<a href="/research/chrome.shtml">Chrome OS Research</a> page.
+<p>
+To access the Developer Switch, simply shut the CR-48 down, remove the battery,
+and look for a small piece of black plastic right next to the battery connector.
+Removing this piece of plastic will uncover the Developer Switch. Move the
+switch <i>towards</i> the battery connector to enable Developer Mode, then
+replace the battery and power the CR-48 back on.
+<p>
+When booting back up you will see an image of a sad CR-48 and a warning about
+image verification being turned off. Simply press <i>ctrl+D</i> to bypass this
+warning and continue booting Chrome OS. The first time you boot in Developer Mode,
+Chrome OS will give you a warning message and wipe the machine back to factory
+defaults. As all of your apps and documents are stored on the Internet, all this
+really means is that the machine will forget your Google account and will need to
+be reconfigured against your WiFi AP.
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

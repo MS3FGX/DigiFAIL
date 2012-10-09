@@ -1,0 +1,514 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - Android Apps</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Android,Apps,WiFi,GPS,NextApp,Tricorder,Moonblink" />
+<meta name="description" content="Essential Android applications for the mobile hacker." />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="center"><img src="/images/software/droidapps1.png" alt="Droid Apps" /></span>
+<h1>There's an app for that.</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;This page is going to be a little out of the
+norm for DigiFAIL, as instead of doing original research or documenting my own
+work, I am going to call out (in no particular order) a few Android
+applications which I think are essential for the mobile hacker. Since this new
+generation of Android devices is pretty much in uncharted territory in terms of
+capability, I think I can get away with considering this "Research". I'll give a
+little background information for all the applications, and if the application
+is complicated enough perhaps even a bit of a tutorial. I plan on updating this
+page regularly, so check back once and awhile to see what I've been playing with.
+<p>
+<h2>Note:
+<br>
+Just because Android is an open source operating system doesn't mean all the
+software has to be free. The developers who create Android applications are the
+reason the platform is so popular, without them we would have nothing. Please
+consider donating to the authors of these applications if you find them useful.</h2>
+<h1>WiFi Analyzer</h1>
+<span class="right"><img src="/images/software/droidapps2.png" alt="WiFi Analyzer" /></span>
+<b>
+&nbsp; &nbsp; &nbsp; &nbsp;Price: Free
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Author: farproc
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Root: No 
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Source Available: No
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;QR Code:
+<a class="thumbnail" href="#thumb">Show<span><img src="http://chart.apis.google.com/chart?cht=qr&chs=135x135&chl=market://details?id=com.farproc.wifi.analyzer" /></span></a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Android Market:
+<a href="http://market.android.com/details?id=com.farproc.wifi.analyzer" target="_blank">View</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Site:
+<a href="http://sites.google.com/site/farproc/wifi-analyzer" target="_blank">http://sites.google.com/site/farproc/wifi-analyzer</a>
+</b>
+<p>
+&nbsp; &nbsp; &nbsp; &nbsp;I think it is safe to say that <i>WiFi Analyzer</i> is
+one of the most well known tools for Android, and for good reason. It is an
+absolutely incredible tool to have in the field when enumerating targets,
+locating access points, or setting up new networks.
+<p>
+The primary goal of <i>WiFi Analyzer</i> is actually to locate the least
+populated WiFi channel in your area so you can adjust your hardware
+accordingly. But along the way it has gotten some really excellent features
+such as the ability to chart signal strength of all detected APs over time. My
+favorite feature is the ability to lock onto a single AP and have <i>WiFi
+Analyzer</i> continually update you on it's signal strength via an analog dial
+and audio cue. The faster the beeping and the higher the needle goes, the
+closer you are to the target. It is an extremely intuitive and helpful
+function to have when trying to locate a WiFi device. I should stress however
+that <i>WiFi Analyzer</i> is <b>NOT</b> a WarDriving application, it doesn't
+have any sort of location function and it doesn't even really log found APs.
+If you are looking for an application that will let you generate WiFi heat maps
+and the like, this is not it. But it does work excellent in conjunction with
+such apps.
+<p>
+Despite being one of the most popular applications currently on the Android
+Marketplace, <i>WiFi Analyzer</i> does not have a pay version nor a
+donation-enhanced version. There are advertisements in the application, but even
+those can be disabled from the menu. While the author, farproc, is obviously
+not going to turn down a donation shot his way, he feels very strongly that the
+software itself should remain free and has promised to always keep it that way.
+<h1>GPS Status</h1>
+<span class="right"><img src="/images/software/droidapps3.png" alt="GPS Status" /></span>
+<b>
+&nbsp; &nbsp; &nbsp; &nbsp;Price: Free
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Author: EclipSim
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Root: No 
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Source Available: No
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;QR Code:
+<a class="thumbnail" href="#thumb">Show<span><img src="http://chart.apis.google.com/chart?cht=qr&chs=135x135&chl=market://details?id=com.eclipsim.gpsstatus2" /></span></a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Android Market:
+<a href="http://market.android.com/details?id=com.eclipsim.gpsstatus2" target="_blank">View</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Site:
+<a href="http://m.eclipsim.com/gpsstatus/" target="_blank">http://m.eclipsim.com/gpsstatus/</a>
+</b>
+<p>
+&nbsp; &nbsp; &nbsp; &nbsp;I find <i>GPS Status</i> an exceptionally
+interesting piece of software. As a very early GPS adopter (I had a Magellan
+2000XL in 1998), it is amazing to me how far the technology has progressed in
+so short a time. This single application gives me considerably more information
+then my old stand-alone GPS ever did, and looks a whole lot better doing it.
+<p>
+When most people think of "GPS", they take it to mean the more modern
+definition of the term: a device like a TomTom or a smartphone running
+something like Google Navigation. In other words, something that has a full map
+of the area with street names, points of interest, voice prompts, etc, etc. But
+I still take it as a very literal term, a way to find your geographical
+coordinates, elevation, speed, and heading. I use <i>GPS Status</i> on all
+manners of adventures, especially when in the woods or on the water, places
+where modern GPS devices and software (unless specialized for that environment)
+are more or less useless.
+<p>
+In terms of specific features, my most used for this application would have to
+be the ability to drop a marker and then switch to "Radar" mode, which gives
+you an easy to interpret heading and range to those coordinates. I used this
+function when doing the range tests on the
+<a href="/hardware/hostxr.shtml">Host XR</a> range test, which allowed me to
+measure the distance between the antenna and the target with a speed and
+accuracy that would have been impractical otherwise.
+<p>
+The donation version of <i>GPS Status</i> costs ~$2.30 USD, and removes the
+in-application ads and enables toggling the display of the top notification
+bar. If you don't want to donate but are bothered by the advertisements,
+EclipSim has a page on his site where you can get a code which disables the
+advertisements without paying anything (though you will need to read through a
+guilt-trip message).
+<h1>QuickSSHd</h1>
+<span class="right"><img src="/images/software/droidapps4.png" alt="QuickSSHd" /></span>
+<b>
+&nbsp; &nbsp; &nbsp; &nbsp;Price: $1.50
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Author: TeslaCoil Software
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Root: Optional
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Source Available: No
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;QR Code:
+<a class="thumbnail" href="#thumb">Show<span><img src="http://chart.apis.google.com/chart?cht=qr&chs=135x135&chl=market://details?id=com.teslacoilsw.quicksshd" /></span></a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Android Market:
+<a href="http://market.android.com/details?id=com.teslacoilsw.quicksshd" target="_blank">View</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Site:
+<a href="http://teslacoilsw.com/quicksshd" target="_blank">http://teslacoilsw.com/quicksshd</a>
+</b>
+<p>
+&nbsp; &nbsp; &nbsp; &nbsp;<i>QuickSSHd</i> is the easiest way to get an SSH
+daemon running on your Android device. Beyond being able to remotely log into
+your device, it also gives you the ability to transfer files to and from the
+system over SCP and SFTP. The interface is about as basic as could be, just
+configure how you want to authenticate (password or key) and start.
+<i>QuickSSHd</i> also includes a really nice widget that allows you to start
+and stop the daemon right from your home screen, as well as show the current
+IP SSH is listening on. Technically <i>QuickSSHd</i> will work over 3G and
+WiFi, but in practice most carriers are blocking inbound ports, so 3G probably
+won't work.
+<p>
+While <i>QuickSSHd</i> doesn't require root to function, it really shines when
+running on a rooted device. As a normal user you will only be able to start the
+daemon on ports above 1024, and you will only be able to access files on the
+SD card. But when running as root, you will be able to start the daemon on the
+standard port 22 and have full read/write access to the entire device
+filesystem, which is very handy when modifying system files (especially if you
+don't have the Android SDK installed). In addition, while not really a limitation
+of <i>QuickSSHd</i> itself, on a stock firmware there isn't a whole lot you can
+do with a remote shell. On the other hand, most custom ROMs include a full
+BusyBox installation which gives you plenty of tools you can run from the shell.
+<p>
+I imagine the fact that there is no free or trial version of <i>QuickSSHd</i>
+will put some people off. If for nothing else, it is nice to have a trial
+version to verify the software works on your particular device and Android
+environment. Still, for the people who want or need SSH and SCP functionality
+on their Android devices, it is well worth the $1.50.
+<h1>Tricorder</h1>
+<span class="right"><img src="/images/software/droidapps5.png" alt="Tricorder" /></span>
+<b>
+&nbsp; &nbsp; &nbsp; &nbsp;Price: Free
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Author: Moonblink
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Root: No
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Source Available: Yes (GPLv2)
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;QR Code:
+<a class="thumbnail" href="#thumb">Show<span><img src="http://chart.apis.google.com/chart?cht=qr&chs=135x135&chl=market://details?id=org.hermit.tricorder" /></span></a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Android Market:
+<a href="http://market.android.com/details?id=org.hermit.tricorder" target="_blank">View</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Site:
+<a href="http://code.google.com/p/moonblink/wiki/Tricorder" target="_blank">http://code.google.com/p/moonblink/wiki/Tricorder</a>
+</b>
+<p>
+&nbsp; &nbsp; &nbsp; &nbsp;OK, I know what you are thinking. I realize that
+<i>Tricorder</i> is intended as a toy, not a serious scientific tool. But
+consider, presentation aside, that this application allows you to examine the
+output of all of your device's sensors with impressive accuracy. A modern
+smartphone like the <a href="/hardware/droid.shtml">Motorola Droid</a> has
+multiple sensors which can detect everything from the angle and position of
+the device to the local magnetic field. While these sensors were not
+originally intended for anything more advanced then detecting when the device
+is held up to your head rather than sitting in your pocket, with a little
+imagination they can be used for slightly more interesting purposes.
+<p>
+For example, the "MAG" tab in <i>Tricorder</i> allows you to examine the
+EMF field in the immediate area of the phone with micro-Tesla accuracy. In
+the past I have successfully used this function to determine if an electrical
+panel was receiving power or not. On one occasion, believe it or not, a friend
+of mine had discovered what he believed to be a meteorite and I used
+<i>Tricorder</i> to detect if the object had a higher magnetic field than other
+rocks found in the surrounding area.
+<p>
+I have had similar success using the "ACO" mode which is a decently accurate
+audio analyzer capable of showing both the waveform and frequency spectrum of
+the sound detected by your devices's microphone. While accuracy and response
+are dependent on the quality of the audio hardware (I.E. the Nexus One only has
+an 8kHz hardware sample rate), it is serviceable on most devices.
+<h1>SystemPanel</h1>
+<span class="right"><img src="/images/software/droidapps6.png" alt="SystemPanel" /></span>
+<b>
+&nbsp; &nbsp; &nbsp; &nbsp;Price: Free/$2.99
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Author: NextApp
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Root: No
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Source Available: No
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;QR Code:
+<a class="thumbnail" href="#thumb">Show<span><img src="http://chart.apis.google.com/chart?cht=qr&chs=135x135&chl=market://details?id=nextapp.systempanel" /></span></a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Android Market:
+<a href="http://market.android.com/details?id=nextapp.systempanel.r1" target="_blank">View</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Site:
+<a href="http://android.nextapp.com/site/systempanel" target="_blank">http://android.nextapp.com/site/systempanel</a>
+</b>
+<p>
+&nbsp; &nbsp; &nbsp; &nbsp;<i>SystemPanel</i> is invaluable if you are going to
+get into custom ROMs and Android hacking. It lets you see how your system's
+resources are being distributed better than any other monitoring application in
+the Marketplace. Function aside, it is probably one of the most visually
+polished applications available on Android, a fine detail that sadly the vast
+majority of Android applications seem to ignore.
+<p>
+<i>SystemPanel</i> is available in a Lite version which has pretty much all the
+functionality that normal Android task managers have, which is to say that you
+can view and kill tasks; plus the resource monitoring ability. While you don't
+strictly need a task manager for Android, this would still be a better solution
+then the rather rudimentary applications like <i>Advanced Task Killer</i> and
+the like because you are still getting the resource monitoring functions that
+none of the other task managers have.
+<p>
+For $2.99 you get the full version which adds in two extremely useful
+functions. The first is the ability to monitor system resources over time.
+You can let <i>SystemPanel</i> run in the background and record all of the
+system information as the day goes on, and then review what applications were
+taxing the system the most during the day. This helps greatly when trying to
+track down that one piece of software which is killing your battery.
+<p>
+The second function is the ability to remove applications and back them up
+to SD. Since <i>SystemPanel</i> doesn't (yet) support root you can't backup
+protected applications or do the more advanced things like backup MMS/SMS, so
+if you have root you should probably look at another backup utility. But on
+non-rooted phones, it is one of the best ways to make backups of your
+applications.
+<h1>WebSharing</h1>
+<span class="right"><img src="/images/software/droidapps7.png" alt="WebSharing" /></span>
+<b>
+&nbsp; &nbsp; &nbsp; &nbsp;Price: Free/$2.99
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Author: NextApp
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Root: No
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Source Available: No
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;QR Code:
+<a class="thumbnail" href="#thumb">Show<span><img src="http://chart.apis.google.com/chart?cht=qr&chs=135x135&chl=market://details?id=nextapp.websharing" /></span></a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Android Market:
+<a href="http://market.android.com/details?id=nextapp.websharing.r1" target="_blank">View</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Site:
+<a href="http://android.nextapp.com/site/websharing" target="_blank">http://android.nextapp.com/site/websharing</a>
+</b>
+<p>
+&nbsp; &nbsp; &nbsp; &nbsp;Alright, I don't want to seem like I am pushing
+NextApp's software, but these guys just happen to be one of the best developers
+for Android right now so it turns out they have two noteworthy applications.
+While <i>SystemPanel</i> is a great application and has all the polish you
+expect for paid software, it is hard to imagine anything else coming close to
+the functionality you get with <i>WebSharing</i>. Basically, this application
+allows you to access all of the files on your device's SD card through a
+web-based interface, completely eliminating the need to plug your phone into
+the computer. At the same time, <i>WebSharing</i> avoids any proprietary
+protocols or software, which means that any device with a modern web browser
+is able to work as a client. Pretty much anything you could want to do with
+the SD filesystem is available through the web interface: creating directories,
+deleting files, batch upload and download, etc.
+<p>
+But while cable-less file transfers are great, the real beauty is in the paid
+version of <i>WebSharing</i>, which is content aware and includes Flash-based
+functions to display and playback all the media on your phone. This means that
+not only can you upload and download things like videos and pictures from you
+device, you can actually view them all right there in the browser. You can even
+view things like signal strength, battery percentage, and storage capacity from
+the web interface.
+<p>
+Honestly, it is really hard to describe just how awesome and seamless this whole
+application is. An incredible amount of work went into this software, and
+personally I would have to say this is the best overall Android application I
+have used so far. Frankly, at $2.99 I think NextApp is really short-changing
+themselves.
+<h1>Titanium Backup</h1>
+<span class="right"><img src="/images/software/droidapps8.png" alt="Titanium Backup" /></span>
+<b>
+&nbsp; &nbsp; &nbsp; &nbsp;Price: Free/$3.99+
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Author: Joel Bourquard
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Root: Required
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Source Available: No
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;QR Code:
+<a class="thumbnail" href="#thumb">Show<span><img src="http://chart.apis.google.com/chart?cht=qr&chs=135x135&chl=market://details?id=com.keramidas.TitaniumBackup" /></span></a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Android Market:
+<a href="http://market.android.com/details?id=com.keramidas.TitaniumBackup" target="_blank">View</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Site:
+<a href="http://www.matrixrewriter.com/android/" target="_blank">http://www.matrixrewriter.com/android/</a>
+</b>
+<p>
+&nbsp; &nbsp; &nbsp; &nbsp;<i>Titanium Backup</i> is arguably one of the best
+reasons for rooting your phone; not only because it won't even start unless it
+can get root permissions, but because it's simply the best backup solution on
+Android. While there are other applications that can backup your applications
+(some of them at least), and others that can backup system files like your
+MMS/SMS storage, no backup tool brings it all together like
+<i>Titanium Backup</i>.
+<p>
+On of <i>Titanium Backup's</i> biggest strengths is in it's ability to run batch
+operations on all of the files on your device rather than having to go through
+and select them manually. More than that though, it allows you to apply some
+conditional arguments, such as only backing up things which have not been
+backed up within the last few days, only backing up things which have not been
+previously backed up, etc. Combined with <i>Titanium Backup's</i> scheduling
+options, this allows you to create some very advanced backup routines. For
+example, the default scheduled backups are setup to do backups of newly
+installed applications twice a week, and a full device backup on the weekend.
+<p>
+Using <i>Titanium Backup's</i> batch mode makes switching between ROMs a breeze,
+you just need to make sure your system is backed up, install the new ROM,
+re-install <i>Titanium Backup</i>, and tell it to restore everything from SD.
+When it's finished, not only will all of your applications and settings will
+be restored, but so will system components like your configured WiFi access
+points, MMS/SMS, call log, etc. Since you are using <i>Titanium Backup</i> to do
+the backup and restore (rather than some tool built into whatever ROM you were
+using), you can do this between totally different ROMs without worrying about
+compatibility issues. You can even do it between different devices simply by
+switching the SD card.
+<p>
+In addition to the standard backup functions, the donation version of
+<i>Titanium Backup</i> has a number of other tools which are very helpful for
+the Android hacker. It can "freeze" applications, which allows you to keep the
+package installed on the system, but otherwise have Android completely ignore
+it. This allows you to test if a particular package is safe to remove before
+actually deleting it (of particular use when trying to remove carrier or
+manufacturer installed applications). It also includes a tool called "Market
+Doctor" which will run through all of your applications and verify they are
+properly registered in the Android Market. There are other little fixes and
+features too, like a faster shell (to execute file operations quicker), and
+the ability to have multiple backups per application.
+<p>
+The donation process for <i>Titanium Backup's</i> is a bit different than most
+applications; basically, you download the free application, then go to the
+author's website and select how much you would like to donate. $3.99 gets you a
+license key, but you can select a few higher donation increments if you wish.
+After donation, you will get a license file that unlocks the advanced features
+of the application and registers it to your name and email address. While you
+can get away with using the free version, I would really suggest donating to
+unlock the advanced tools, <i>especially</i> if you intend on doing any sort of
+ROM modification.
+<h1>Wireless Tether</h1>
+<span class="right"><img src="/images/software/droidapps9.png" alt="Wireless Tether" /></span>
+<b>
+&nbsp; &nbsp; &nbsp; &nbsp;Price: Free
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Author: Harald Muller, Seth Lemons, Ben Buxton
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Root: Required
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Source Available: Yes (GPLv3)
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;QR Code:
+<a class="thumbnail" href="#thumb">Show<span><img src="http://chart.apis.google.com/chart?cht=qr&chs=135x135&chl=http://code.google.com/p/android-wifi-tether" /></span></a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Android Market:
+<a href="http://market.android.com/details?id=android.tether" target="_blank">View</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Site:
+<a href="http://code.google.com/p/android-wifi-tether/" target="_blank">http://code.google.com/p/android-wifi-tether/</a>
+</b>
+<p>
+&nbsp; &nbsp; &nbsp; &nbsp;While <i>Titanium Backup</i> is an excellent tool
+for power users, it lacks obvious appeal to the average user.
+<i>Wireless Tether</i> on the other hand, is a root-only application that
+pretty much anyone can get behind. While Android 2.2 introduced a wireless
+tether function, the carriers have decided to lock it up and force users into
+additional fees to use a function built right into the OS. But with
+<i>Wireless Tether</i>, you can share your Android device's 3G cellular
+connection with multiple clients over Bluetooth and Ad-Hoc WiFi <i>without</i>
+having to sign up for any additional services from your carrier.
+<p>
+This is somewhat of a grey area in terms of legality, as the use of this
+application more than likely breaks your carrier's TOS. Additionally, if you
+intend on making serious use of the tethering function (I.E. using it as a
+primary Internet connection on your computer), there is a good chance your
+carrier will eventually catch on. But if you only want to use the tethering
+function occasionally and don't mind living a little dangerously,
+<i>Wireless Tether</i> is the answer.
+<p>
+While the use of this application may be questionable, one thing is not:
+<i>Wireless Tether</i> is one of the best designed and polished applications in
+the Android Market, and may very well be the best free application available.
+There is an incredible amount of customization built into the networking
+aspect of the application, letting you setup relatively complex networks to
+suit almost any need. You can setup access controls, enable encryption, change
+IP subnets, etc. The UI itself is also exceptionally well designed, and the
+multitude of notification options (for things like new client connections) is a
+really nice touch.
+<p>
+However, <i>Wireless Tether</i> is not without it's flaws. Battery life while
+tethering is absolutely horrendous; this is about as hard as you can possibly
+work an Android device, 3G and WiFi will both be going at full tilt (remember,
+this is something that would never occur under normal circumstances) and the
+processor is going to be running fairly hard to handle IP forwarding and NAT.
+You won't get long on a charge running at this rate, and even if you are
+plugged in, don't be surprised if your device starts getting rather warm (hence
+the temperature monitor on-screen).
+<p>
+The other issue, at least on most devices, is that the WiFi hardware can only
+be put into Ad-Hoc mode. Which means that, unless you are running one of the
+few devices that have hardware support for Master mode (at the time of this
+writing, I am only aware of the HTC EVO 4G), your client devices will have to
+support getting online through an Ad-Hoc connection. If you only intend on
+sharing your connection with full-fledged computers, that's fine. But most
+other devices (PDAs, game consoles, Internet enabled set-top boxes, etc) will
+not even attempt to connect to the Internet when they see an Ad-Hoc network.
+<p>
+With slight technical issues (which are both attributed to valid hardware
+limitations) and legality aside, <i>Wireless Tether</i> is one of the best
+examples of what rooted Android device's are capable of. If you are on the
+fence about rooting your device and need a compelling reason to take the
+plunge, or maybe just want to show off to your iFriends, this application is
+it.
+<h1>Shark for Root</h1>
+<span class="right"><img src="/images/software/droidapps10.png" alt="Shark" /></span>
+<b>
+&nbsp; &nbsp; &nbsp; &nbsp;Price: Free
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Author: Elviss Kustans
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Root: Required
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Source Available: No
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;QR Code:
+<a class="thumbnail" href="#thumb">Show<span><img src="http://chart.apis.google.com/chart?cht=qr&chs=135x135&chl=market://details?id=lv.n3o.shark" /></span></a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Android Market:
+<a href="http://market.android.com/details?id=lv.n3o.shark" target="_blank">View</a>
+</b>
+<p>
+&nbsp; &nbsp; &nbsp; &nbsp;<i>Shark for Root</i> is essentially just an Android
+port of tcpdump with a minimal graphical front-end. I can't say that this
+application is particularly stable or polished, but it does work and that is
+all most users will be worried about.
+<p>
+While you can technically run <i>Shark</i> on a 3G connection, it is going to
+be the most useful when run against the WiFi network your device has
+authenticated to. Of particular interest is the fact that you can run
+<i>Shark</i> while your device is tethering (like when using <i>Wireless
+Tether</i> or the Android 2.2+ built in tethering function). This opens up the
+possibility of doing mobile man-in-the-middle attacks against WiFi clients;
+simply setup your device for WiFi tethering using a SSID like "PublicWiFi",
+start up <i>Shark</i>, and see what you catch.
+<p>
+Since <i>Shark</i> is built on tcpdump, it saves all of the logged data in
+standard PCAP files. These files can be read in your protocol analyzer of
+choice (such as WireShark), but Elviss has also written a companion tool
+called
+<a class="thumbnail" href="#thumb"><i>Shark Reader</i><span><img src="http://chart.apis.google.com/chart?cht=qr&chs=135x135&chl=market://details?id=lv.n3o.sharkreader" /></span></a>
+designed to let you read PCAP files right on the device. <i>Shark Reader</i>
+follows the same minimalistic design ideals as <i>Shark</i>, but again, gets
+the job done well enough.
+<p>
+While these two applications are hardly a replacement for a laptop running
+WireShark, it is an interesting example of what can be done with mobile devices
+if the user thinks out of the box a bit.
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

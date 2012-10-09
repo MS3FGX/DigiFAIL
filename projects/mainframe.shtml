@@ -1,0 +1,545 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - Mainframe Mk2</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Linux,Slackware,Atom,Mini-ITX,SSD,Jetway,WD10EADS,lighttpd,DenyHosts" />
+<meta name="description" content="Information on Mainframe Mk2, home of DigiFAIL.com" />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="right"><img src="/images/projects/mainframe1.jpg" alt="LOGO" /></span>
+<h1>Home Sweet Home</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;I thought it would be fitting that the first project
+I document on DigiFAIL.com would be the creation of it's home, the Mainframe
+Mark 2. Mainframe Mk2 was designed to replace the original Mainframe, which was
+the first Linux computer I ever put together. It served me well as file server
+for the LAN, but had started to show it's age. At only 400 MHz, anything much
+more taxing than serving files over SMB/NFS was toying with disaster. Once I
+decided to actually put up a world-accessible website, I knew the old girl was
+going to need to be retired. Hardware performance aside, I also wanted to
+modernize it's capabilities. I wanted to push more network management
+responsibilities onto the one box, and at the same time address the biggest
+concerns I had with the original Mainframe, namely power consumption, lack of
+redundancy, physical size, and noise.
+<p>
+To this end I started the design for Mainframe Mk2 around one of the new Atom
+boards, as these give an excellent power consumption to performance ratio. They
+also lend themselves well to fan-less (or at least, less fans...) operation,
+which would address the noise issue. Most importantly, they are standard x86
+machines, which makes them much more accessible. You can do much better in
+terms of energy efficiency with embedded ARM devices, but they are considerably
+more difficult to setup and maintain.
+<h1>Hardware Design</h1>
+<span class="right"><img src="/images/projects/mainframe2.jpg" alt="Board" /></span>
+&nbsp; &nbsp; &nbsp; &nbsp;The core of the Mk2 is an Atom 230 board with 2 GB
+of PC2 5300 RAM. The case is a Jetway JC-300 which features a 60 Watt
+integrated PSU. Cooling in the stock case is decent, though I did add a Vantec
+heat spreader to the RAM and changed the CPU fan out for a Scythe SY124010L
+which is much quieter.
+<p>
+That was the easy part, throwing some basic components into a decent case. The
+next part was a little harder. You see, energy efficiency was the number one
+goal in this build, which means that some traditional ideas would have to go.
+First, the operating system being on a standard HDD. The OS drive on a normal
+system is constantly spinning, which obviously takes it's toll on power
+consumption. You can put the storage drives in a server to sleep, but putting
+the OS drive to sleep has some serious downsides. Even if you got the drive to
+sleep for any extended period of time (which would be hard, as there is almost
+always some file I/O going on somewhere in the OS), the inherent latency of
+brining a drive back out of sleep mode would kill performance. Every request to
+the server (assuming it has been awhile since the last one), would lag for a
+few seconds before processing. This is obviously unacceptable, so one of the
+primary goals of this build was to put the OS on flash, and leave the standard
+HDDs to storage only.
+<p>
+Unfortunately, SSD is still pretty expensive. So for this build, I decided to
+go the cheaper route and install the OS onto a CF card in an IDE adapter.
+Generally speaking, CF cards are not well suited to this type of use as they
+have limited read/write cycles, but as you will see later I address this a bit
+in the software. Modern CF cards and controllers also support what is known as
+wear leveling, wherein the hardware attempts to spread read/write operations
+around the device evenly, rather than hitting the same areas over and over
+again. Realistically, with software modifications and modern hardware, I should
+be able to get at least a year out of each card, which isn't bad considering
+how cheap flash media is now.
+<p>
+I would also need to tackle how to handle redundancy while still retaining my
+goals. A RAID is big and loud, neither of which would be acceptable in this
+build. Even if I was willing to let the power and noise requirements slide a
+bit, my case was physically too small to accommodate two 3.5 inch drives, it
+only has one 3.5 bay, and an odd tray that you would mount a slimline optical
+drive on. I would have to figure something out there as the build went on...
+<h1>Early Problems</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;I wanted this build to be very clean, so I didn't
+want to have to run too many wires in the case, especially the fat IDE ribbons.
+I got a CF to IDE adapter from DealExtreme (<a href="http://www.dealextreme.com/details.dx/sku.2720~r.58964868" target="_blank">SKU 2720</a>) that plugged
+directly into the motherboard IDE header. It worked out great in my head, but
+when I connected it up to the board I realized that the Vantec heat spreader
+was so thick that it pushed on the adapter.
+<p>
+Well, I thought. This isn't good at all. But I am nothing if not creative, and
+I really wanted to be able to plug this thing directly into the board. It
+occurred to me that the problem was really that the LEDs and the jumper pins on
+the adapter were sticking out too far. If I removed them and moved them to the
+back side (at least the jumper anyway, LEDs weren't strictly necessary), the
+adapter would <i>just</i> fit. So off I went with my soldering iron and removed
+the three LEDs and shorted the jumper out to "Master".
+<p>
+<span class="center"><img src="/images/projects/mainframe3.jpg" alt="Adapter" /></span>
+<p>
+The finished product looked excellent. The jumper was small enough that it
+wouldn't touch the metal of the heat spreader, and aside from the loss of the
+LEDs, I was very happy with this fix. The voltage selection jumper could have
+gone too, but it was just as well to bend it up slightly, as that was farther
+to the side and didn't come directly in contact with the spreader.
+<p>
+It was actually just as well that this little problem came up now, as the
+original case was destroyed in transit and I was waiting on it's replacement
+the whole time. So this gave me a nice diversion as I waited for the new one to
+get here. Sure, it would have been nice to do a dry run with everything in the
+case, but no big deal. A few days after I finished the modifications to the
+adapter board, the case got here. So I mounted it all up in the case and took a
+look at it...
+<p>
+Wait...what?
+<p>
+<span class="center"><img src="/images/projects/mainframe4.jpg" alt="Little big..." /></span>
+<p>
+<i>Oh</i>, I see what happened here. In my zeal to fix the adapter issue, I
+failed to take into account the physical dimensions of the case. So I had a
+nice modified little adapter which could never have possibly worked in the
+first place. Thank God for DX, at least it was only $3...
+<h1>Second CF Adapter</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Clearly I needed to completely rethink the CF
+adapter issue. It would have much much easier to just give up here and install
+the OS to the main drive, but I wasn't giving up that easy. As I had mentioned
+earlier, this case has a tray where a slimline optical drive is supposed to
+go. Since I wasn't putting any optical drive in this machine, I had that whole
+area free in the case. It was just a matter of figuring out how to get a CF
+adapter mounted to it.
+<p>
+To start, I got another CF adapter from DealExtreme (<a href="http://www.dealextreme.com/details.dx/sku.10309~r.58964868" target="_blank">SKU 10309</a>),
+this time one that had the female IDE connector at a right angle to the rest of
+the adapter. My idea was to mount the adapter in upside down, with the IDE
+connector hanging over the edge of the tray. That was the only way I would have
+the vertical clearance to get it inside the case. But the tray was clearly not
+setup for this, so I had to make a few modifications.
+<p>
+<span class="center"><img src="/images/projects/mainframe5.jpg" alt="Tray Modification" /></span>
+<p>
+The first thing I had to do was cut the tab that would have held the side of
+the optical drive. I ground this down level with the rest of the tray, making
+sure there were no jagged bits sticking up that might short the CF adapter that
+would eventually sit on top of it. I then drilled a hole for the CF adapter to
+mount to, and epoxied a nut on the underside that I could thread a screw into.
+Finally, I just had to find the right diameter screw and cut it down to length.
+It is a little tight on the inside with the primary storage HDD in place, but
+nothing too bad.
+<p>
+Then it was simply a matter of getting the IDE ribbon short enough and folded
+in such a way that it wouldn't intrude too much in the case. In case you are
+wondering, it is very hard finding IDE cables under 6 inches in length. I was
+about to make my own IDE cable, until I found a very short one in an old OEM
+Dell. I pulled it out, and with some tight folds I managed to get it to fit in
+exactly the space available between the RAM and the side of the tray. I was
+initially a little concerned about how tight everything was, especially with
+how it would effect airflow, but so far there doesn't appear to be any serious
+problems. In the following you can see just how tight a fit everything is, with
+the IDE ribbon cable packed in alongside the PSU wires.
+<p>
+<span class="center"><img src="/images/projects/mainframe6.jpg" alt="Adapter in place" /></span>
+<p>
+You have probably noticed that the adapter is in upside-down... Obviously I
+would have rather it been oriented the proper way, but it just wasn't possible
+with how tight everything is in the case. Still, there is no problem getting
+the card in and out in this configuration, as there is enough space to the
+front of the case that you can pull the whole card out and clear of the adapter
+without any trouble. You may also have noticed that the adapter is only mounted
+with the single screw on the one side. The other side is laying on top of the
+edge of the tray, which makes a nice flat platform at about the same height as
+the mounted side. Of course it does move around slightly, but as the server
+will not be living a very mobile life I don't think it is that big of an issue.
+Plus, the adapter and card assembly is so light that there isn't much chance of
+it banging around in there.
+<h1>Storage System</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;What is a file server without storage, right? Now
+that I had a filesystem to install my OS on, I needed to turn my attention to
+exactly how I was going to mount the drives in this thing. The primary storage
+drive was easy enough, it goes into the bay right below the tray where the CF
+adapter is mounted. I used a 1 TB WD Green Drive (WD10EADS), which puts energy
+efficiency and low-noise over raw performance by throttling itself down during
+periods of inactivity, and only running at a relatively low RPM even when it is
+active. On a server like this, I don't need a high-revving drive to get instant
+access to many small files like you would want on a desktop machine, I will
+mainly be dealing with streaming larger files one at a time. In this scenario,
+the WD Green Drive excels. I found some 6 inch SATA cables on NewEgg.com which
+were the exact size needed to plug the drive into the board with no slack, so
+everything went in fine there.
+<p>
+But as I mentioned earlier, there is no place for a second HDD in this case. I
+was ready to either get an external drive to do the backups on, or risk another
+few years without them, when I noticed the open area next to the CF adapter.
+It wasn't large enough to fit another 3.5 drive, but I wondered if a laptop HDD
+wouldn't fit in there. Pulling out a spare SATA laptop drive I had, I found
+that the area next to the CF adapter was almost exactly the same size as a 2.5
+laptop HDD. So I went back onto NewEgg and ordered a 320 GB Hitachi Travelstar,
+another of the 6 inch SATA cables, and a 4 pin molex to SATA power adapter, as
+the case's PSU only had one SATA power plug.
+<p>
+Like last time, this was going to involve some modification to the optical
+drive tray, which was increasingly less and less designed for the things I was
+trying to do with it. I had to cut the holes on one end of the tray into an
+elongated slit so I could adjust the drive back and forth, and the other end
+needed a new hole drilled. Basically, the existing hole pattern was completely
+wrong for mounting a HDD to it.
+<p>
+<span class="center"><img src="/images/projects/mainframe7.jpg" alt="Mounting holes" /></span>
+<p>
+Once the new holes were cut into the tray, the rest was easy. I just had to
+tuck in the molex to SATA power adapter, and connect the short SATA cable to
+the motherboard. Like last time I was only able to mount the drive on one side,
+but again, given how little this machine will ever move and how light the
+components are, I am not too worried about it. I should also mention at this
+point that the server is oriented such that it is laying on it's side, meaning
+gravity will pull both the CF adapter and the laptop HDD down onto their
+mounting points, rather than towards the surface of the tray.
+<p>
+In the end, all three storage devices for Mainframe Mk2 are mounted to the same
+piece of metal. A nice little package if I do say so myself. It all came
+together exceptionally well, considering that I had absolutely no plan on how
+to do this when I bought the case. Here you can see the CF adapter, WD Green
+Drive, and Hitachi laptop drive all mounted in their final positions.
+<p>
+<span class="center"><img src="/images/projects/mainframe8.jpg" alt="Storage array" /></span>
+<h1>Final Touches</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;With the primary work done, there were only a few
+minor hardware details left to work out. I cut the power lines for the 24 pin
+motherboard connector as the Atom board has the older 20 pin connector. I do
+realize this means I won't be able to use a newer board in this machine without
+buying a new wiring harness for the PSU, but I figure by then that will be the
+least of my worries. I also cut off the audio connectors going to the front
+panel. The machine doesn't use audio, so I certainly didn't need those. The
+case also comes with a piece of black plastic to cover up the optical bay if
+you don't use it, so I put that in as well, but it doesn't fit properly so you
+need to glue it. Not pictured here is the mini Bluetooth module plugged into
+the back USB ports. Nothing special there, but I did paint the whole thing
+black with model paint, as the flashing LED under the adapter's plastic casing
+was bothering me at night.
+<p>
+<span class="center"><img src="/images/projects/mainframe9.jpg" alt="Completed Hardware" /></span>
+<h1>Software Additions</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The server runs Slackware 13.0, which was released a
+few days before the build was complete. I tried to keep the install as close to
+stock as possible in terms of installed software so I could keep it synced up
+with security updates without having to rebuild too many packages manually. I
+found that on the older server I ended up rebuilding most of the packages from
+source as the install had drifted so far from stock that nothing worked without
+a rebuild anymore. Still, there were a few things I wanted to change.
+<p>
+The main software additions were <a href="http://www.lighttpd.net/" target="_blank">lighttpd</a> and <a href="http://denyhosts.sourceforge.net/" target="_blank">DenyHosts</a>. I didn't use Apache as my situation didn't require all of the
+features and capabilities that Apache offers, and frankly, it would simply have
+consumed more resources than necessary for a simple site like this.
+<p>
+DenyHosts is a nice little script that parses the SSHd logs and adds IPs to
+/etc/hosts.deny if they attempt to brute force the SSH server. Anyone who has
+ever run an Internet-facing SSH server knows that you are likely to see a few
+hundred SSH brute force attempts a day, so something like this comes in handy.
+Personally, I have been hit with as many as 30,000 failed SSH login attempts in
+a single night, so something like this was high on my list for the new server
+build. DenyHosts also has a nice function where it will download IPs which
+other DenyHosts installations have blocked recently, which should help to
+preemptively block attacks.
+<p>
+In addition to building the packages, I also went and wrote proper rc.d files
+for both of them, so they function like native Slackware packages. But as they
+are not part of the default boot scripts, they don't start unless manually
+called from rc.local, which is demonstrated a little farther down the page.
+Current Slackware 13.0 packages for these two applications can always be found
+under the <a href="/slackware/packages.shtml">Slackware packages</a> section of
+the site.
+<h1>Storage Configuration</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The main change in regards to the storage devices
+used in the server was limiting the I/O on the CF card in an attempt to squeeze
+as much life out of it as I could. This consists of mounting the CF card with
+options like noatime to limit redundant I/O and using a non-journalizing
+filesystem. This is the /etc/fstab file from the server:
+<pre><code># Root filesystem on Compact Flash
+/dev/hda1        /              ext2    defaults,noatime,nodiratime    1   1
+
+# Primary storage drive
+/dev/sda1	/mnt/storage	xfs	defaults,logbufs=8		1   1
+
+# Backup drive
+/dev/sdb1	/mnt/backup	ext4	defaults			1   1	
+
+# /tmp on RAM
+tmpfs   /tmp   tmpfs   defaults,nosuid,size=512M,mode=1777  		0   0 
+
+# Serve web pages out of RAM
+tmpfs  /var/www/htdocs  tmpfs  noexec,nosuid,size=24M,gid=www,mode=0775 0   0
+
+# System mounts
+devpts           /dev/pts         devpts      gid=5,mode=620   		0   0
+proc             /proc            proc        defaults        		0   0
+#tmpfs            /dev/shm         tmpfs       defaults         	0   0
+</code></pre>
+Here you can see the changes I made for the root filesystem and both of the
+HDDs. I chose to run the whole OS out of one partition for simplicity, though
+usually I would break it up into a few partitions. You can also see that I used
+different filesystems for the two HDDs. I used the high-performance XFS where
+speed counted (the drive users would be interfacing with) and the slightly more
+prosaic EXT4 for the backups. Beyond performance, my logic was that if there
+was some sort of software related filesystem failure on one drive, the other
+would in theory be unaffected. So far I haven't needed to test this out...
+<h1>TMPFS Configuration</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;You can see above I also did a 512 MB tmpfs
+"partition" on RAM. This is used as a general file cache, and holds most of the
+logs. I didn't put everything on tmpfs, as I would like at least the core
+kernel logs to survive a reboot, but things like the denyhosts logs certainly
+didn't need to live on non-volatile flash.
+<p>
+The common approach to this is simply symlinking the various log files from
+/var/log onto files under /tmp. In this scenario, your software continues
+logging as normal, never realizing it is actually going into /tmp. This is well
+and good, and what I had done in the past, but I wanted something a little more
+elegant this time around. So I went into the configuration file for each daemon
+and changed it's log location to /tmp/log. I then went through each daemon's
+entry under /etc/logrotate.d/ and made sure logrotate was aware of the new log
+locations so they would get compressed and rotated out properly.
+<p>
+The problem with this method is that on reboot, there won't <i>be</i> a
+/tmp/log to save to, and your daemons are going to fail. So we need to setup a
+sane hierarchy under /tmp for our applications to use. But we need to be
+careful to do this <i>before</i> the daemons start, or else they will just
+silently fail. The following is the /etc/rc.d/rc.local file from the server,
+which sets up the files and directories under /tmp and then starts the daemons.
+This assumes that you have the proper rc.<i>service</i> files installed on
+your system, like I have included in my Slackware packages of those daemons.
+<pre><code>#!/bin/sh
+#
+# /etc/rc.d/rc.local:  Local system initialization script.
+#
+# Put any local startup commands in here.  Also, if you have
+# anything that needs to be run at shutdown time you can
+# make an /etc/rc.d/rc.local_shutdown script and put those
+# commands in there.
+
+# Set storage drive to powerdown after 15 minutes
+echo "Configuring power management on disk drives:"
+hdparm -S 180 /dev/sda
+# Set backup drive to powerdown after 1 minute of idle time
+hdparm -B 1 -S 12 /dev/sdb
+echo ""
+
+# Create directories in volatile storage, need to do this before
+# daemons start up and want to log
+echo "Populating /tmp on tmpfs..."
+mkdir -p /tmp/web
+chmod -R 777 /tmp
+
+# Permissions for logs should be a little different
+# lighttpd doesn't run as root, so it must own log directory
+mkdir -p /tmp/log/lighttpd
+chown lighttpd:lighttpd /tmp/log/lighttpd
+chmod 755 /tmp/log/lighttpd
+
+# Samba runs as root, so it doesn't matter
+mkdir /tmp/log/samba
+
+# Start the Network Time Protocol daemon:
+# We need to start this later than in rc.M because of the tmpfs log.
+# This means that the time won't be 100% accurate for initial logs, but I
+# really don't think that is a problem.
+if [ -x /etc/rc.d/rc.ntpd ]; then
+    /etc/rc.d/rc.ntpd start
+fi
+
+# Start lighttpd instead of Apache
+if [ -x /etc/rc.d/rc.lighttpd ]; then
+    /etc/rc.d/rc.lighttpd start
+fi
+
+# Start VSFTPD in standalone mode:
+if [ -x /etc/rc.d/rc.vsftpd ]; then
+    /etc/rc.d/rc.vsftpd start
+fi
+
+# Start DenyHosts
+if [ -x /etc/rc.d/rc.denyhosts ]; then
+    /etc/rc.d/rc.denyhosts start
+fi
+
+# EOF
+</code></pre>
+Note that I start NTPd from rc.local instead of it's normal spot in rc.M. As
+explained in the comment, rc.M runs before rc.local, so if we let it start
+there it won't have a log file to use. Interestingly enough, this build has
+taught me that for whatever reason, daemons generally won't create a log file
+if one isn't found, they will either continue running without logging or fail
+silently. I am not sure what the logic is behind this, but it seems rather odd.
+<p>
+You can also see at the top of rc.local where I apply the hdparm settings for
+the two HDDs. I use some very intense power management options on the drives,
+putting them to sleep as quickly and as often as possible. For the backup
+drive, the power management settings are so hardcore that within a second or so
+of the last file operation finishing, the drive is already back in sleep mode.
+For the primary drive, I was a little more relaxed, though it still goes to
+sleep after a few minutes. In practice, this causes a few-second lag the first
+time a file is accessed from the drive after a period of inactivity. For my
+purposes this is fine, but for some it might be an issue.
+<h1>Redundancy</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;From the very beginning, having a trustworthy
+backup system was very high on the list of priorities. On the old server,
+backups were manually done, and were scattered all over the network. Originally
+I assumed I would do a RAID on the new server, but once I started on this trend
+of efficiency and miniaturization, I realized a traditional RAID setup just
+wasn't going to work for me. Not only would multiple drives be louder and
+consume more energy, but the case itself wasn't physically large enough to hold
+two 3.5 inch HDDs.
+<p>
+Naturally my next thought was to use a laptop drive as the secondary in a RAID
+array, but that would have been a problem for a number of reasons. Drives in
+RAID should really be identical, using two different types of drives with
+different sustained data speeds and seek times is just asking for strange and
+hard to track down glitches in the system. Even if you ignore the issues with
+non-matched drives, I wouldn't be able to find (or afford, if I could) a 1 TB
+2.5 inch HDD to mirror to anyway.
+<p>
+But then I started to consider what I really needed to be keeping backups of in
+the first place. An exact mirror is the norm, and ideal, but let's be honest
+here; so I <i>really</i> need to maintain backups of things that I could just
+as easily re-download in the case of a drive crash? I'm talking about things
+like the Slackware mirror; sure it would be a hassle to download the whole
+thing again, but I wouldn't actually lose anything. Same thing for all of the
+Linux distribution ISOs I store on the server, I could go and download any one
+of them again if I ever needed to.
+<p>
+I suppose having fiber optic Internet access gives you a slightly different
+outlook on what is and is not an acceptable amount of data to redownload in the
+event of data loss, but I realized all I actually needed to keep backups of was
+my original work. The site, my code, documents, etc, etc. The only exception to
+that rule is the music collection, which is meticulously tagged and managed. It
+<i>could</i> be ripped from the CDs again, but I really really wouldn't want to
+re-tag the 20,000+ songs.
+<p>
+With this new idea in mind, I went ahead and bought a 320 GB 2.5 inch HDD to
+rsync data that was deemed important enough to keep backups of. In keeping with
+my efficiency goals, the laptop drive is configured to go to sleep after 1
+minute of inactivity, and the rsync process is done every 24 hours to prevent
+excessive read/write operations. The backup could probably stand to be done a
+little more often, but the main drives are not written to that often so it
+hasn't been an issue yet. Indeed, it can go a few days before rsync even needs
+to make any changes to the backup drive.
+<h1>Dynamic DNS</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Usually this should be pretty straight forward, but
+it took me a bit of hacking around to get it working the way I wanted, so I
+thought I might as well document what I did.
+<p>
+I get my domain name from <a href="http://www.lqconsulting.com/" target="_blank">LQ Consulting</a> which is an off-shoot of one of my favorite online forums,
+<a href="http://www.linuxquestions.org/" target="_blank">LinuxQuestions.org</a>.
+The cost of a domain name from them is a bit more than other registrars, but
+the profits go right into supporting LQ, so I don't mind. Unfortunately, and I
+hate to talk down on the service, LQ Consulting doesn't appear to be anything
+more but a side-project of LQ's owner, Jeremy Garcia. There is no support to
+speak of, and all of the FAQs and documentation available are ripped right from
+the support pages of other registrars and web hosts.
+<p>
+The biggest problem was with dynamic DNS, which allows me to keep the domain
+name even when my IP changes (which isn't often, but does happen from time to
+time on Verizon FiOS). According to their "support" information, LQ
+Consulting's dynamic DNS service should be supported by a number of Unix/Linux
+scripts, which they give the links to. But after trying each one that was
+linked, I found that not a single one actually supports whatever scheme they
+were using. Worse, nowhere does it say which dynamic DNS service they are
+actually running, so I had to try and figure it out on my own.
+<p>
+The first clue was in their support pages. It said that once you got the
+software installed, point it to their update URL: <i>dynamic.name-services.com</i>. Opening that link in the browser returned the following string:
+<pre><code>;URL Interface
+;Machine is Reseller9-SJL
+Command= Language=eng ErrCount=1 Err1=An invalid command was specified ResponseCount=1 ResponseNumber1=304150 ResponseString1=Validation error; invalid ; command MinPeriod= MaxPeriod=10 Server=Reseller9-SJL Site= IsLockable= IsRealTimeTLD= TimeDifference=+0.00 ExecTime=0.016 Done=true
+</code></pre>
+I had absolutely no idea what that meant, but some searches on Google
+eventually pointed me in the right direction. Apparently this is the same
+dynamic domain name service run by <a href="http://www.enom.com/" target="_blank">eNom</a>. Checking the support pages for the various dynamic DNS update
+scripts for Linux, it turns out that none of them actually had support for
+eNom. Incredible.
+<p>
+After awhile I managed to find the script <a href="http://edoceo.com/creo/enomddu" target="_blank">enomddu.sh</a>, which I got working with a few slight
+modifications:
+<pre><code>#!/bin/bash
+# 
+# Modified version of enomddu.sh - eNom Dynamic DNS Update with Bash
+
+hostname='@'
+password='XXXXXXXXXXXXXXXXX'
+zonename='digifail.com'
+
+# Must have the PERL module URI::Escape
+url_hostname=$(echo $hostname | perl -MURI::Escape -lne 'print uri_escape($_)')
+url_password=$(echo $password | perl -MURI::Escape -lne 'print uri_escape($_)')
+url_zonename=$(echo $zonename | perl -MURI::Escape -lne 'print uri_escape($_)')
+
+enom_url='http://dynamic.name-services.com/interface.asp?Command=SetDNSHost'
+enom_url="${enom_url}&HostName=${url_hostname}"
+enom_url="${enom_url}&DomainPassword=${url_password}"
+enom_url="${enom_url}&Zone=${url_zonename}"
+
+# For debug, echo the URL that will be called
+#echo $enom_url
+curl $enom_url &> /dev/null
+</code></pre>
+Here you can see that for the hostname I used the character "@", which the DNS
+service interprets as essentially as a wildcard. So using "@" as the hostname
+and "digifail.com" as the zone name tells the dynamic DNS service that any
+hostname on digifail.com (I.E. www, ftp, etc) should resolve to the same IP.
+<p>
+Running this every hour has been working fine for awhile now, outside of one
+strange incident where eNom apparently forgot the password for the account, so
+the domain name stopped updating. That is where the "echo $enom_url" line comes
+in. If you are ever having problems with dynamic DNS, uncomment that line and
+then copy the URL this script generates into your web browser. The message you
+get back should give you an idea as to what the problem is.
+<h1>The Journey Begins</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;I can't really end this on a "Conclusion" or
+anything like that, as the end of the server setup was really just the start of
+a long journey. For the next 5 years or so this machine is going to be on the
+front lines; handling all of the internal responsibilities a network of this
+size requires, and keep DigiFAIL running for anyone who might be so inclined as
+to take a look. If you are reading this, then at least that second part seems
+to be working still. But now that the Mk2 has been running for a few months, I
+have gotten a pretty good feel for what worked and what might give me some
+trouble down the road.
+<p>
+Hardware performance has been stellar so far. It could be because I am coming
+from such a slow machine, but the Atom board combined with a high speed CF card
+and tmpfs absolutely flies. I haven't had any I/O errors on the CF card, so I
+must not be rocking it too hard. But to be safe I made an image of the card
+right after everything was setup, so if it does fail I can re-image a new card
+and be up and running in a matter of minutes.
+<p>
+In terms of accomplishing my original goals for efficiency and silence, I
+couldn't be happier. I don't have the equipment to see exactly how much sound
+this thing puts out, but it is whisper quiet. You really can't hear the system
+without putting your ear against it, which is exactly what I was going for.
+Energy consumption is right in line with my original goals as well, pulling 28
+watts at idle and 33 watts when both HDDs are up and running.
+<p>
+The only problem I have had so far was when lighttpd locked up on me, I haven't
+been able to reproduce that as of yet, so I am keeping an eye on it. There were
+a few glitches in my backup scripts, but those have been largely worked out
+now.
+<p>
+I'll update this page if any problems come up with the original hardware or
+software, but until then, onwards and upwards!
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

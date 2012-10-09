@@ -1,0 +1,1966 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - Operation Street Sweep</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Linux,Bluetooth,Bluelog,AIRcable,OpenWRT,TPLINK" />
+<meta name="description" content="Long-term Bluetooth scanning in urban environment using Bluelog." />
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Vehicle Manufacturer');
+        data.addColumn('number', 'Unique Vehicles');
+        data.addRows(5);
+        data.setValue(0, 0, 'Audi');
+        data.setValue(0, 1, 21);
+        data.setValue(1, 0, 'BMW');
+        data.setValue(1, 1, 8);
+        data.setValue(2, 0, 'Ford');
+        data.setValue(2, 1, 2);
+        data.setValue(3, 0, 'GM');
+        data.setValue(3, 1, 50);
+        data.setValue(4, 0, 'Volkswagen');
+        data.setValue(4, 1, 9);
+
+        var chart = new google.visualization.PieChart(document.getElementById('chart_manufacturer'));
+        chart.draw(data, {width: 350, height: 200, title: 'Vehicle Manufacturers'});
+      }
+</script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Navigation System');
+        data.addColumn('number', 'Unique Systems');
+        data.addRows(4);
+        data.setValue(0, 0, 'Other');
+        data.setValue(0, 1, 5);
+        data.setValue(1, 0, 'Magellan');
+        data.setValue(1, 1, 5);
+        data.setValue(2, 0, 'nuvi');
+        data.setValue(2, 1, 182);
+        data.setValue(3, 0, 'TomTom');
+        data.setValue(3, 1, 34);
+
+        var chart = new google.visualization.PieChart(document.getElementById('chart_nav'));
+        chart.draw(data, {width: 350, height: 200, title: 'Navigation Systems'});
+      }
+</script>
+
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="right"><img src="/images/research/streetsweep1.jpg" alt="Logo" /></span>
+<h1>Overview</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;One of the biggest problems I had during the
+development of <a href="/software/bluelog.shtml">Bluelog</a> was the simple
+act of testing new versions. I had collected a small army of Bluetooth devices
+via yard sales, eBay, and Craigslist, but even with them all on I couldn't break
+more than 20 simultaneously discoverable devices. This forced me to take a lot
+of trips to local malls during peak shopping hours, but this got pretty annoying
+very quickly. Driving 20 minutes each way and hoping for the best (I never knew
+if I would get 20 or 200 devices logged) made this impractical for serious
+development.
+<p>
+Around the time I started working heavily on Bluelog 0.9.9, I was made aware of
+the concept of 
+<a href="http://tpa-na.com/traffic_monitoring.html" target="_blank">Bluetooth traffic monitoring</a>,
+wherein Bluetooth scanners are deployed on the side of busy streets to estimate
+the number and speed of vehicles passing by. Reading about this technology made
+me realize that I was going about this whole thing the wrong way; why chase
+around Bluetooth devices when I could simply wait for them to drive by?
+<p>
+<i>Operation Street Sweep</i> was my attempt at capitalizing on this concept by
+deploying a long-term Bluetooth monitoring station in an urban environment to
+collect large amounts of real-world data. The project ran from May 5th, 2011 to
+May 10th, 2011 in Eastern Pennsylvania, generating data which proved invaluable
+during the development of Bluelog.
+<h1>Hardware Setup</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The hardware setup for this project consisted of
+a TP-LINK MR-3220 running OpenWRT Backfire and the
+<a href="/hardware/hostxr.shtml">AIRcable Host XR</a> coupled with a 9 dBi
+omnidirectional antenna. The MR-3220 was chosen simply because it was the
+cheapest OpenWRT-compatible router that featured a USB port. Any OpenWRT
+device with a USB port and BlueZ installed should be compatible with Bluelog,
+and I have received reports of it running successfully on the Buffalo
+WZR-HP-G300NH and the Ubiquiti RouterStation Pro.
+<p>
+<span class="center"><img src="/images/research/streetsweep2.jpg" alt="Setup" /></span>
+<p>
+The equipment was placed in the windowsill, within range of a busy intersection
+and shopping plaza. This proved to be an ideal location, as it was able to scan
+cars sitting at the intersection and anyone who stopped to enter one of the
+stores. If there was any downside to this location, it was that so many of the
+targets were passing through the intersection as part of a daily commute. This
+means that the same targets would pop up every 8 hours or so as they went back
+and forth between their homes and jobs. This is an interesting avenue of
+research in itself, but unfortunately was not the goal of this project.
+<h1>Lessons Learned</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;During the course of this project, a number of
+unexpected complications arose which made things slightly more difficult than
+I anticipated. Of course, these issues are themselves important pieces of
+data and will be taken into account during future large-scale scanning
+projects.
+<p>
+<i>Operation Street Sweep</i> was made possible by, in large part, the porting
+of Bluelog to <a href="http://www.openwrt.org" target="_blank">OpenWRT</a>. The
+immediate advantages of use OpenWRT was clear: low energy consumption, compact
+size, silent operation, etc. One thing I didn't take into account was the
+increased development effort required in terms of processor and memory
+optimizations. For example, running Bluelog on a device with only 32 MB of RAM
+made memory leaks much more obvious. A memory leak which affected earlier
+versions of Bluelog was only made apparent when Bluelog was found to be consuming
+nearly 50% of the device's free RAM after running for 12 hours.
+<p>
+After I got Bluelog running reliably for longer than 12 hours, a new issue came to
+light which never occurred during my previous tests. It turned out that, after
+logging 200 - 300 devices, Bluelog would start to re-log them as if they were new
+discoveries. I spent a few days tracking down the bug which was causing this issue,
+only to discover a fairly obvious mistake on my part in a piece of code which I
+thought was done 4 months ago.
+<p>
+With the two software issues out of the way, and Bluelog finally ready to embark
+on a long-term mission, it was the hardware setup's turn to give me a problem.
+As it turns out, the Host XR with a 9 dBi antenna is able to jam WiFi
+communications at close range. This simple fact made it occasionally difficult
+to communicate with the MR-3220 during active scanning. At first I was unsure
+about how to approach the problem, as unplugging the Host XR would obviously
+cause the scan to fail and crash Bluelog. In the end, I had to remove the
+antenna from the Host XR each time I wanted to download the log files from the
+MR-3220. This kept the scan running, but minimized the Host XR's jamming
+ability. In the future, a more directional antenna pointed at the target zone
+could be used to minimize the adverse effects of the AIRcable's output energy,
+and should additionally improve range and scanning accuracy. Naturally, I could
+also use Ethernet to connect to the MR-3220 rather than WiFi, if the situation
+allows it.
+<p>
+This project brought to light issues which I might never have discovered
+otherwise, proving just as useful as the data that it would eventually return.
+The limitations imposed by the embedded hardware and the rigors of running
+unattended for 120+ hours necessitated code optimizations and fixes which
+benefit all Bluelog users, regardless of platform. The problems stemming from
+the AIRcable's effect on local wireless communications also proved an interesting
+example of how Bluetooth could be used in a non-conventional DoS against other
+forms of communication.
+<h1>Resulting Data</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;While the problems that were discovered and fixed
+during <i>Operation Street Sweep</i> were extremely beneficial to the further
+development of Bluelog, the goal of this project was always to collect
+real-world data about discoverable Bluetooth devices in a typical urban environment.
+One of the biggest misconceptions about Bluetooth security is that there aren't that
+many active Bluetooth devices in the wild, and I hope that projects like
+<i>Operation Street Sweep</i> can help set the record straight.
+<p>
+During the 5 day mission, Bluelog was able to successfully log 1,776 unique
+devices. In addition, a further 820 were logged with partial data (due most
+likely to fast moving vehicles). There are still improvements I can make to
+the scanning code, but I think the results are fairly impressive and show that
+an exploitable ecosystem of Bluetooth devices is out there waiting.
+<p>
+<b>Results:</b> (<a href="ftp://ftp.digifail.com/downloads/research/streetsweep/sweep_log.txt">Direct Download</a>)
+<pre><code>00:00:A0:2C:0C:2F,0x520204,SANYO KATANA I
+00:00:A0:2F:E2:9C,0x520204,SANYO SCP-7050
+00:00:A0:64:5A:3B,0x5a0204,SANYO KATANA Eclipse X
+00:00:A0:68:68:92,0x520204,Big Man John
+00:02:78:33:33:33,0x001f00,BTGPS
+00:02:C7:72:CB:B6,0x1c010c,CI-5IKYA61431E1
+00:02:C7:EE:13:FF,0x340408,Pioneer BT unit
+00:02:C7:EE:25:61,0x340408,Pioneer BT unit
+00:02:C7:F8:09:17,0x300408,PIONEER NAVI
+00:03:6E:21:CA:32,0x140680,TALLY-7
+00:03:7A:1A:1C:57,0x040680,XXXX08-43-5320
+00:03:7A:30:E1:12,0x040680, XXRC06-31-5086
+00:03:7A:6C:4E:C5,0x040680,TERC08-37-5077
+00:03:7A:C8:44:9E,0x1c010c,NJMLLPANXP347
+00:03:7A:C8:46:FF,0x00010c,TUSPA02SLKME01P
+00:03:7A:ED:56:C6,0x1c010c,TUSPA02SLKME01Y
+00:05:4F:00:E8:BE,0x200408,nuvi #3683180296
+00:05:4F:00:E9:F3,0x200408,Anju
+00:05:4F:03:79:E3,0x300404,StreetPilot 2820
+00:05:4F:03:CC:4D,0x280408,nuvi 765 #3681381097
+00:05:4F:03:DA:3B,0x200408,nuvi 2x5 #3681680391
+00:05:4F:04:65:9A,0x300408,nuvi #3684240091
+00:05:4F:04:90:1B,0x200408,nuvi #3681441542
+00:05:4F:0C:2B:B7,0x300408,StreetPilot c5 #3191220682
+00:05:4F:0C:AC:3C,0x300408,StreetPilot c550 #3314050419
+00:05:4F:0C:F4:90,0x200408,Sam
+00:05:4F:10:12:03,0x200408,nuvi #3691502128
+00:05:4F:14:FA:0A,0x300408,Big CJ Day!!!
+00:05:4F:15:47:C1,0x300408,Where2
+00:05:4F:15:BA:D8,0x300408,StreetPilot c550 #3332661443
+00:05:4F:1D:36:EA,0x300408,nuvi #3252821346
+00:05:4F:20:2B:3B,0x300408,nuvi #3333070370
+00:05:4F:20:B9:08,0x300408,nuvi #3335731342
+00:05:4F:21:41:21,0x300408,StreetPilot c550 #3342510446
+00:05:4F:22:6A:E8,0x300408,
+00:05:4F:26:86:21,0x300408,nuvi #3469021253
+00:05:4F:26:8F:74,0x300408,nuvi #3469040947
+00:05:4F:27:B0:38,0x300408,Where2
+00:05:4F:28:7D:07,0x300408,nuvi #3350151965
+00:05:4F:29:08:1C,0x300408,GPS
+00:05:4F:2A:48:53,0x300408,nuvi #3355580795
+00:05:4F:2C:01:EF,0x300408,StreetPilot c550 #3358202958
+00:05:4F:30:D4:66,0x300408,nuvi #3376832457
+00:05:4F:32:5F:BF,0x300408,StreetPilot c5 #3382162600
+00:05:4F:32:CB:3D,0x300408,StreetPilot c5 #3385750845
+00:05:4F:33:87:85,0x300408,len Nuvi
+00:05:4F:35:95:E4,0x300408,nuvi 7 #3378411174
+00:05:4F:3A:18:C4,0x300408,nuvi 7 #3383391563
+00:05:4F:3A:28:AC,0x300408,nuvi 7 #3383130521
+00:05:4F:3B:70:7C,0x300408,StreetPilot c5 #3393880369
+00:05:4F:3B:71:28,0x300408,StreetPilot c5 #3393880541
+00:05:4F:3C:69:3C,0x300408,nuvi 7 #3386010805
+00:05:4F:3F:26:F8,0x300408,nuvi #3392742781
+00:05:4F:3F:41:16,0x300408,VOID
+00:05:4F:3F:F6:1B,0x300408,nuvi #3396830537
+00:05:4F:40:DF:56,0x300408,nuvi #3400596990
+00:05:4F:40:F3:1C,0x300408,nuvi #3400611323
+00:05:4F:41:92:F8,0x300408,nuvi 7 #3398481247
+00:05:4F:42:B1:AA,0x300408,nuvi #3404674809
+00:05:4F:43:85:E8,0x300408,StreetPilot c5 #3423660189
+00:05:4F:44:DC:EF,0x300408,nuvi 7 #3402682960
+00:05:4F:44:DC:FE,0x300408,nuvi 7 #3402682975
+00:05:4F:45:FE:35,0x300408,nuvi #3413141911
+00:05:4F:47:C5:CB,0x200408,nuvi #3693341226
+00:05:4F:48:2E:2F,0x300408,kia
+00:05:4F:49:EC:2D,0x300408,nuvi 7 #3410451231
+00:05:4F:4A:42:3A,0x300408,nuvi #3465160765
+00:05:4F:4C:37:EF,0x200408,nuvi 2x5 #36941120501234lgcf360
+00:05:4F:4D:6E:B0,0x300408,Where2 #3434464536
+00:05:4F:4E:BE:ED,0x280408,nüvi 765 #3698360202
+00:05:4F:57:D8:EA,0x200408,nuvi #3703282277
+00:05:4F:57:FA:85,0x200408,RoadTunes
+00:05:4F:58:08:64,0x200408,nuvi 2x5 #3509870435
+00:05:4F:59:7B:4E,0x200408,Lilly2159109144
+00:05:4F:5A:44:FB,0x200408,nuvi 2x5 #3699102185
+00:05:4F:5B:0D:85,0x300408,nuvi 7 #3468760852
+00:05:4F:5B:D7:B4,0x300408,nuvi 7 #3480720771
+00:05:4F:5C:EF:7C,0x300408,Zumo #3673210447
+00:05:4F:5D:43:5C,0x300408,nuvi #3483140133
+00:05:4F:5E:7C:0F,0x200408,nuvi 2x5 #3704420055
+00:05:4F:5E:B1:80,0x300408,nuvi #3708600904
+00:05:4F:61:16:F4,0x200408,nuvi 2x5 #3708551228
+00:05:4F:62:82:25,0x300408,nuvi 7 #3508152910
+00:05:4F:63:A0:62,0x300408,nuvi 7 #3517090818
+00:05:4F:64:B0:A0,0x200408,nuvi 2x5 #3526092836
+00:05:4F:64:C0:20,0x200408,nuvi 2x5 #3525732258
+00:05:4F:65:E4:16,0x300408,nuvi 7 #3522790581
+00:05:4F:66:8F:F8,0x200408,Samsungx
+00:05:4F:66:C1:5A,0x200408,nuvi 2x5 #3523212728
+00:05:4F:68:40:F7,0x300408,nuvi 7 #3525281100
+00:05:4F:69:47:40,0x200408,nuvi 2x5 #3524901183
+00:05:4F:6A:8E:11,0x200408,nuvi 2x5 #3537490390
+00:05:4F:6A:BB:5D,0x200408,nuvi 2x5 #3537510115
+00:05:4F:6C:FA:80,0x300408,nuvi 7 #3554940710
+00:05:4F:6D:B0:47,0x200408,nuvi
+00:05:4F:6D:ED:4F,0x200408,nuvi 2x5 #3540942901
+00:05:4F:6E:37:5B,0x200408,nuvi #3617153202
+00:05:4F:6E:CD:7C,0x280408,nüvi 785 #3708711980
+00:05:4F:6E:FD:9C,0x200408,nuvi 2x5 #3714491679
+00:05:4F:70:2D:8C,0x200408,nuvi #3612491621
+00:05:4F:71:70:62,0x200408,nuvi 2x5 #3564900212
+00:05:4F:72:4F:CB,0x200408,nuvi 2x5 #3547991294
+00:05:4F:72:58:33,0x200408,nuvi 2x5 #3551090165
+00:05:4F:72:C3:48,0x200408,nuvi 2x5 #3550532896
+00:05:4F:76:5A:1F,0x200408,nuvi 2x5 #3565711844
+00:05:4F:77:76:FC,0x200408,nuvi #3632641176
+00:05:4F:77:E3:88,0x200408,nuvi #3648631209
+00:05:4F:78:6A:C1,0x300408,nuvi 7 #3583431588
+00:05:4F:78:E4:FB,0x200408,nuvi 2x5 #3716050094
+00:05:4F:79:68:2E,0x200408,nuvi 2x5 #3581131883
+00:05:4F:79:72:C5,0x200408,nuvi 2x5 #3581060829
+00:05:4F:79:84:0A,0x200408,nuvi 2x5 #3582400936
+00:05:4F:79:8F:F1,0x200408,GPS
+00:05:4F:79:F4:FE,0x200408,nuvi 2x5 #3583461081
+00:05:4F:7C:22:6F,0x200408,nuvi 2x5 #3714592931
+00:05:4F:7D:04:4A,0x200408,nuvi 2x5 #3583971994
+00:05:4F:7E:6A:8D,0x200408,nuvi #3678620780
+00:05:4F:7E:7F:2A,0x200408,nuvi 2x5 #3719622180
+00:05:4F:7E:CE:F7,0x200408,nuvi 2x5 #3719570342
+00:05:4F:81:38:67,0x200408,Rach Cell
+00:05:4F:81:D9:9B,0x200408,nuvi 2x5 #3719590193
+00:05:4F:82:10:BE,0x200408,nuvi 2x5 #3603161243
+00:05:4F:82:38:8E,0x200408,nuvi 2x5 #3608782289
+00:05:4F:82:3D:F8,0x200408,nuvi 2x5 #3608800012
+00:05:4F:82:66:2A,0x200408,nuvi 2x5 #3607440350
+00:05:4F:86:0C:B4,0x200408,nuvi #3723703137
+00:05:4F:86:BA:04,0x200408,nuvi 2x5 #3730360772
+00:05:4F:86:C0:BA,0x200408,nuvi 2x5 #3730362490
+00:05:4F:87:83:39,0x200408,nuvi 2x5 #3632480064
+00:05:4F:89:CA:DE,0x200408,nuvi #3737541891
+00:05:4F:8A:5F:C5,0x200408,nuvi 2x5 #3634821096
+00:05:4F:8A:A6:5E,0x200408,nuvi 2x5 #3639940888
+00:05:4F:8A:EB:60,0x200408,nuvi 2x5 #3642031213
+00:05:4F:8B:6A:0B,0x280408,nüvi 765 #3644181812
+00:05:4F:8C:07:6B,0x200408,nuvi 265 Napoli
+00:05:4F:8C:16:5A,0x200408,nuvi 2x5 #3639721960
+00:05:4F:8C:73:7B,0x200408,nuvi 2x5 #3643771398
+00:05:4F:8C:75:CD,0x200408,nuvi 2x5 #3643771992
+00:05:4F:8C:A3:78,0x200408,nuvi 2x5 #3647310117
+00:05:4F:8D:60:3B,0x200408,nuvi 2x5 #3668202656
+00:05:4F:8E:B2:BE,0x200408,nuvi #3675631484
+00:05:4F:90:D7:B1,0x200408,nuvi 2x5 #3657852150
+00:05:4F:91:12:71,0x280408,nuvi 765 #3651560934
+00:05:4F:92:45:EE,0x200408,nuvi 2x5 #3658832110
+00:05:4F:93:B1:35,0x200408,nuvi 2x5 #3668030851
+00:05:4F:94:83:BD,0x200408,nuvi 2x5 #3737411924
+00:05:4F:94:A6:73,0x200408,nuvi 1390
+00:05:4F:95:03:40,0x280408,nüvi 785 #3672580288
+00:05:4F:95:25:73,0x280408,nüvi 765 #3672710379
+00:05:4F:95:B1:3A,0x200408,nuvi 2x5 #3740480158
+00:05:4F:95:E8:E9,0x200408,nuvi 2x5 #3740001069
+00:05:4F:96:05:2F,0x200408,nuvi 2x5 #3671611057
+00:05:4F:96:4E:C1,0x200408,nuvi 2x5 #3671620716
+00:05:4F:96:9B:F8,0x200408,nuvi 2x5 #3676561922
+00:05:4F:97:43:CD,0x200408,nuvi 2x5 #3740501578
+00:05:4F:97:D2:4F,0x200408,nuvi 2x5 #3745340870
+00:05:4F:97:D7:58,0x200408,nuvi 2x5 #3745342159
+00:05:4F:98:5B:A0,0x200408,nuvi 2x5 #3744470803
+00:05:4F:98:68:AA,0x200408,nuvi 2x5 #3745380215
+00:05:4F:99:26:B9,0x200408,nuvi 2x5 #3745480071
+00:05:4F:99:62:E1,0x200408,nuvi 2x5 #3745612456
+00:05:4F:99:63:A4,0x200408,nuvi 2x5 #3745612651
+00:05:4F:9A:01:26,0x200408,nuvi 2x5 #3752892169
+00:05:4F:9A:C6:03,0x200408,nuvi 2x5 #3755880520
+00:05:4F:9B:2A:6A,0x200408,nuvi 2x5 #3755970164
+00:05:4F:9B:FC:D1,0x280408,nuvi 765 #3758911208
+00:05:4F:9D:5D:5D,0x200408,nuvi 2x5 #3762100697
+00:05:4F:9D:A0:AE,0x200408,nuvi #3766200129
+00:05:4F:A1:72:31,0x200408,nuvi 2x5 #3777852795
+00:05:4F:A1:D7:D9,0x200408,nuvi #3800159708
+00:05:4F:A4:1B:17,0x200408,nuvi #3801212688
+00:05:4F:A4:90:0C,0x200408,nuvi #3801370675
+00:05:4F:A6:EF:3F,0x200408,nuvi #3802314511
+00:05:4F:A7:DB:37,0x200408,nuvi 2x5 #3802663798
+00:05:4F:A8:E4:E8,0x200408,nuvi #3802924733
+00:05:4F:AA:50:45,0x200408,nuvi #3803478482
+00:05:4F:AA:5A:B8,0x200408,nuvi #3803481158
+00:05:4F:AB:52:12,0x200408,nuvi #3803848916
+00:05:4F:AD:02:DE,0x200408,nuvi #3804469603
+00:05:4F:AE:56:46,0x200408,nuvi 2x5 #3804980218
+00:05:4F:B2:22:9E,0x200408,Ger's GPS
+00:05:4F:B2:77:6A,0x200408,nuvi #3806736490
+00:05:4F:B2:7B:E7,0x200408,nuvi #3806737639
+00:05:4F:B4:50:EA,0x200408,nuvi #3807471696
+00:05:4F:B4:59:D1,0x200408,Josh GPS
+00:05:4F:B4:80:26,0x200408,nuvi #3807605817
+00:05:4F:B5:EB:53,0x200408,nuvi #3808169576
+00:05:4F:B7:2B:8C,0x200408,nuvi 2x5 #3808447435
+00:05:4F:B7:30:67,0x200408,nuvi #3808596182
+00:05:4F:B7:7C:C5,0x200408,nuvi 2x5 #38086577721
+00:05:4F:B7:7F:2B,0x200408,nuvi 2x5 #3808658386
+00:05:4F:B9:6B:8B,0x200408,nuvi #3809483001
+00:05:4F:B9:8E:44,0x200408,nuvi #3809691187
+00:05:4F:B9:C6:FD,0x200408,nuvi #3809802990
+00:05:4F:B9:CB:87,0x200408,nuvi #3809804152
+00:05:4F:B9:D3:7C,0x200408,nuvi #3809806189
+00:05:4F:BB:F3:CD,0x200408,nuvi #3810783028
+00:05:4F:BB:F4:78,0x200408,nuvi #3810783199
+00:05:4F:BB:FE:55,0x200408,nuvi #3810785724
+00:05:4F:BC:7C:91,0x200408,nuvi 2x5 #3811011961
+00:05:4F:BC:85:60,0x200408,nuvi #3811033344
+00:05:4F:BD:D0:8F,0x200408,nuvi 2x5 #3811519449
+00:05:4F:BE:60:A3,0x200408,nuvi 2x5 #3811762386
+00:05:4F:BE:BA:02,0x200408,nuvi #3811808378
+00:05:4F:BE:FF:7B,0x200408,nuvi 2x5 #3811967441
+00:05:4F:C2:BD:BC,0x200408,nuvi 2x5 #3813397361
+00:05:4F:C2:C3:BA,0x200408,nuvi 2x5 #3813398895
+00:05:4F:C3:C8:39,0x200408,nuvi 2x5 #3813779187
+00:05:4F:C3:FF:5A,0x200408,nuvi 2x5 #3813831046
+00:05:4F:C5:08:4C,0x200408,nuvi #3814125158
+00:05:4F:C5:45:E3,0x200408,nuvi #3814214509
+00:05:4F:C5:58:92,0x200408,nuvi 2x5 #3814232850
+00:05:4F:C5:B3:7A,0x200408,nuvi 
+00:05:4F:C5:E5:E1,0x200408,nuvi #3814343958
+00:05:4F:C6:0D:64,0x200408,nuvi #3814382891
+00:05:4F:C6:7F:88,0x200408,nuvi #3814504333
+00:05:4F:C7:E5:7A,0x200408,nuvi 2x5 #3814730926
+00:05:4F:C8:34:62,0x200408,nuvi 2x5 #3814871825
+00:05:4F:C8:C1:28,0x200408,nuvi #3815080424
+00:05:4F:CA:01:0B,0x200408,nuvi #3815383771
+00:05:4F:CA:6C:1E,0x200408,nuvi 2x5 #3815431517
+00:05:4F:CA:E0:04,0x200408,nuvi 2x5 #3815537499
+00:05:4F:CA:E1:2D,0x200408,nuvi 2x5 #3815537796
+00:05:4F:CC:1E:91,0x200408,nuvi #3815878568
+00:05:4F:CD:4B:4E,0x200408,nuvi #3816233405
+00:05:4F:CF:36:5F,0x200408,nuvi 2x5 #3816871854
+00:05:4F:CF:50:09,0x200408,nuvi #3816893948
+00:05:4F:CF:65:DB,0x200408,nuvi #3816923695
+00:05:4F:D1:28:20,0x200408,nuvi 2x5 #3817498450
+00:05:4F:D5:20:EA,0x200408,nuvi #3818150956
+00:05:4F:D5:44:2D,0x200408,nuvi #3818157329
+00:05:4F:D6:46:A8,0x200408,nuvi #3819178492
+00:05:4F:D6:4A:4B,0x300408,Zumo #3818738985
+00:05:4F:D8:4F:61,0x200408,nuvi #3819321130
+00:06:66:01:7D:13,0x040680,PB42-26020923305
+00:06:66:01:80:5B,0x040680,PB42-02110914257
+00:06:66:02:DD:CD,0x040680,PB42-26020923044
+00:06:66:03:09:B3,0x040680,PB42-26020923235
+00:06:66:03:33:F6,0x040680,PB42-00721023145
+00:06:66:03:58:19,0x040680,PB42-34520923072
+00:07:BA:F9:9A:0A,0x4a0204,Zell loc
+00:07:BA:FD:27:94,0x4a0204,Reas
+00:08:1B:82:6C:FD,0x080428,Motorola D650
+00:08:36:17:E9:EF,0x200408,LAND ROVER
+00:08:3B:17:2A:D1,0x200408,LAND ROVER
+00:08:E0:15:3F:1A,0x200404,Car08f
+00:09:2D:FB:E4:F3,0x7a020c,T-Mobile52
+00:0A:30:2D:FB:8B,0x300408,HandsFreeLink TM
+00:0B:24:CC:84:3B,0x340408,SONATA
+00:0D:18:A0:00:6D,0x240404,ROSEN
+00:0D:18:A0:00:AF,0x240404,MD
+00:0D:18:A0:04:56,0x240404,ROSEN
+00:0D:18:A0:11:05,0x240404,ROSEN
+00:0D:18:A0:99:56,0x240404,BLU Logic 1111
+00:0D:18:A0:BC:1F,0x240404,BLU Logic 1011
+00:0D:18:A0:C6:67,0x240404,BLU Logic 1211
+00:0D:18:A1:53:15,0x240404,BLU Logic 1211
+00:0D:18:A1:59:B7,0x240404,BLU Logic 1211
+00:0D:18:A1:B1:61,0x240404,BLU Logic 1211
+00:0D:18:A2:70:1D,0x240404,BLU Logic 1211
+00:0D:18:A2:8C:F9,0x240404,BLU Logic 1211
+00:0D:18:A2:D5:5D,0x240404,BLU Logic 1211
+00:0D:18:A2:E0:F7,0x240404,BLU Logic 1311
+00:0D:18:A2:E2:77,0x240404,BLU Logic 1311
+00:0D:18:A2:E2:D1,0x240404,BLU Logic 1311
+00:0D:18:A2:EB:80,0x240404,BLU Logic 1311
+00:0D:18:A2:ED:21,0x240404,BLU Logic 1311
+00:0D:18:A2:FB:DE,0x240404,BLU Logic 1311
+00:0D:18:A2:FE:45,0x240404,BLU Logic 1311
+00:0D:18:A3:37:3C,0x240404,BLU Logic 1311
+00:0E:9F:15:52:F2,0x200408,Audi UHV 8914
+00:0E:9F:29:44:8D,0x200408,Audi UHV 5006
+00:0E:9F:29:5A:6F,0x200408,Audi UHV 1685
+00:0E:9F:61:B3:26,0x200408,Audi UHV 3770
+00:0E:9F:66:C5:5D,0x200408,Audi UHV 2896
+00:0E:9F:67:92:24,0x200408,Audi UHV 6572
+00:0E:9F:6F:05:A3,0x200408,Volkswagen
+00:0E:9F:70:FF:9C,0x200408,Audi UHV 3854           
+00:0E:9F:71:D0:BA,0x200408,VOID
+00:0E:9F:72:49:93,0x200408,Volkswagen
+00:0E:9F:74:CC:FD,0x200408,Volkswagen
+00:0E:9F:76:64:26,0x200408,Volkswagen
+00:0E:9F:77:07:EE,0x200408,Volkswagen
+00:0E:9F:77:9B:62,0x200408,Volkswagen
+00:0E:9F:7A:31:EF,0x200408,Volkswagen
+00:0E:9F:7B:15:82,0x200408,Volkswagen
+00:0E:9F:7C:9D:4B,0x200408,Volkswagen
+00:0E:9F:7D:85:4D,0x200408,Audi UHV 7268           
+00:0E:9F:88:89:A6,0x300408,Audi MMI 4946
+00:0E:9F:98:6B:4C,0x300408,Audi MMI 6817
+00:0E:9F:99:64:CF,0x300408,Audi MMI 3615
+00:0E:9F:9A:33:E4,0x300408,Audi MMI 4709
+00:0E:9F:9B:9F:0E,0x300408,Audi MMI 1093
+00:0E:9F:9B:CB:8D,0x300408,Audi MMI 0285
+00:0E:9F:9C:77:27,0x300408,Audi MMI 9297
+00:0E:9F:9E:3B:EE,0x300408,Audi MMI 2913
+00:0E:9F:A9:CB:22,0x200408,Audi UHV 5445           
+00:0E:9F:B4:FB:20,0x300408,Audi MMI 2774
+00:0E:9F:B5:27:5F,0x300408,Audi MMI 1998
+00:0F:E4:2B:67:A7,0x520204,C520
+00:0F:E4:2B:DB:F4,0x520204,C520
+00:0F:E4:3E:6E:51,0x520204,C520
+00:0F:E4:5E:E8:37,0x520204,Hunter
+00:0F:E4:61:78:63,0x5a0204,C740
+00:0F:E4:66:D0:BD,0x5a0204,C740
+00:0F:E4:6B:B3:BC,0x520204,C520
+00:0F:E4:6B:C9:50,0x520204,C520
+00:0F:E4:6D:D7:9D,0x5a0204,C740
+00:0F:E4:70:61:FF,0x5a0204,C740
+00:0F:E4:74:E4:BC,0x5a0204,C740
+00:0F:E4:78:BA:27,0x520204,C520
+00:0F:E4:78:BF:05,0x520204,Kpunk
+00:0F:E4:83:45:1B,0x580204,Maddie (:
+00:0F:E4:83:71:1F,0x5a0204,Megan (:
+00:0F:E4:88:F5:BD,0x5a0204,P2000
+00:0F:E4:8C:70:53,0x5a0204,C790
+00:10:0F:E8:4B:5F,0x200408,LAND ROVER
+00:10:11:E8:B0:80,0x200408,LAND ROVER
+00:10:14:E8:2B:03,0x200408,LAND ROVER
+00:10:18:1A:98:5B,0x320110,Pocket_PC
+00:10:2D:E8:86:EB,0x200408,LAND ROVER
+00:10:40:E8:DA:98,0x200408,LAND ROVER
+00:10:49:E8:FA:B3,0x200408,LAND ROVER
+00:10:60:D0:DF:9E,0x240404,JVC Unit
+00:10:78:E8:95:F7,0x200408,LAND ROVER
+00:10:86:E8:38:94,0x200408,LAND ROVER
+00:10:A0:E8:53:DF,0x200408,LAND ROVER
+00:12:1C:04:96:63,0x300408,Parrot 3200LS
+00:12:1C:24:6F:0C,0x300408,Parrot CK3100
+00:12:1C:51:0E:4D,0x200408,Parrot v5.23C
+00:12:1C:5A:7B:0C,0x240408,Parrot MKi9100
+00:12:1C:69:FF:96,0x300408,Parrot CK3100
+00:12:1C:93:0D:9A,0x300408,KENWOOD BT CD/R-3P1
+00:12:1C:93:B1:F4,0x300408,AVH-P5200BT
+00:12:1C:93:F4:0D,0x300408,MVH-P8200BT
+00:12:1C:95:A9:29,0x340408,PIONEER NAVI
+00:12:1C:98:4D:AB,0x340408,VW PHONE
+00:12:1C:A4:31:60,0x200408,Parrot 3200LS
+00:12:1C:A4:A1:56,0x300408,ALPINE CDE-103BT
+00:12:1C:A4:D1:77,0x300408,KENWOOD BT CD/R-3P1
+00:12:1C:A4:D7:51,0x300408,KENWOOD BT CD/R-3P1
+00:12:1C:A9:07:E7,0x200408,Parrot 3200LS
+00:12:1C:AC:57:A8,0x300408,ALPINE CDE-103BT
+00:12:1C:DE:5C:04,0x340408,KCA-BT200
+00:12:1C:F2:C3:72,0x340408,KCA-BT200
+00:12:1C:F6:FC:A1,0x340408,KCA-BT200
+00:12:1C:FF:CA:E0,0x300408,AVH-P3200BT
+00:12:47:00:00:01,0x5a0204,SGH-A867
+00:12:47:76:FC:9E,0x400204,SCH-A950
+00:12:EE:C4:14:46,0x520204,Z520a
+00:12:F3:0B:04:43,0x000000,Wolf
+00:12:F3:0C:4F:5C,0x000000,al gian
+00:13:04:84:CD:BC,0x240404,CAR KIT
+00:13:6C:05:2F:6F,0x001f00,TomTom GO 300
+00:13:6C:17:B9:C5,0x001f00,TomTom ONE
+00:13:6C:18:0E:25,0x001f00,TomTom ONE
+00:13:6C:1A:B4:27,0x001f00,TomTom ONE XL
+00:13:6C:1E:90:9F,0x001f00,TomTom ONEv4
+00:13:6C:1E:BA:97,0x001f00,TomTom ONEv4
+00:13:6C:1F:97:17,0x001f00,TomTom ONE XL
+00:13:6C:26:1C:0F,0x001f00,TomTom ONE
+00:13:6C:27:91:F7,0x001f00,TomTom ONEv4
+00:13:6C:40:02:2D,0x001f00,TomTom ONE
+00:13:6C:40:98:C8,0x001f00,TomTom ONEv4
+00:13:6C:44:86:27,0x001f00,VOID
+00:13:6C:4B:EA:82,0x001f00,TomTom GO 300
+00:13:6C:4C:1A:E1,0x001f00,TomTom GO 300
+00:13:6C:6E:2C:F4,0x001f00,TomTom ONE
+00:13:6C:7E:4E:0F,0x001f00,TomTom ONE
+00:13:6C:7E:9F:B3,0x001f00,TomTom ONE
+00:13:6C:8F:43:44,0x001f00,TomTom ONE XL
+00:13:6C:98:1C:A2,0x001f00,TomTom ONE XL
+00:13:6C:98:31:FE,0x001f00,TomTom ONE XL
+00:13:6C:9F:9B:FE,0x001f00,TomTom ONE XL
+00:13:6C:A1:F2:89,0x001f00,TomTom ONE XL
+00:13:6C:A3:93:A8,0x001f00,TomTom ONE XL
+00:13:6C:AF:10:C6,0x001f00,TomTom ONE XL
+00:13:6C:C0:61:EA,0x280408,TomTom GO 720
+00:13:6C:C0:BF:1D,0x280408,VOID
+00:13:6C:D8:D6:C2,0x240408,TomTom GO
+00:13:6C:DB:BD:E1,0x240408,TomTom GO 910
+00:13:6C:DC:B4:42,0x280408,TomTom GO
+00:13:6C:E2:85:01,0x280408,Debug GO 910
+00:13:6C:EE:3F:15,0x280408,TomTom GO 720
+00:13:6C:EE:E8:18,0x280408,TomTom GO 720
+00:14:60:9C:35:91,0x100204,SANYO SCP-2700
+00:14:60:9D:C0:29,0x520204,VOID
+00:14:60:9D:FC:C1,0x520204,SANYO KATANA LX
+00:14:60:EE:9E:DC,0x100204,Ada
+00:14:9A:EB:FA:6D,0x200408,BMW06106
+00:15:B9:A7:67:99,0x520208,SGH-D357
+00:15:D3:6A:69:B6,0x5a0204,Pam joyce
+00:15:D3:76:D1:29,0x5a0204,P7000
+00:15:D3:7C:F3:E5,0x5a0204,VOID
+00:15:D3:8C:7F:3B,0x5a0204,P7000
+00:15:D3:8D:E4:F6,0x5a0204,P2000
+00:15:D3:90:9E:31,0x5a0204,P7040
+00:15:D3:9B:61:E8,0x5a0204,Azz kiker
+00:15:D3:9D:25:EB,0x5a0204,C790
+00:16:09:C0:C8:FF,0x920100,WindowsCE
+00:16:41:B4:19:1A,0x5a010c,Hecate
+00:16:74:48:6F:84,0x700404,BlueAnt ST3
+00:16:74:4C:11:9A,0x700404,BlueAnt ST3
+00:16:74:4D:A2:9E,0x000000,BlueAnt ST3
+00:16:74:4E:A7:8E,0x700404,BlueAnt ST3
+00:16:74:50:58:B9,0x700404,BlueAnt ST3
+00:16:B8:EC:50:C4,0x520204,W300i
+00:16:D3:6A:66:A8,0x720408,Magellan GPS
+00:16:D3:6C:42:C1,0x722408,Magellan GPS
+00:16:D3:73:26:BB,0x720408,Magellan GPS
+00:16:D3:74:47:80,0x200408,NAVIGON
+00:16:DB:43:CA:CE,0x520204,SPH-A920
+00:17:00:B7:BD:02,0x200408,BMW51193
+00:17:4B:DC:06:03,0x520204,Nokia 6126
+00:17:4B:DC:06:0B,0x520204,Nokia 6126
+00:17:53:0B:92:89,0x300408,P1-0B9289
+00:17:53:0B:CD:D2,0x240408,NX500
+00:17:83:DD:EA:EF,0x5a020c,Pocket_PC
+00:17:84:3B:DC:95,0x200408,BMW11591
+00:17:84:55:30:32,0x200408,BMW41492
+00:17:84:56:3C:3C,0x200408,BMW52303
+00:17:84:56:E5:71,0x200408,BMW23606
+00:17:AC:01:9F:A6,0x040680,MP20706
+00:17:AC:01:AF:5D,0x040680,VOID
+00:17:AC:01:B5:5C,0x040680,PA04818
+00:17:AC:01:B5:EC,0x040680,MP24924
+00:17:AC:11:48:3D,0x040680,PG07563
+00:17:AC:11:A0:73,0x040680,McLane_DDH_MF4Te
+00:17:AC:11:A8:2F,0x040680,McLane_DDH_MF4Te
+00:17:E2:69:9C:D3,0x300408,Jaguar
+00:17:E3:21:37:F5,0x720204,VOID
+00:17:E6:43:10:1B,0x300204,VOID
+00:17:E6:BD:B6:C2,0x5a020c,T-Mobile_Wing
+00:17:E7:8D:B0:8A,0x000114,VOID
+00:18:6B:20:90:28,0x200404,LG HBM-230
+00:18:6B:9A:83:A8,0x200404,LG HBM-750
+00:18:6B:E5:10:37,0x200404,LG HBM-210
+00:18:8D:F7:D1:B8,0x520204,jps.nokia.6103
+00:18:AF:50:51:4E,0x520204,Terry
+00:18:AF:5F:94:7F,0x520204,SGH-D807
+00:18:C5:90:26:CA,0x520204,Nokia 6102i
+00:18:C5:AC:79:F7,0x5a0204,Nokia 6133
+00:18:E4:1A:D2:71,0x200404,VRBT400M
+00:19:95:00:B8:1E,0x240404,Alpine KCE-350BT
+00:19:A1:4B:7A:AB,0x500204,LG CU400
+00:19:A1:77:BE:0D,0x520204,LG CU400
+00:19:C0:63:11:C2,0x500204,UHI-SN5064
+00:19:C1:96:70:71,0x340408,RADIO
+00:19:C1:97:72:5C,0x340408,VOID
+00:19:C1:98:1F:F4,0x340408,Pioneer BT unit2
+00:19:C1:98:38:5C,0x340408,Pioneer BT unit2
+00:19:C1:98:40:A0,0x340408,Pioneer BT unit2
+00:19:C1:98:A0:14,0x340408,Pioneer BT unit2
+00:19:C1:EB:3E:19,0x300408,VOID
+00:19:C1:EB:D9:B2,0x300408,MB Bluetooth
+00:1A:0E:9A:CB:56,0x240404,Motorola S805
+00:1A:1B:DE:94:96,0x500204,UHI-SN4117
+00:1A:45:D6:EA:9C,0x200404,Motorola H700
+00:1A:7D:20:96:1A,0x200404,EM228
+00:1A:8A:70:9D:DD,0x5a2204,SPH-M610
+00:1A:8A:AD:4A:95,0x520204,SGH-D407
+00:1A:DC:A6:51:E1,0x520204,Nokia 6102i
+00:1A:DC:B6:FE:20,0x5a0204,Nokia 6085
+00:1B:52:85:3B:F3,0x300408,BMW14282
+00:1B:59:8D:E7:10,0x5a0204,K550i
+00:1B:98:6F:68:0B,0x500204,SAMSUNG SGH-T509
+00:1B:98:7B:C7:D9,0x720204,SPH-M30
+00:1B:AF:CD:A7:11,0x5a0204,Nokia 6555b
+00:1B:DA:00:3F:05,0x4a0204,GTX75
+00:1B:EE:79:79:16,0x5a0204,NOKIA6300
+00:1C:12:66:B1:8E,0x000408,General Motors
+00:1C:12:D0:AA:87,0x000408,General Motors
+00:1C:12:F2:9D:90,0x000408,General Motors
+00:1C:12:F3:22:29,0x000408,BMW 92156
+00:1C:43:0D:95:5B,0x5a0204,SGH-A707
+00:1C:43:1B:24:F9,0x5a0204,SGH-A707
+00:1C:62:53:1D:82,0x500204,Super1!
+00:1C:62:A7:91:E1,0x5a0204,Mom LG CU575 
+00:1C:9A:4F:56:FE,0x5a0204,Nokia 5300
+00:1C:C1:86:23:F9,0x7a020c,H500
+00:1C:CC:B0:A2:1B,0x7a020c,Jabra VBT
+00:1C:D4:5D:B0:08,0x5a0204,Nokia 6263
+00:1C:D4:6A:D7:6F,0x5a0204,Nokia 6133
+00:1C:D4:8C:40:56,0x520204,Nokia 6126
+00:1C:EE:B0:7A:F1,0x78020c,VOID
+00:1D:25:9D:D0:41,0x5e0204,Beat
+00:1D:6E:72:7B:67,0x520204,Nokia 2660
+00:1D:98:35:7F:20,0x5a0204,Katushca"Nokia 6300"
+00:1D:BA:5B:D1:E8,0x240404,KD-AVX40
+00:1D:BE:6F:86:63,0x7a020c,SmartPhone
+00:1D:BE:CE:D9:74,0x7a020c,WM_Nana_Ampons1
+00:1D:E9:BF:6A:89,0x5a0204,BASShead
+00:1D:F6:0D:D0:CC,0x5e0204,Beat
+00:1D:F6:8A:16:87,0x5a0204,SGH-T639
+00:1D:F6:9C:A2:11,0x720204,SPH-M300
+00:1D:F6:A1:7D:A6,0x5a0204,SGH-A737
+00:1D:F6:D9:6D:3E,0x5a0204,SGH-T639
+00:1E:45:1A:7C:3E,0x520204,Z310a
+00:1E:75:B8:2A:D1,0x520204,PLANTRONICS
+00:1E:75:FE:CB:15,0x5a0204,LG MUZIQ
+00:1E:7D:93:F9:54,0x180204,THEO
+00:1E:7D:D3:C2:CF,0x5a020c,Abhijit
+00:1E:8D:6A:72:DB,0x70020c,Sidekick Slide
+00:1E:A3:3D:6E:B9,0x5a0204,Nokia 5310 XpressMusic
+00:1E:A3:3D:CA:35,0x5a0204,William
+00:1E:A3:43:84:09,0x5a0204,Nokia 5310 XpressMusic
+00:1E:A3:8D:C7:34,0x5a0204,Nokia 6555b
+00:1E:AE:03:1E:12,0x300408,My Car
+00:1E:AE:03:88:1B,0x300408,My Car
+00:1E:AE:20:C0:4B,0x300408,My Car
+00:1E:AE:25:EB:A3,0x300408,LAND ROVER
+00:1E:AE:28:40:D3,0x300408,My Car
+00:1E:AE:2E:3B:09,0x300408,My Car
+00:1E:AE:2E:3B:5E,0x300408,VOID
+00:1E:AE:41:3D:15,0x300408,Jaguar
+00:1E:AE:44:26:C6,0x300408,My Car
+00:1E:AE:48:75:52,0x300408,My Car
+00:1E:AE:49:3F:97,0x300408,My Car
+00:1E:AE:49:7B:FA,0x300408,My Car
+00:1E:AE:4C:B4:A9,0x300408,My Car
+00:1E:AE:4E:59:71,0x300408,My Car
+00:1E:AE:4E:82:98,0x300408,My Car
+00:1E:AE:50:D8:D5,0x300408,Land Rover
+00:1E:AE:54:34:A9,0x300408,My Car
+00:1E:AE:57:C8:AB,0x300408,VOID
+00:1E:B2:0A:AC:18,0x200408,General Motors
+00:1E:B2:0A:E0:D7,0x200408,General Motors
+00:1E:B2:0C:90:E2,0x200408,General Motors
+00:1E:B2:0C:A2:A0,0x200408,General Motors
+00:1E:B2:1E:0A:BA,0x200408,General Motors
+00:1E:B2:20:4F:65,0x200408,General Motors
+00:1E:B2:20:65:37,0x200408,General Motors
+00:1E:B2:20:9B:9F,0x200408,General Motors
+00:1E:B2:21:30:6E,0x200408,General Motors
+00:1E:B2:21:AF:F3,0x200408,General Motors
+00:1E:B2:23:0F:E5,0x200408,General Motors
+00:1E:B2:23:14:7A,0x200408,General Motors
+00:1E:B2:23:49:B9,0x200408,General Motors
+00:1E:B2:23:4F:23,0x200408,General Motors
+00:1E:B2:23:4F:5F,0x200408,General Motors
+00:1E:B2:23:51:87,0x200408,General Motors
+00:1E:B2:23:8A:59,0x200408,General Motors
+00:1E:B2:23:D3:64,0x200408,General Motors
+00:1E:B2:23:F9:23,0x200408,General Motors
+00:1E:B2:24:00:EF,0x200408,General Motors
+00:1E:B2:24:1F:73,0x200408,VOID
+00:1E:B2:24:62:FE,0x200408,General Motors
+00:1E:B2:26:04:02,0x200408,General Motors
+00:1E:B2:26:BC:4F,0x200408,General Motors
+00:1E:B2:26:BD:86,0x200408,General Motors
+00:1E:B2:26:D0:96,0x200408,General Motors
+00:1E:B2:26:E7:0A,0x200408,General Motors
+00:1E:B2:29:08:15,0x200408,General Motors
+00:1E:B2:29:17:8D,0x200408,General Motors
+00:1E:B2:42:4D:02,0x200408,General Motors
+00:1E:B2:42:4D:6B,0x200408,General Motors
+00:1E:B2:43:03:D7,0x000408,Your Vehicle
+00:1E:B2:45:12:A0,0x200408,General Motors
+00:1E:B2:45:4F:32,0x200408,General Motors
+00:1E:B2:46:79:FC,0x200408,General Motors
+00:1E:B2:46:BA:E1,0x200408,General Motors
+00:1E:B2:46:C4:53,0x200408,General Motors
+00:1E:B2:47:6B:53,0x200408,General Motors
+00:1E:B2:47:74:B7,0x200408,General Motors
+00:1E:B2:47:DD:67,0x200408,General Motors
+00:1E:B2:48:81:DD,0x200408,General Motors
+00:1E:B2:48:95:73,0x200408,General Motors
+00:1E:B2:67:07:8C,0x200408,General Motors
+00:1E:B2:A0:82:FD,0x200408,General Motors
+00:1E:B2:A2:4A:D5,0x200408,Your Vehicle
+00:1E:B2:A6:00:9B,0x000408,Your Vehicle
+00:1E:DC:1D:F0:59,0x5a0204,Z750ajeslie
+00:1E:DC:57:E4:2E,0x5a0204,W580i
+00:1E:E1:6C:9C:FE,0x5a020c,SGH-i617
+00:1E:E1:9B:F2:6C,0x5a0204,SGH-A737
+00:1E:E1:9D:69:8A,0x180204,SGH-T439
+00:1E:E1:CD:55:E4,0x5a020c,SGH-i617
+00:1E:E2:91:12:9E,0x5a020c,mz.br3
+00:1F:01:82:00:F6,0x5a020c,Dad
+00:1F:01:B8:B5:4E,0x5a0204,Nokia 6085
+00:1F:01:BC:58:D7,0x5a0204,Nokia 6085
+00:1F:01:BC:C0:A1,0x5a0204,Nokia 6085
+00:1F:5C:D3:DC:A7,0x5a0204,Nokia 3110c
+00:1F:5D:01:F6:C5,0x5a0204,Nokia 5610 XpressMusic
+00:1F:5D:32:5E:B8,0x520204,Nokia 2760
+00:1F:5D:36:0F:87,0x520204,Nokia 2760
+00:1F:5D:36:BE:BB,0x520204,Nokia 276j..
+00:1F:5D:37:87:BA,0x520204,Nokia 2760
+00:1F:5D:37:9E:2D,0x520204,Nokia 2760
+00:1F:5D:37:EC:64,0x520204,Nokia 2760
+00:1F:6B:A2:EB:B9,0x520204,Debbie 
+00:1F:6B:AC:DB:AE,0x520204,LG RUMOR
+00:1F:6B:B7:42:99,0x520204,Plantronics
+00:1F:82:1C:86:19,0x340404,Motorola T325
+00:1F:82:1E:59:36,0x340404,Motorola T325
+00:1F:82:66:22:1B,0x400204,lester
+00:1F:82:FE:2E:86,0x400204,grams
+00:1F:82:FE:C6:35,0x400204,A300
+00:1F:BD:25:2A:F2,0x100204,Tina
+00:1F:BD:3C:88:AB,0x100208,KWC-M1400
+00:1F:BD:57:07:54,0x100204,Gskootxx12
+00:1F:BD:60:87:F7,0x100204,KWC-S2300
+00:1F:BD:62:08:A6,0x100204,KWC-S2300
+00:1F:BD:63:94:7C,0x100204,KWC-S2300
+00:1F:BD:63:EB:0C,0x100204,KWC-S2300
+00:1F:BD:69:CB:CE,0x100204,Kyocera
+00:1F:BD:6A:4C:88,0x100204,KWC-S2300
+00:1F:BD:71:12:E4,0x100208,Mando
+00:1F:BD:74:2E:DD,0x100204,Dopemans wife
+00:1F:BD:75:B0:CE,0x100204,KWC-S2300
+00:1F:BD:76:3D:CB,0x100204,KWC-S2300
+00:1F:BD:76:79:A2,0x100204,KWC-S2300
+00:1F:BD:76:7E:9B,0x100204,Jasmine
+00:1F:BD:76:C0:96,0x100204,Big_Wally
+00:1F:BD:77:33:BC,0x100204,KWC-S2300
+00:1F:BD:7C:1D:66,0x100204,2sexy
+00:1F:BD:7C:89:6B,0x100204,KWC-S2300
+00:1F:BD:7C:FC:30,0x100204,KWC-S2300
+00:1F:BD:7D:34:74,0x100204,C-diva 2011 
+00:1F:BD:8A:8B:4C,0x100204,KWC-S2300
+00:1F:BD:8B:2C:14,0x100204,Alonzo or butter
+00:1F:BD:8B:C7:01,0x100204,KWC-S2300
+00:1F:BD:8C:DD:40,0x100204,Prince looney
+00:1F:BD:8E:5C:85,0x100204,KWC-S2300
+00:1F:BD:90:47:48,0x100204,Khy boogie
+00:1F:CC:4E:40:AF,0x5a0204,SGH-A737
+00:1F:CC:C1:BD:58,0x180204,SGH-T439
+00:1F:CD:C5:32:D7,0x5a0204,kEc
+00:1F:DE:0F:52:6E,0x5a0204,Nokia 6301
+00:1F:DE:10:1D:1B,0x5a0204,Nokia 6301
+00:1F:DE:36:FB:09,0x5a0204,Nokia 6085
+00:1F:DE:39:E1:FD,0x5a0204,Nokia 6085
+00:1F:DE:3A:4B:22,0x5a0204,Nokia 6085
+00:1F:DE:3C:42:52,0x5a0204,Nokia 6085
+00:1F:DE:40:A7:DA,0x5a0204,Nokia 6085
+00:1F:DE:42:C6:1A,0x5a0204,Nokia 6085
+00:1F:DF:35:08:2D,0x5a0204,VOID
+00:1F:E3:2A:4E:93,0x5a0204,LG CU515
+00:1F:E3:2B:0B:12,0x5a0204,LG CU720
+00:1F:E3:97:6D:4A,0x5a0204,LG CU720
+00:1F:E3:C9:8D:64,0x5a0204,LG CU515
+00:1F:E3:D9:39:45,0x5a0204,LG CU720
+00:21:06:26:67:39,0x7a020c,BlackBerry 8330
+00:21:06:26:77:16,0x7a020c,BlackBerry 8330
+00:21:06:84:2D:5D,0x7a020c,BlackBerry 8320
+00:21:06:97:AF:F4,0x7a020c,BlackBerry 8310
+00:21:06:D7:9D:54,0x7a020c,BlackBerry 8830
+00:21:3E:08:6A:4C,0x240408,TomTom car kit
+00:21:3E:08:8D:E8,0x240408,TomTom car kit
+00:21:3E:8D:11:B9,0x280408,TomTom ECLIPSE II
+00:21:3E:ED:51:59,0x280408,TomTom GO 740 LIVE
+00:21:3E:F7:C0:4C,0x280408,TomTom GO 930
+00:21:4F:EC:EE:4A,0x340408,VOID
+00:21:86:71:51:76,0x00010c,NJCHQLAPA08963
+00:21:9E:36:01:12,0x700204,R306
+00:21:9E:3E:84:9D,0x5a0204,VOID
+00:21:9E:41:54:10,0x5a0204,TM506
+00:21:9E:BC:4B:32,0x5a0204,VOID
+00:21:D1:39:70:38,0x5a2204,SPH-M800
+00:21:D1:3A:57:10,0x5a2204, ilovetara :) <3
+00:21:D1:73:BA:5F,0x5a020c,SGH-i617
+00:21:D1:B9:03:16,0x5a0204,VOID
+00:21:D1:C9:3C:E9,0x5a0204,Net phone | bluetooth .
+00:21:D1:F2:62:9D,0x5a0204,SGH-A737
+00:21:D2:68:E6:6A,0x5a0204,Sync
+00:21:D2:6A:54:AA,0x5a0204,SGH-A837
+00:21:D2:C4:AE:7C,0x5a2204,SPH-M800
+00:21:D2:C4:C3:DE,0x5a2204,SPH-M800
+00:21:D2:C5:D2:AE,0x720204,VALYNN
+00:21:D2:CA:F6:DB,0x5a2204,Wireless Gear
+00:21:D2:CE:4E:92,0x5a2204,PMA
+00:21:FB:38:E0:70,0x5a0204,LG CU515
+00:21:FB:48:4F:68,0x5a0204,LG CU515
+00:21:FB:8F:E2:17,0x5a0204,LG CU720
+00:21:FB:BC:72:ED,0x5a0204,LG CU720
+00:21:FB:BE:99:B9,0x5a0204,LG CU515
+00:21:FB:C5:DB:79,0x5a0204,LG KE970
+00:21:FB:C6:76:C2,0x5a0204,LG CU720
+00:21:FB:E5:A8:AC,0x5a0204,LG LOTUS
+00:21:FB:FD:1E:F8,0x5a0204,LG CU720
+00:21:FE:83:3E:8D,0x500204,Nokia 2600c-2b
+00:21:FE:87:3D:12,0x500204,VOID
+00:21:FE:8A:68:01,0x500204,Nokia 2600c-2b
+00:21:FE:B3:5D:50,0x5a020c,Baby Girl
+00:22:4D:15:C7:90,0x300408,PIONEER NAVI
+00:22:4D:16:3E:28,0x300408,PIONEER NAVI
+00:22:4D:16:9A:E2,0x300408,PIONEER NAVI
+00:22:4D:1B:21:D0,0x300408,PIONEER NAVI
+00:22:4D:33:C3:7E,0x200408,Magellan RoadMate
+00:22:58:04:6E:E4,0x080618,VOID
+00:22:65:40:DC:90,0x5a0204,VOID
+00:22:65:E8:A8:C6,0x5a0204,Nokia 6085
+00:22:65:EC:8E:8F,0x5a0204,Nokia 6085
+00:22:65:F0:EE:8D,0x5a0204,Nokia 6085
+00:22:65:F2:7E:1B,0x5a0204,Nokia 6085
+00:22:66:13:32:70,0x5a0204,Nokia 7610 Supernova
+00:22:94:07:E6:01,0x520204,SANYO SCP-2700
+00:22:94:0B:AB:C9,0x520204,SANYO SCP-270
+00:22:94:16:57:96,0x180204,SANYO Incognito
+00:22:94:16:7F:A4,0x180204,SANYO Incognito
+00:22:94:16:9A:93,0x180204,King
+00:22:94:19:DC:EE,0x180204,SANYO Incognito
+00:22:94:1C:6B:3F,0x100204,Louis Clark
+00:22:94:22:B2:EB,0x180204,SANYO Incognito
+00:22:94:22:C8:20,0x180204,Bryan`s Boost
+00:22:94:22:FD:A6,0x180204,SANYO Incognito
+00:22:94:23:83:25,0x180204,Mo's Maddness
+00:22:94:24:B8:0D,0x520204,SANYO SCP-3810
+00:22:94:24:F0:A1,0x520204,SANYO SCP-3810
+00:22:94:25:59:A4,0x520204,SANYO SCP-3810
+00:22:94:28:C9:C6,0x5a0204,Fuzzyslipers
+00:22:94:2B:3D:92,0x520204,SANYO SCP-3810
+00:22:94:2C:A3:9A,0x180204,Nikki Incognito
+00:22:94:32:BE:E0,0x100204,Amelia
+00:22:94:37:FE:87,0x180204,SANYO Incogni
+00:22:94:3B:FF:9F,0x520204,SANYO SCP-3810
+00:22:94:3C:E9:C7,0x520204,Kalilou's Sprint
+00:22:94:3E:C0:D4,0x180204,Romell Calhoun
+00:22:94:40:64:8F,0x180204,KiD CuDi
+00:22:94:41:64:9C,0x180204,VOID
+00:22:94:46:BF:0C,0x180204,SANYO Incognito
+00:22:94:4A:8F:CF,0x5a0204,Innuendo
+00:22:94:58:C9:03,0x5a0204,Vae
+00:22:94:69:BE:35,0x100204,Nee Nee
+00:22:94:6F:4F:70,0x5a0204,Taho
+00:22:94:77:96:1A,0x180204,Coco
+00:22:94:78:23:6D,0x180204,SANYO Incognito Ms. Butterfly
+00:22:98:06:80:E6,0x5a0204,W350a
+00:22:98:D5:2F:52,0x5a0204,TM506
+00:22:98:F0:15:1F,0x5a0204,TM50
+00:22:A9:4A:AC:81,0x5a0204,LG GR500
+00:22:A9:4F:69:A2,0x420204,LG CU920
+00:22:A9:5E:45:FE,0x520204,VOID
+00:22:A9:8D:1E:EF,0x5a0204,LG GR500
+00:22:A9:BD:B2:A2,0x5a0208,LG KC550 
+00:22:A9:FF:23:3D,0x5a0204,Motorola H555
+00:23:39:38:89:38,0x5a0204,SGH-T639
+00:23:39:54:3F:32,0x5a2204,SPH-M800
+00:23:3A:8F:85:86,0x5a0204,SGH-T639
+00:23:3A:9C:D6:1A,0x720204,SPH-M320
+00:23:3A:E6:7F:EF,0x5a0204,Gravity
+00:23:3A:ED:F3:26,0x5a0204,SGH-A767
+00:23:3D:05:CE:5A,0x240408,Ford Audio
+00:23:3D:0F:3B:98,0x240408,novero TheTalkyOne
+00:23:3D:11:45:0A,0x240408,VW UHV
+00:23:3D:13:E9:07,0x240408,Ford Audio
+00:23:3D:18:30:84,0x240408,VW UHV
+00:23:76:38:7B:DA,0x6a020c,HTC-ST7377
+00:23:76:6C:84:82,0x78020c,HTC38
+00:23:76:71:C1:56,0x68020c,RHOD500
+00:23:76:E3:26:2B,0x7a020c,HTC_HD2
+00:23:76:F4:7E:B1,0x68020c,philly tech
+00:23:78:6B:4B:E5,0x200404,Jabra BT2080
+00:23:7A:77:8E:C7,0x7a020c,BlackBerry 8830
+00:23:7A:F1:B8:5C,0x7a020c,BlackBerry 9530
+00:23:7A:F5:E7:B2,0x7a020c,BlackBerry 9530
+00:23:D4:DB:F2:B6,0x58020c,Droid
+00:23:D6:06:18:73,0x5a0204,SGH-T639
+00:23:D6:08:33:76,0x5a0204,SGH-T639
+00:23:D6:33:FC:EA,0x5a0204,Gravity
+00:23:D6:5E:C7:FF,0x5a0204,Jesus Loves
+00:23:D6:93:2A:B4,0x5a0204,Zeon
+00:23:D6:93:2A:D1,0x5a0204,SGH-A867
+00:23:D6:A2:D9:D7,0x5a2204,SPH-M540
+00:23:D6:A2:DA:71,0x5a2204,Denise
+00:23:D6:A9:FE:B1,0x5a2204,SPH-M540
+00:23:D7:02:9A:DE,0x5a0204,SGH-T919
+00:23:D7:02:A1:40,0x5a0204,SGH-T919
+00:23:D7:57:BF:E3,0x5a0204,Basil
+00:23:D7:65:C2:F0,0x180204,SGH-E250
+00:23:D7:7D:42:5A,0x5a0204,SGH-T919
+00:23:D7:B7:F8:D0,0x720204,VOID
+00:23:D7:D0:EE:20,0x5a0204,SGH-A867
+00:23:EE:D8:29:76,0x200408,MOTONAV TN500
+00:23:F1:C4:49:2F,0x5a0204,Jai ho
+00:23:F1:C5:19:1F,0x5a0204,LADIESMAN 40
+00:23:F1:C7:05:BA,0x5a0204,TM506
+00:23:F1:CD:01:D7,0x5a0204,Se
+00:23:F1:D1:5E:ED,0x5a0204,TM506
+00:23:F1:E7:93:FF,0x5a0204,S500i
+00:24:1C:5D:C2:0D,0x240404,Motorola Roadster
+00:24:1C:5E:31:D4,0x240404,Motorola Roadster
+00:24:7C:08:86:FF,0x100204,Nokia 1006
+00:24:7E:EE:88:90,0x00010c,WXP-SP2-PCCOE
+00:24:83:36:9D:1B,0x5a0204,LG GR500
+00:24:83:4E:73:30,0x5a0204,LG GR500
+00:24:83:5E:AB:E4,0x5a0204,LG KP500
+00:24:83:66:54:69,0x5a0204,PRETTi MO
+00:24:83:D4:0C:00,0x5a0204,LG CF360
+00:24:90:20:C7:A3,0x5a0204,SGH-A767
+00:24:90:22:8A:07,0x5a0204,SGH-A767
+00:24:90:35:A5:79,0x5a0204,SGH-T919
+00:24:90:37:12:81,0x5a0204,SGH-A867
+00:24:90:3B:ED:FF,0x5a0204,Gravity
+00:24:90:72:66:2D,0x5a0204,SGH-A837
+00:24:90:75:24:32,0x5a0204,SGH-A767A
+00:24:90:7E:D0:8A,0x5a0204,SGH-A767
+00:24:90:89:1F:DC,0x5a2204,SPH-M810
+00:24:90:89:46:9A,0x5a2204,SPH-M810
+00:24:90:C9:8F:B2,0x5a0204,SGH-T919
+00:24:90:FA:73:9A,0x5a0204,SGH-T339
+00:24:91:10:65:AB,0x5a0204,SGH-A767
+00:24:91:14:81:3C,0x5a0204,SGH-A767
+00:24:91:15:D2:41,0x5a0204,Steve
+00:24:91:43:D3:6F,0x5a0204,Polkadotinfinity.DejahKiara
+00:24:91:4E:75:A6,0x5a0204,SGH-T919
+00:24:91:4E:76:EB,0x5a0204,SGH-T919
+00:24:91:85:B7:A4,0x5a0204,SGH-A867
+00:24:91:87:35:5D,0x5a0204,SGH-A867
+00:24:91:89:CF:FE,0x5a0204,SGH-A767
+00:24:91:8B:4F:30,0x5a0204,$(Luckeybaby)$
+00:24:91:8C:CC:32,0x5a0204,SGH-A867
+00:24:91:90:44:00,0x5a0204,SGH-A867
+00:24:91:91:11:97,0x5a0204,B2100
+00:24:91:A6:A2:13,0x5a2204,SPH-M540
+00:24:91:A7:4A:27,0x5a2204,SPH-M810
+00:24:91:A9:C9:EA,0x5a2204,SPH-M5
+00:24:91:A9:F5:0D,0x5a2204,Lee
+00:24:91:FA:67:E9,0x5a0204,Vanilla
+00:24:91:FC:90:C5,0x5a0204,SGH-A867
+00:24:91:FE:C6:19,0x5a0204,SGH-T929
+00:24:9F:0A:A8:12,0x7a020c,BlackBerry 9530
+00:24:9F:19:2A:E0,0x7a020c,BlackBerry 8320
+00:24:9F:24:DA:87,0x7a020c,BlackBerry 9530
+00:24:9F:69:99:33,0x7a020c,BlackBerry 9530
+00:24:9F:71:7D:10,0x7a020c,BlackBerry 8330
+00:24:9F:83:35:5C,0x7a020c,BlackBerry 8330
+00:24:9F:84:91:24,0x7a020c,BlackBerry 8330
+00:24:9F:8D:AF:EA,0x7a020c,BlackBerry 8330m
+00:24:9F:97:FA:2A,0x7a020c,BlackBerry 8330m
+00:24:9F:A6:6D:37,0x7a020c,BlackBerry 8900
+00:24:9F:B2:B9:0E,0x7a020c,rocio
+00:24:9F:B3:E7:C3,0x7a020c,BlackBerry 8900
+00:24:9F:B6:97:2C,0x7a020c,BlackBerry 8900
+00:24:9F:D5:62:E4,0x7a020c,BlackBerry 8330m
+00:24:9F:EA:C7:96,0x7a020c,BlackBerry 9530
+00:24:A0:A3:7F:06,0x200408,MOTONAV TN500
+00:24:BE:1E:11:DD,0x340408,My Sony Shit
+00:24:EF:9C:8E:E8,0x5a0204,W595
+00:24:EF:CC:FB:DD,0x5a0204,TM506
+00:24:EF:CD:07:D4,0x5a0204,W518a
+00:25:47:6D:DE:04,0x5a020c,Nokia
+00:25:47:B0:F6:56,0x5a020c,Nokia 6650d-1bH
+00:25:48:D4:BB:31,0x5a020c,Nokia E75
+00:25:57:4F:F0:5C,0x7a020c,Spomenka
+00:25:57:52:FA:85,0x7a020c,BlackBerry 8320
+00:25:57:67:24:68,0x7a020c,BlackBerry 9000
+00:25:57:87:4F:37,0x7a020c,BlackBerry 8900
+00:25:57:89:E1:21,0x7a020c,BlackBerry 8520
+00:25:57:94:49:9D,0x7a020c,VOID
+00:25:57:B7:B6:A9,0x7a020c,Omar's BlackBerry
+00:25:57:CE:31:F0,0x7a020c,BlackBerry 9630
+00:25:57:D1:1C:72,0x7a020c,BlackBerry 8330
+00:25:57:DA:BA:0F,0x7a020c,BlackBerry 9630
+00:25:57:E3:43:63,0x7a020c,BlackBerry 9630
+00:25:57:E7:6C:96,0x7a020c,VOID
+00:25:57:F1:2E:F6,0x7a020c,lorie bb
+00:25:57:F1:2F:8F,0x7a020c,BlackBerry 9630
+00:25:57:F3:4A:BE,0x78020c,jawbone
+00:25:66:13:E9:24,0x5a2204,SPH-M810
+00:25:66:1B:AB:71,0x5a2204,BigBadKrem
+00:25:66:1C:3A:80,0x5a2204,JUAN   CUA
+00:25:66:63:E3:00,0x5a0204,SGH-T929
+00:25:66:6A:66:FB,0x5a0204,SGH-A877
+00:25:66:6E:FB:4A,0x5a0204,Gravity
+00:25:66:85:A6:AF,0x5a0204,Gravity
+00:25:66:99:2D:85,0x5a0204,C3053
+00:25:66:E7:22:CE,0x5a0204,SGH-A877
+00:25:66:E7:2E:AE,0x5a0204,SGH-A877
+00:25:66:F1:EB:28,0x5a2204,SPH-M550
+00:25:66:F7:01:EF,0x5a2204,SPH-M550
+00:25:67:68:CF:2D,0x5a0204,Edilsar   
+00:25:67:6C:66:7C,0x5a020c,SGH-i637
+00:25:67:77:4A:A5,0x5a0204,SGH-T749
+00:25:67:77:5D:82,0x5a0204,SGH-A867
+00:25:67:79:19:83,0x5a0204,SGH-T749
+00:25:67:79:23:EE,0x5a0204,SGH-T749
+00:25:67:79:2F:D7,0x5a0204,SGH-T749
+00:25:67:7E:8C:03,0x5a0204,SGH-T749
+00:25:67:7F:55:B8,0x5a0204,SGH-T749
+00:25:67:9B:16:B8,0x5a0204,Samsung Reclaim
+00:25:67:9F:02:3E,0x5a2204,Samsung Reclaim
+00:25:67:9F:14:94,0x5a2204,Samsung Reclaim
+00:25:67:D5:B6:A5,0x5a0204,SGH-T749
+00:25:67:D5:B7:59,0x5a0204,SGH-T749
+00:25:67:DA:83:08,0x5a0204,SGH-T749
+00:25:67:DF:74:B1,0x5a0204,SGH-T749
+00:25:67:EE:29:3D,0x5a0204,Gordis
+00:25:67:EE:4C:3E,0x5a0204,VOID
+00:25:67:EE:A4:3B,0x5a0204,SGH-A877
+00:25:68:F5:24:A0,0x580204,HW M750
+00:25:BC:AD:80:90,0x7a020c,Dad's Phone
+00:25:BC:FC:CC:32,0x002540,test's Keyboard
+00:25:CF:19:C5:CA,0x5a020c,VOID
+00:25:E5:10:19:F3,0x5a0204,Poppa hill
+00:25:E5:14:53:50,0x5a0204,Motorola h390
+00:25:E5:77:32:F6,0x5a0204,Motorola H390
+00:25:E5:8C:F5:82,0x5a0204,Noha
+00:25:E5:A2:E4:B9,0x5a0208,Hope
+00:25:E5:A6:B8:7C,0x520204,Jabra EASYGO
+00:25:E5:B0:9E:EF,0x5a0208,LG GT365
+00:25:E5:B1:0D:61,0x5a0204,VOID
+00:25:E5:B3:D5:47,0x5a0204,LG GR500
+00:25:E5:B9:21:6D,0x5a0208,LG KS360
+00:25:E5:EB:0A:86,0x5a0204,LG RUMOR2
+00:26:08:A7:35:DC,0x7a020c,JLC's iPhone
+00:26:43:F7:76:3C,0x00010c,SW00000
+00:26:4A:36:69:53,0x7a020c,Elise Kristina's iPhone
+00:26:4A:A2:70:23,0x380104,Donato Marable's iMac
+00:26:5D:03:C1:7F,0x5a0204,SGH-A767
+00:26:5D:15:86:DD,0x522204,
+00:26:5D:18:15:08,0x522204,SPH-M330
+00:26:5D:A1:2F:82,0x5a2204,Samsung Reclaim
+00:26:5D:A2:22:10,0x5a0204,Samsung Reclaim
+00:26:5D:A2:68:C1,0x5a2204,M@R!A 
+00:26:5D:B1:42:52,0x5a0204,Daddys Little Girl
+00:26:5D:B1:43:C1,0x5a0204,Cute like always XD alyssa baby
+00:26:5D:B1:DE:60,0x5a0204,SGH-T749
+00:26:5D:B6:58:48,0x5a0204,SGH-T559
+00:26:5D:B7:0B:9D,0x5a0204,825.BankGirl !
+00:26:5D:B7:54:1C,0x5a0204,SGH-T469
+00:26:5D:B9:5A:CF,0x5a0204,SGH-T469
+00:26:5D:BB:9B:8C,0x5a0204,SGH-T469
+00:26:5D:BB:F6:48,0x5a0204,SGH-T469
+00:26:5D:BD:B6:00,0x5a0204,Janet e freenman
+00:26:5D:BE:C4:23,0x5a0204,SGH-A867
+00:26:5D:BF:06:78,0x5a0204,SGH-T469
+00:26:5D:BF:0B:9B,0x5a0204,SGH-T469
+00:26:5D:DB:FD:23,0x5a0204,SGH-A887
+00:26:5D:E4:BD:E2,0x5a0204,SGH-T749
+00:26:5D:E7:C0:7D,0x5a0204,A.bieber <3
+00:26:5D:E7:C2:1A,0x5a0204,SGH-T749
+00:26:5D:FA:DB:C8,0x5a0204,SGH-A767
+00:26:5F:00:58:C5,0x5a0204,SGH-T469
+00:26:5F:06:B9:09,0x5a0204,SGH-T469
+00:26:5F:0C:60:B7,0x5a0204,SGH-T659
+00:26:5F:0E:63:7D,0x5a0204,SGH-T659
+00:26:5F:0F:4B:7F,0x5a0204,SGH-T469
+00:26:5F:0F:61:14,0x5a0204,SGH-T469
+00:26:5F:28:3E:3D,0x5a0204,Ms Sonn
+00:26:5F:2F:3E:DB,0x5a0204,VOID
+00:26:5F:38:E2:26,0x5a0204,SGH-A837
+00:26:5F:40:27:62,0x5a0204,SGH-A887
+00:26:5F:40:AA:BA,0x5a0204,SGH-A877
+00:26:5F:46:11:2E,0x5a0204,SGH-A887
+00:26:5F:5E:E3:C7,0x5a0204,SGH-A887
+00:26:5F:7A:73:91,0x5a0204,SGH-T919
+00:26:5F:7B:B8:3B,0x5a0204,SGH-T819
+00:26:5F:7D:57:37,0x5a0204,SGH-A867
+00:26:5F:8A:52:F8,0x520204,SPH-M330
+00:26:5F:9A:A9:FE,0x5a0204,SGH-A767
+00:26:5F:A9:D7:E4,0x5a0204,SGH-A837
+00:26:5F:B1:41:B5,0x5a0204,SGH-A887
+00:26:5F:CD:A5:5B,0x5a0204,SGH-A877
+00:26:5F:D3:F2:A7,0x5a0204,Samsung Reclaim
+00:26:5F:D3:F2:AF,0x5a2204,Samsung Reclaim
+00:26:5F:D5:7F:58,0x5a2204,SPH-M850
+00:26:7E:00:8A:AD,0x340408,PIONEER NAVI
+00:26:7E:00:E5:BD,0x340408,PIONEER NAVI
+00:26:7E:04:8F:D9,0x300408,Parrot CK3100
+00:26:7E:09:A5:9A,0x300408,Parrot CK3100
+00:26:7E:12:76:35,0x340408,KENWOOD BT CD/R-4P1
+00:26:7E:13:16:96,0x340408,KENWOOD BT CD/R-4P1
+00:26:7E:13:3A:8F,0x340408,KENWOOD BT CD/R-4P1
+00:26:7E:18:71:9D,0x300408,DEH-P6200BT 
+00:26:7E:18:8D:63,0x300408,DEH-P6200BT 
+00:26:7E:1A:07:E3,0x300408,KENWOOD BT CD/R-3P1
+00:26:7E:1B:6E:C1,0x300408,KENWOOD BT CD/R-3P1
+00:26:7E:1B:88:5C,0x300408,KENWOOD BT CD/R-3P1
+00:26:7E:1B:8C:C1,0x300408,KENWOOD BT CD/R-3P1
+00:26:7E:1B:E7:C6,0x300408,KENWOOD BT CD/R-3P1
+00:26:7E:25:2C:D9,0x340408,KENWOOD BT CD/R-4P1
+00:26:7E:30:2B:F6,0x300408,ALPINE KCE-250BT
+00:26:7E:3A:BF:D8,0x300408,AVH-P3200BT
+00:26:7E:3A:D5:B6,0x300408,DEH-P6200BT 
+00:26:7E:3D:7B:06,0x340408,VW PHONE
+00:26:7E:3D:9B:56,0x300408,ALPINE BT Box
+00:26:7E:3D:C7:A8,0x300408,KENWOOD BT CD/R-3P1
+00:26:7E:4A:B5:65,0x340408,VW PHONE
+00:26:7E:4F:07:71,0x340408,VW PHONE
+00:26:7E:52:11:42,0x300408,AVH-P3300BT
+00:26:7E:56:8A:FA,0x300408,AVH-P3300BT
+00:26:7E:7A:DB:32,0x340408,PIONEER NAVI
+00:26:BA:1D:9F:76,0x4a0204,Motorola Phone
+00:26:BA:32:9F:0B,0x4a0204,Motorola Phone
+00:26:BA:42:54:79,0x4a0204,Motorola Phone
+00:26:BB:7D:0E:31,0x002580,testa's Mouse
+00:26:CC:2C:4E:EA,0x5a0204,Nokia 6350
+00:26:CC:2C:8B:DE,0x5a0204,Nokia 6350
+00:26:CC:3A:76:A2,0x5a0204,Nokia 6750-1b
+00:26:CC:79:21:73,0x5a0204,MILAN'S PHONE
+00:26:E2:00:18:8F,0x5a0204,LG GR500
+00:26:E2:18:54:5D,0x5a0204,LG CF360
+00:26:E2:7C:86:42,0x5a0204,Q seven
+00:26:E2:A1:36:02,0x5a0208,LG GT365
+00:26:E2:AD:1E:21,0x5a0204,LG RUM
+00:26:E2:C0:A8:68,0x5a0204,Ff9065
+00:26:E2:C4:D8:65,0x5a0204,2XXplantronics 
+00:26:E2:C9:06:01,0x5a0204,LG RUMOR2
+00:26:E2:C9:CD:21,0x5a0204,LG LX370
+00:26:E2:D4:C7:22,0x5a0204,LG RUMOR2
+00:26:E2:DB:68:0C,0x5a0208,8D nickki 
+00:26:E2:DC:28:12,0x5a0204,LG RUMOR2
+00:26:E2:EC:6C:0D,0x5a0204,BlueAnt
+00:26:FF:01:B6:17,0x7a020c,BlackBerry 9630
+00:26:FF:04:AB:E0,0x7a020c,BlackBerry zoe blackie
+00:26:FF:1C:CC:01,0x7a020c,mkdsnj
+00:26:FF:20:A7:09,0x7a020c,BlackBerry 8330m
+00:26:FF:20:DF:9A,0x78020c,BlackBerry 8330
+00:26:FF:33:D7:76,0x7a020c,BlackBerry 8330
+00:26:FF:4C:88:06,0x7a020c,BlackBerry 9630
+00:26:FF:60:5A:E1,0x7a020c,BlackBerry 9630
+00:26:FF:64:DD:96,0x7a020c,BlackBerry 9630
+00:26:FF:6E:09:7D,0x7a020c,BlackBerry 8330m
+00:26:FF:75:72:DA,0x7a020c,BlackBerry 8520
+00:26:FF:99:8C:78,0x7a020c,BlackBerry 9700
+00:26:FF:BC:7C:84,0x7a020c,BlackBerry 9550
+00:26:FF:C3:61:84,0x7a020c,BlackBerry 9550
+00:26:FF:D3:06:86,0x7a020c,BlackBerry 8900
+00:26:FF:D5:CA:FF,0x7a020c,BlackBerry 8530
+00:26:FF:E0:19:A1,0x7a020c,BlackBerry 8530
+00:26:FF:E5:B0:44,0x7a020c,BlackBerry 9630
+00:26:FF:FA:52:35,0x7a020c,BlackBerry 8520
+00:26:FF:FF:AD:69,0x7a020c,BlackBerry 9700
+00:40:D0:B3:6A:42,0x720408,Magellan GPS
+00:80:37:25:47:9A,0x040680,PK80-4941626
+00:A0:96:0E:70:EC,0x040680,PB42-23810514164
+00:A0:96:0F:5D:A1,0x040680,PB42-25910514131
+00:A0:96:14:8B:59,0x040680,PB42-25810614290
+00:A0:96:15:29:CE,0x040680,PB42-06410714463
+00:A0:96:26:5F:B6,0x000000,TPGRT-2420075157-41014301H
+00:A0:96:27:6A:09,0x040680,PENTAX PocketJet
+00:A0:96:30:21:7D,0x000000,TPGRT-2420206896-41014709
+00:A0:96:30:3B:A0,0x000000,TPGRT-2420141921-41014309H
+00:A0:96:30:3B:DA,0x000000,TPGRT-2420142186-41014309H
+04:1E:64:55:A5:F9,0x7a020c,Dave's iPhone
+08:76:95:1C:04:BB,0x340408,SONATA
+0C:60:76:8A:2C:44,0x00010c,PR-LT-ELLERKR1
+0C:DD:EF:2C:D7:A1,0x5a0204,Nokia 7230
+0C:DD:EF:69:9F:7C,0x5a020c,Nokia 5230
+0E:67:E3:99:66:01,0x5a0204,DORO410TOMB
+10:1D:C0:01:F9:43,0x5a0204,SGH-T479
+10:1D:C0:05:61:1B,0x5a0204,SGH-T669
+10:1D:C0:0D:8C:F6,0x5a0204,SGH-A847
+10:1D:C0:10:DF:6A,0x5a0204,SGH-T669
+10:1D:C0:12:A3:11,0x5a0204,SGH-T359
+10:1D:C0:15:3D:28,0x5a0204,Jay
+10:1D:C0:19:03:EB,0x5a0204,SGH-T669
+10:1D:C0:1C:A0:A9,0x5a0204,SGH-T359
+10:1D:C0:1C:A0:AA,0x5a0204,SGH-T359
+10:1D:C0:6A:06:6A,0x5a2204,Samsung Seek
+10:1D:C0:6D:34:2D,0x5a2204,Samsung Seek
+10:1D:C0:92:93:10,0x5a0204,SGH-A777
+10:1D:C0:94:BE:08,0x5a0204,SGH-T479
+10:1D:C0:96:3E:BD,0x5a0204,SGH-T669
+10:1D:C0:96:70:A0,0x5a0204,SGH-T249
+10:1D:C0:96:8E:E2,0x5a0204,SGH-T249
+10:1D:C0:98:14:D6,0x5a0204,SGH-T479
+10:1D:C0:9A:3B:53,0x5a0204,SGH-T669
+10:1D:C0:9C:9F:B3,0x5a0204,SGH-T479
+10:1D:C0:9E:F1:06,0x5a0204,SGH-T249
+10:1D:C0:A1:AE:1A,0x5a0204,SGH-T249
+10:1D:C0:A5:CB:77,0x5a0204,SGH-T479
+18:86:AC:39:4F:5B,0x5a020c,Nokia N97
+18:86:AC:5A:3D:20,0x520204,Nokia 2720a-2b
+20:21:A5:09:1C:6B,0x5a0204,VOID
+20:21:A5:12:91:7F,0x5a0204,LG LOTUS
+20:21:A5:51:4A:B6,0x5a0204,LG LOTUS ELITE
+20:21:A5:63:C2:1B,0x5a0204,LG GR500
+20:21:A5:6F:22:1C,0x5a0204,LG GR500
+20:21:A5:70:11:54,0x5a0204,LG LOTUS
+20:21:A5:87:8C:4A,0x5a0204,Tay
+20:21:A5:B7:E7:EC,0x5a0204,LG RUMOR2
+20:21:A5:CB:33:BD,0x5a0208,LG GT365
+20:21:A5:CC:A6:51,0x5a0204,crys
+24:21:AB:41:7A:8B,0x5a0204,TM717
+24:21:AB:67:8C:45,0x5a0204,W518a
+24:21:AB:69:C9:9E,0x5a0204,TM717
+28:E7:CF:09:A1:8B,0x7a020c,Saurabh's iPhone
+2C:30:68:03:37:50,0x5a0204,P2000
+2C:30:68:07:5F:E6,0x5a0204,P7000
+2C:30:68:0B:63:98,0x5a0204,P2000
+2C:30:68:0D:1F:C0,0x5a0204,P2020
+2C:30:68:10:2E:68,0x5a0204,VOID
+2C:30:68:1B:FB:DF,0x5a0204,P7040plantronics
+2C:30:68:2D:01:D1,0x5a0204,P2000audrey
+2C:30:68:40:38:FB,0x5a0204,P2000
+2C:30:68:45:C4:D3,0x5a0204,P2000
+2C:30:68:4D:E9:8E,0x5a0204,P2000
+2C:A8:35:0E:71:C7,0x7a020c,BlackBerry 8330
+2C:A8:35:29:99:E5,0x7a020c,BlackBerry 9630
+2C:A8:35:35:2D:56,0x7a020c,BlackBerry 8530
+2C:A8:35:35:9B:93,0x7a020c,BlackBerry 8520
+2C:A8:35:3B:00:E7,0x7a020c,BlackBerry 9630
+2C:A8:35:3B:B4:C8,0x7a020c,BlackBerry 9700
+2C:A8:35:49:72:40,0x7a020c,BlackBerry 8530
+2C:A8:35:57:AE:CB,0x7a020c,BlackBerry 9650
+2C:A8:35:59:7B:F3,0x7a020c,BlackBerry 9650
+2C:A8:35:6A:60:0A,0x7a020c,motorolla
+2C:A8:35:6A:67:7C,0x7a020c,bahari boi
+2C:A8:35:6A:80:0B,0x7a020c,BlackBerry 9650
+2C:A8:35:6A:CC:FF,0x7a020c,BlackBerry 9650
+2C:A8:35:6F:9F:FD,0x7a020c,BlackBerry 9700
+2C:A8:35:7F:83:7D,0x7a020c,Jim BlackBerry
+2C:A8:35:9A:B8:C6,0x7a020c,BlackBerry 9700
+2C:A8:35:EB:CF:97,0x7a020c,BlackBerry 9700
+2C:A8:35:FD:E7:2A,0x7a020c,BlackBerry 9650
+2C:D2:E7:49:D3:1D,0x5a020c,Nokia 5230
+2C:D2:E7:D7:5F:F3,0x520204,Nokia 2330c-2b
+2C:D2:E7:D7:EB:2D,0x520204,Nokia 2330c-2b
+30:69:4B:01:9E:D3,0x7a020c,BlackBerry 8530
+30:69:4B:0A:C7:73,0x7a020c,BlackBerry 8530
+30:69:4B:26:88:D6,0x7a020c,BB Bold
+30:69:4B:35:9F:83,0x7a020c,BlackBerry 9650
+30:69:4B:48:1F:6D,0x78020c,tom blue
+30:69:4B:6D:D6:A2,0x7a020c,85076
+30:69:4B:72:75:99,0x7a020c,BlackBerry 8530
+30:69:4B:77:A0:52,0x7a020c,The Boss
+30:69:4B:80:FF:E3,0x7a020c,motorola h720
+30:69:4B:83:68:7B,0x7a020c,BlackBerry 9800
+30:69:4B:94:7C:14,0x7a020c,BlackBerry 9800
+30:69:4B:98:B2:E7,0x7a020c,BlackBerry 9650
+30:69:4B:9A:04:14,0x7a020c,BlackBerry 8530
+30:69:4B:B2:62:D7,0x7a020c,BlackBerry 8530
+30:69:4B:BD:82:6C,0x7a020c,BlackBerry 9800
+30:69:4B:E6:ED:D1,0x78020c,BlackBerry 8350i
+30:69:4B:EA:07:96,0x7a020c,BlackBerry 8520
+30:7C:30:16:18:B9,0x7a020c,BlackBerry 9700
+30:7C:30:19:CA:63,0x7a020c,BlackBerry 8530
+30:7C:30:1F:C5:0B,0x7a020c,BlackBerry 8530
+30:7C:30:25:DA:47,0x7a020c,BlackBerry 9700
+30:7C:30:26:EF:E4,0x7a020c,BlackBerry 9630
+30:7C:30:32:E6:1A,0x7a020c,BlackBerry 8530
+30:7C:30:5B:36:2C,0x7a020c,BlackBerry 9630
+30:7C:30:81:A2:F7,0x7a020c,BlackBerry 8520
+30:7C:30:90:35:2E,0x7a020c,BlackBerry 9630
+30:7C:30:9D:AD:BB,0x7a020c,BlackBerry 9630
+30:7C:30:AB:18:F8,0x7a020c,Blackberry 8530
+30:7C:30:AF:DB:87,0x7a020c,vsagaram
+30:7C:30:BC:C3:52,0x78020c,BlackBerry 8350i
+30:7C:30:BD:DB:75,0x7a020c,BlackBerry 8530
+30:7C:30:EA:45:FC,0x7a020c,BlackBerry 9700
+30:7C:30:EB:9A:2E,0x7a020c,BlackBerry 9550
+30:87:30:D9:D8:BA,0x580204,HUAWEI M228
+30:87:30:F6:A2:AA,0x580204,HUAWEI M228
+30:87:30:F8:DA:15,0x580204,HW M750
+30:87:30:FE:FC:7A,0x580204,HW M750
+30:87:30:FF:3C:CC,0x58020c,M860
+30:87:30:FF:58:90,0x58020c,M860
+34:15:9E:A1:D2:CC,0x7a020c,Dre's iPhone
+34:7E:39:29:C0:33,0x5a0204,Nokia 3711 fold
+34:7E:39:2C:38:70,0x5a020c,Nokia E72-2
+34:7E:39:7C:2E:B1,0x5a020c,Nokia N97 mini
+34:7E:39:8B:9C:FB,0x5a0204,Nokia 3711 fold
+34:7E:39:B8:8D:40,0x520204,Nokia 2720a-2b
+34:C3:AC:0A:FD:0E,0x5a0204,SGH-A687
+34:C3:AC:66:39:48,0x5a0204,SGH-T749
+34:C3:AC:69:71:D7,0x5a0204,SGH-T559
+34:C3:AC:6C:CB:C2,0x5a0204,SGH-T749
+34:C3:AC:72:97:8B,0x5a2204,Samsung Reclaim
+34:C3:AC:78:C5:AF,0x5a0204,VOID
+34:C3:AC:C9:DD:B9,0x5a0204,SGH-T469
+38:16:D1:27:B9:C3,0x522204,Samsung M360
+38:16:D1:7C:34:03,0x5a0204,SGH-T259
+38:16:D1:AF:40:0F,0x5a0204,SGH-T479
+38:E7:D8:27:D3:C3,0x7a020c,T7380
+3C:5A:37:35:09:74,0x5a0204,Fatboy
+3C:5A:37:38:8E:68,0x5a0204,SGH-T359
+3C:5A:37:3A:47:10,0x5a0204,SGH-A847
+3C:5A:37:59:67:2E,0x5a2204,Samsung Seek
+3C:5A:37:F7:3B:4D,0x5a2204,Samsung Seek
+3C:5A:37:FC:6C:8C,0x5a2204,Samsung Seek
+3C:74:37:05:E2:1A,0x7a020c,BlackBerry 9330
+3C:74:37:21:A8:43,0x7a020c,VOID
+3C:74:37:26:59:91,0x7a020c,BlackBerry 9330
+3C:74:37:26:DD:F5,0x7a020c,BlackBerry 9330
+3C:74:37:3B:9B:40,0x7a020c,BlackBerry 9650
+3C:74:37:66:38:38,0x7a020c,BlackBerry 9650
+3C:74:37:71:51:D9,0x7a020c,BlackBerry 9800
+3C:74:37:7A:E5:8C,0x7a020c,BlackBerry 9800
+3C:74:37:9F:3B:EF,0x7a020c,BlackBerry 9330
+3C:74:37:C0:16:E9,0x7a020c,BlackBerry 9650
+3C:74:37:CE:7C:D8,0x7a020c,BlackBerry 9650
+3C:74:37:D5:75:74,0x7a020c,BlackBerry 9800
+3C:74:37:FE:AF:FC,0x7a020c,BlackBerry 9780
+3C:8B:FE:60:C0:94,0x5a2204,TONI LUV ME
+3C:8B:FE:66:C7:8F,0x5a2204,Samsung Seek
+3C:8B:FE:6B:A9:69,0x5a2204,Samsung Seek
+3C:8B:FE:6E:8B:85,0x5a2204,Samsung Seek
+3C:8B:FE:72:75:64,0x5a0204,Lazorko igor
+3C:8B:FE:74:D8:DC,0x5a0204,SGH-A847
+3C:8B:FE:79:5B:DA,0x5a0204,SGH-T359
+3C:8B:FE:79:5C:66,0x5a0204,SGH-T359
+3C:8B:FE:79:BE:E8,0x5a0204,SGH-T359
+3C:8B:FE:7D:EF:FF,0x5a0204,SGH-A187
+3C:8B:FE:82:67:73,0x5a0204,SGH-T359
+3C:8B:FE:8B:32:91,0x5a0204,SGH-T359
+40:2B:A1:BA:DD:66,0x5a0204,TM717
+40:4D:8E:01:78:F5,0x58020c,Rome
+40:4D:8E:02:08:A6,0x58020c,Female shooter
+40:4D:8E:02:3B:A0,0x58020c,Rc_intl shipping
+40:4D:8E:0A:E7:6A,0x58020c,WEP 480
+40:4D:8E:0C:FA:CE,0x58020c,M860
+40:4D:8E:0D:FE:E8,0x58020c,Frank
+40:4D:8E:13:DA:63,0x580204,Huawei M735
+40:4D:8E:36:00:F1,0x58020c,M860
+40:4D:8E:3A:5C:49,0x58020c,M860
+40:4D:8E:54:14:15,0x580204,Michael
+40:4D:8E:54:14:87,0x580204,Charlotte
+40:4D:8E:C4:E2:A5,0x58020c,M860clbsr
+40:4D:8E:D9:ED:E5,0x58020c,VOID
+40:5F:BE:1F:68:9C,0x7a020c,*Leslie*
+40:5F:BE:24:DE:74,0x7a020c,BlackBerry 9800
+40:5F:BE:2C:6E:BA,0x7a020c,BlackBerry 9800
+40:5F:BE:49:D8:84,0x7a020c,BlackBerry 9800
+40:5F:BE:54:55:5D,0x7a020c,BlackBerry 9800
+40:5F:BE:54:57:18,0x7a020c,BlackBerry 8530
+40:5F:BE:54:92:10,0x7a020c,Ellen's BlackBerry
+40:5F:BE:57:3A:0B,0x7a020c,BlackBerry 9800
+40:5F:BE:58:30:80,0x7a020c,BlackBerry 9330
+40:5F:BE:5D:C1:11,0x7a020c,BlackBerry 9800
+40:5F:BE:81:A3:5C,0x7a020c,BlackBerry 8530
+40:5F:BE:83:90:6E,0x7a020c,BlackBerry 9800
+40:5F:BE:84:74:F5,0x7a020c,BlackBerry 9800
+40:5F:BE:84:83:B2,0x7a020c,dBlackBerry 9800
+40:5F:BE:87:2E:C7,0x7a020c,BlackBerry 9800
+40:5F:BE:88:26:13,0x7a020c,BlackBerry 9800
+40:5F:BE:8A:07:94,0x7a020c,BlackBerry 9800
+40:5F:BE:8E:1C:DC,0x7a020c,BlackBerry 9800
+40:5F:BE:94:1E:02,0x7a020c,BlackBerry 9800
+40:5F:BE:94:8D:55,0x7a020c,BlackBerry 9800
+40:5F:BE:97:07:28,0x7a020c,BlackBerry 9650
+40:5F:BE:99:9A:DB,0x7a020c,BlackBerry 9300
+40:5F:BE:AD:CA:56,0x7a020c,BlackBerry 9800
+40:5F:BE:B0:3F:E8,0x7a020c,RiichBoii's BlackBerry
+40:5F:BE:BB:39:4A,0x7a020c,BlackBerry 9330
+40:5F:BE:C0:CD:5E,0x7a020c,BlackBerry 8530
+40:5F:BE:D6:BC:41,0x7a020c,BlackBerry 9800
+40:5F:BE:DA:06:27,0x7a020c,BlackBerry 9330
+40:5F:BE:DC:3B:57,0x7a020c,BlackBerry 9800
+40:5F:BE:E2:4A:47,0x7a020c,BlackBerry 9330
+40:5F:BE:EF:9B:B9,0x78020c,BlackBerry 8350i
+40:D3:2D:8A:1B:90,0x7a020c,Harriet's iPhone, her bffl.
+44:4E:1A:05:7C:86,0x5a0204,VOID
+44:4E:1A:15:EF:72,0x5a0204,SGH-A877
+44:4E:1A:19:7B:A8,0x5a0204,SGH-A877
+44:4E:1A:23:8E:F1,0x5a0204,SGH-A687
+44:4E:1A:25:DF:24,0x5a0204,SGH-A687
+44:4E:1A:2A:D2:14,0x5a0204,SGH-A687
+44:4E:1A:33:59:E7,0x580204,SGH-T939
+44:4E:1A:CD:A3:66,0x5a0204,SGH-T469
+44:4E:1A:CD:B0:EA,0x5a0204,Nichole
+44:4E:1A:CD:B5:A2,0x5a0204,SGH-T559
+44:4E:1A:D7:4B:FC,0x5a0204,B5722
+44:4E:1A:DB:03:BD,0x5a0204,SGH-T469
+44:4E:1A:DF:71:C4,0x5a0204,SGH-T469
+44:4E:1A:DF:74:78,0x5a0204,SGH-T469
+44:F4:59:07:16:45,0x522204,SPH-M330
+44:F4:59:14:5B:D2,0x5a2204,SPH-M550
+44:F4:59:14:D0:76,0x5a2204,SPH-M55
+44:F4:59:1B:24:7F,0x5a2204,SPH-M550
+44:F4:59:28:CF:05,0x5a0204,SGH-T469
+44:F4:59:44:B0:53,0x5a0204,Nick Joyce :)
+44:F4:59:4A:B9:98,0x5a0204,SGH-A877
+44:F4:59:55:31:09,0x5a0204,SGH-rochelle
+44:F4:59:55:31:16,0x5a0204,SGH-swinuha
+44:F4:59:83:F5:94,0x5a0204,SGH-T469
+44:F4:59:87:DC:84,0x5a0204,SGH-T469
+44:F4:59:89:17:C7,0x5a0204,SGH-T469
+44:F4:59:89:1F:4F,0x5a0204,SGH-T469
+44:F4:59:89:23:02,0x5a0204,SGH-T469
+44:F4:59:9F:26:52,0x5a0204,SGH-T469
+44:F4:59:B9:87:E6,0x5a0204,Gallagher
+44:F4:59:C2:4C:69,0x5a0204,SGH-T469
+44:F4:59:C6:6B:7B,0x5a0204,Â¤lADY STACkZ. !Â¤ 
+44:F4:59:D0:3B:F1,0x5a0204,SGH-T929
+44:F4:59:D2:E3:CD,0x5a0204,SGH-T659
+44:F4:59:DA:AB:D0,0x5a0204,SGH-T929
+44:F4:59:DD:B1:BF,0x5a0204,SGH-T659
+44:F4:59:DE:AB:B6,0x5a0204,TECHNO_T10
+48:5D:60:AB:3F:11,0x000000,CR-48
+4C:54:99:08:DA:70,0x580204,HUAWEI M228
+4C:54:99:10:1C:CC,0x580204,HW M750
+4C:54:99:17:77:AA,0x580204,HW M750
+4C:54:99:17:D3:39,0x580204,HW M750
+4C:54:99:18:30:CA,0x580204,HW M750
+4C:54:99:26:9A:EB,0x580204,HW M750
+4C:54:99:26:A4:B2,0x580204,HW M750
+4C:54:99:26:AC:EE,0x580204,HUAWEI M228
+4C:54:99:38:89:88,0x580204,HW M750
+4C:54:99:38:C0:71,0x580204,iHW M750yfh 
+4C:54:99:39:7D:A9,0x580204,HW M750
+4C:54:99:39:7E:6A,0x580204,HW M750
+4C:54:99:5A:FD:79,0x5a0204,Tap
+4C:54:99:CF:60:EF,0x580204,HW M750
+54:92:BE:02:25:C1,0x5a0204,SGH-T469
+54:92:BE:27:57:81,0x5a0204,SGH-A887
+54:92:BE:39:76:86,0x5a0204,SGH-A887
+54:92:BE:41:8E:BF,0x5a0204,Samsung Reclaim
+54:92:BE:4A:C5:5F,0x5a2204,SPH-M50
+54:92:BE:4D:CC:AE,0x5a0204,Samsung Reclaim
+54:92:BE:93:D4:14,0x5a0204,SGH-T749
+54:92:BE:9A:BE:FE,0x5a0204,SGH-T469
+54:92:BE:9F:B6:30,0x5a0204,Porkchop
+54:92:BE:AD:58:75,0x5a0204,SGH-T749
+54:92:BE:B3:49:33,0x5a0204,SGH-A897
+54:92:BE:B3:54:B5,0x5a0204,SGH-A897
+58:17:0C:11:71:F2,0x5a0204,TM717
+58:17:0C:17:D3:CC,0x5a0204,J105i
+58:17:0C:86:31:85,0x5a0204,W518 Taytan
+58:17:0C:8E:22:70,0x5a0204,TM717
+58:17:0C:A3:33:1E,0x5a020c,U5
+5C:17:D3:06:00:BC,0x5a0204,VOID
+5C:17:D3:08:86:B2,0x5a0204,LG GR700
+5C:17:D3:0B:E6:67,0x5a0204,LG Remarq
+5C:17:D3:0C:4E:C9,0x520204,LG GS170
+5C:17:D3:13:78:A2,0x520204,LG GS170
+5C:17:D3:19:A1:87,0x520204,LG GS170
+5C:17:D3:1D:38:A3,0x5a0204,LG GR500FD
+5C:17:D3:36:90:B7,0x5a0204,Samsung wep450
+5C:17:D3:3D:DC:56,0x520204,LG GS170
+5C:17:D3:42:AB:AB,0x5a0204,LG GS290
+5C:17:D3:44:1F:48,0x5a0204,LG GU295
+5C:17:D3:BE:CE:67,0x5a0204,Stackz daddy
+5C:17:D3:C0:27:7C,0x5a0204,LG GW300
+5C:17:D3:C1:12:19,0x5a0204,Â§JanayÂ§
+5C:17:D3:E3:73:4F,0x5a0204,Donovon .
+5C:17:D3:EF:45:F9,0x5a0204,LG RUMOR TOUCH
+5C:4C:A9:46:50:92,0x580204,HW M750
+5C:4C:A9:46:51:B2,0x580204,HW M750
+5C:4C:A9:53:8F:92,0x58020c,M860
+5C:4C:A9:54:25:04,0x580204,HW M750
+5C:4C:A9:80:4F:26,0x58020c,M860
+5C:4C:A9:80:6B:F0,0x58020c,M860
+5C:4C:A9:80:93:B6,0x58020c,M860
+5C:4C:A9:80:C9:DC,0x58020c,M860
+5C:4C:A9:8E:56:95,0x580204,cuteeee.
+5C:4C:A9:91:30:40,0x580204,HW M750
+5C:4C:A9:9C:A3:B7,0x580204,WHHW M750
+5C:4C:A9:9C:B5:4E,0x580204,HW M750
+5C:4C:A9:9D:FC:C3,0x58020c,"Mina"
+5C:4C:A9:A7:D1:72,0x58020c,M860
+5C:4C:A9:A9:51:4B,0x580204,Huawei M735
+5C:4C:A9:AA:E4:95,0x58020c,Blueaction
+5C:4C:A9:C7:EB:53,0x5a0204,Huawei U7519
+5C:4C:A9:D1:E2:8F,0x58020c,Nasia
+5C:4C:A9:E5:1E:65,0x58020c,Drizzy bby
+5C:4C:A9:E5:46:60,0x58020c,M860
+5C:4C:A9:E5:5C:E7,0x58020c,M860
+5C:4C:A9:E5:CA:7D,0x58020c,Carr's phone
+5C:4C:A9:E6:51:F7,0x58020c,M860
+5C:4C:A9:F6:E2:8D,0x58020c,M860
+5C:4C:A9:F8:BF:8E,0x58020c,M860
+5C:57:C8:BF:92:B9,0x5a020c,Nokia 5230
+5C:59:48:48:B8:59,0x7a020c,Lisa's iPhone
+60:A1:0A:25:D3:05,0x5a0204,SGH-A777
+60:A1:0A:39:29:79,0x5a0204,SGH-A817
+60:A1:0A:C9:A3:8D,0x5a2204,Samsung ReclaiM
+60:A1:0A:E5:34:5D,0x500204,SGH-A197
+60:D0:A9:03:56:0B,0x5a0204,SGH-T659
+60:D0:A9:09:ED:B7,0x5a0204,SGH-T469
+60:D0:A9:2A:86:5F,0x5a0204,SGH-A887
+60:D0:A9:2D:32:AD,0x5a0204,SGH-A877
+60:D0:A9:45:4A:B4,0x5a0204,Austin
+60:D0:A9:78:EE:F5,0x5a0204,SGH-A877
+60:D0:A9:80:40:BE,0x5a0204,SGH-A877
+60:D0:A9:80:8B:F3,0x5a0204,SGH-A877
+60:D0:A9:89:38:05,0x5a0204,SGH-A887
+60:D0:A9:8F:E2:60,0x5a0204,SGH-A887
+60:D0:A9:90:4A:32,0x520204,SPH-M33
+60:D0:A9:9F:FD:DC,0x522204,KIY.
+60:D0:A9:B3:53:9D,0x5a0204,VOID
+60:D0:A9:B5:5E:A6,0x5a0204,SGH-A837
+60:D0:A9:B8:E5:42,0x5a0204,SGH-T46
+60:D0:A9:BB:E7:D8,0x5a0204,SGH-A837
+60:D0:A9:BF:C7:62,0x5a0204,BLAcK@YeLLOw
+60:D0:A9:E1:18:6E,0x5a0204,JANELMONET
+60:D0:A9:EC:EA:F5,0x5a0204,SGH-T469
+64:16:F0:1F:2F:E0,0x5a0204,Tap
+64:16:F0:1F:7A:D6,0x5a0204,Tap
+64:16:F0:90:90:D9,0x5a0204,Tap
+64:16:F0:A9:2E:0C,0x580204,HW M750
+64:16:F0:AB:D3:E2,0x5a0204,Tap
+64:16:F0:C8:A8:C5,0x580204,HUAWEI M228
+64:16:F0:F9:BD:43,0x580204,HW M750
+64:99:5D:01:92:E1,0x5a0204,LG GR700
+64:99:5D:18:1E:9A,0x520204,LG GS170
+64:99:5D:26:90:FF,0x5a0204,LG GS390
+64:99:5D:2A:6D:89,0x5a0204,LG Rumor Touch
+64:99:5D:2E:1C:60,0x5a0204,LG RUMOR TOUCH
+64:99:5D:35:44:EE,0x520204,LG GS170
+64:99:5D:37:CE:E1,0x520204,LG GS170
+64:99:5D:3A:5E:F5,0x5a0204,Cassandra
+64:99:5D:3C:C2:FD,0x520204,LG GS170
+64:99:5D:3F:7B:D0,0x520204,LG GS170
+64:99:5D:3F:95:5D,0x520204,LG GS170
+64:99:5D:42:F5:D5,0x5a0204,LG GS390
+64:99:5D:46:69:B4,0x5a0204,Nellz
+64:99:5D:4B:3A:69,0x5a0204,LG RUMOR TOUCH
+64:99:5D:63:86:FB,0x520204,LG 420G
+64:99:5D:6A:E3:42,0x5a0204,Robert
+64:99:5D:C1:29:37,0x5a0204,LG RUMOR TOUCH
+64:99:5D:C5:DF:B9,0x5a0204,LG GT550
+64:99:5D:C7:73:26,0x5a0204,kissesbabe
+64:99:5D:C8:41:CA,0x520204,LG GS170
+64:99:5D:CD:F6:67,0x5a0204,LG GT350
+68:EB:AE:28:55:39,0x5a0204,Samsung Reclaim
+68:EB:AE:69:47:30,0x5a0204,Miguel
+68:EB:AE:6B:BA:C6,0x5a0204,SGH-T749
+68:EB:AE:75:14:E1,0x5a0204,SGH-T469
+68:EB:AE:A5:8D:89,0x5a2204,SAMMIIII
+68:EB:AE:A5:93:6B,0x5a2204,Christinee(:
+68:EB:AE:D5:42:88,0x5a0204,VOID
+68:EB:AE:D7:17:8F,0x5a0204,SGH-T669
+68:EB:AE:DA:79:C2,0x5a0204,SGH-T479
+68:EB:AE:DC:05:F5,0x5a0204,SGH-T479
+68:EB:AE:DD:20:F4,0x5a0204,SGH-T479
+68:EB:AE:F8:11:4B,0x5a0204,SGH-A687
+68:EB:AE:F8:59:AA,0x5a0204,SGH-T359
+68:EB:AE:F8:CF:29,0x5a0204,SGH-T359
+68:EB:AE:FD:35:AB,0x5a0204,SGH-T359
+6C:0E:0D:CA:B2:34,0x5a0204,TM717
+6C:23:B9:49:53:58,0x5a0204,W518a
+6C:9B:02:5F:D7:E6,0x5a020c,Nokia 5230
+6C:9B:02:84:C5:29,0x5a020c,Nokia 5230
+6C:9B:02:BA:2E:A0,0x5a020c,Nokia 5230
+6C:D6:8A:05:D3:54,0x5a0204,LG CF360
+6C:D6:8A:0C:C7:B3,0x5a0204,VOID
+6C:D6:8A:70:73:A5,0x5a0204,LG RUMOR TOUCHyadi
+6C:D6:8A:75:36:CB,0x5a0204,Kimmie Robbins
+6C:D6:8A:7A:EA:CE,0x5a0204,LG VX8575
+6C:D6:8A:80:C4:35,0x5a0204,Amira
+6C:D6:8A:82:90:96,0x5a0204,LG RUMOR TOUCH
+6C:D6:8A:8A:0C:A1,0x5a0204,LG GR500
+6C:D6:8A:8C:06:66,0x580204,R-EASY
+6C:D6:8A:99:19:74,0x5a0204,LG RUMOR TOUCH
+6C:D6:8A:9D:40:B5,0x5a0204,LG RUMOR TOUCH
+6C:D6:8A:9F:2A:3E,0x5a0204,LG RUMOR2
+6C:D6:8A:EA:4F:B2,0x5a0204,LG GS390
+70:F1:A1:01:4C:8E,0x7e010c,D185KYJ1
+74:A7:22:AA:D2:ED,0x580204,VMU Rumor Touch
+78:1D:BA:00:1E:F0,0x580204,HUAWEI M228
+78:1D:BA:02:5B:75,0x58020c,chaela
+78:1D:BA:17:18:37,0x580204,HW M750
+78:47:1D:07:A3:E0,0x5a0204,SGH-T359
+78:47:1D:0C:1C:95,0x5a0204,SGH-T669
+78:47:1D:15:21:C7,0x5a0204,SGH-T359
+78:47:1D:81:DD:F1,0x5a0204,SGH-T559
+78:47:1D:89:6E:3F,0x5a0204,SGH-T669
+78:47:1D:89:70:B5,0x5a0204,SGH-T669
+78:47:1D:89:E7:BF,0x5a0204,SGH-T3
+78:47:1D:DF:E0:D8,0x5a0204,SGH-T669
+78:47:1D:EE:52:F2,0x5a0204,SGH-T359
+78:DD:08:A3:FE:8F,0x7e010c,INC-L-RSM001
+80:50:1B:7B:2A:3E,0x5a020c,Nokia 5230
+80:50:1B:87:3F:3B,0x5a020c,Nokia E73
+80:50:1B:92:D3:35,0x5a020c,Nokia 5230
+80:50:1B:95:30:3B,0x5a020c,Nokia E73
+80:50:1B:F0:4A:D4,0x5a0204,Nokia X3-00
+8C:54:1D:00:29:1A,0x5a0204,Jj
+8C:54:1D:19:27:DC,0x5a0204,LG RUMOR2
+8C:54:1D:19:A5:9C,0x5a0204,LG GS505
+8C:54:1D:1C:8F:37,0x5a0204,LG GS505
+8C:54:1D:26:1D:D3,0x5a0204,LG GS505
+8C:54:1D:29:AB:20,0x5a0204,Tucci*
+8C:54:1D:2B:B3:43,0x5a0204,VOID
+8C:54:1D:2C:42:DB,0x5a0204,VOID
+8C:54:1D:31:23:F7,0x5a0204,LG GS505
+8C:54:1D:3B:03:39,0x5a0204,LG GS505
+8C:54:1D:77:09:C8,0x520204,LG VX5600
+8C:54:1D:86:7B:68,0x5a0204,LG GS505
+8C:54:1D:8B:57:D3,0x5a0204,LG RUMOR TOUCH
+8C:54:1D:8D:60:90,0x5a0204,LG GS505
+8C:54:1D:8F:C3:1A,0x580204,Jose Antonio's Communicator
+8C:54:1D:9C:96:7B,0x520204,LG GS170
+8C:54:1D:DD:25:28,0x5a0204,LG GD570
+8C:54:1D:DD:FA:79,0x520204,LG GS170
+8C:54:1D:DE:3D:2A,0x5a0204,LG GS505
+8C:54:1D:E2:6A:DD,0x5a0204,LG GS390
+8C:58:77:06:48:80,0x7a020c,CHRIS HUNTER's iPhone
+8C:71:F8:16:42:C2,0x522204,Brahyiene
+8C:71:F8:81:9E:FB,0x5a0204,SGH-T669
+8C:71:F8:81:A3:26,0x5a0204,SGH-T669
+8C:71:F8:86:42:B5,0x5a0204,SGH-T669
+8C:71:F8:E4:D6:CB,0x5a0204,VOID
+90:4C:E5:CD:73:E5,0x000000,Dell Wireless 365 Bluetooth Module
+A0:07:98:13:33:4E,0x5a0204,SGH-A887
+A0:07:98:13:8E:FA,0x5a0204,SGH-A877
+A0:07:98:16:27:E7,0x5a0204,SGH-A877
+A0:07:98:26:D4:D1,0x5a0204,SGH-A887
+A0:07:98:36:C2:98,0x5a0204,SGH-A767
+A0:07:98:4E:D3:74,0x5a0204,SGH-A777
+A0:07:98:66:67:7E,0x5a0204,SGH-A797
+A0:07:98:6B:70:26,0x5a0204,SGH-T659
+A0:07:98:72:C0:34,0x5a0204,SGH-A897
+A0:07:98:76:27:00,0x5a0204,SGH-A797
+A0:07:98:78:F7:55,0x5a0204,SGH-A897
+A0:07:98:7E:62:76,0x5a0204,SGH-A897
+A0:07:98:95:4C:2C,0x5a0204,SGH-A767
+A0:07:98:A7:51:B7,0x5a0204,SGH-T749
+A0:07:98:A8:BB:C5,0x5a0204,SGH-T401G
+A0:4E:04:51:79:76,0x5a020c,VOID
+A0:4E:04:60:1A:CD,0x5a020c,Nokia 5230
+A0:4E:04:63:AD:38,0x5a020c,Nokia 5230
+A0:4E:04:B4:59:E0,0x520204,Nokia 2720a-2b
+A0:4E:04:CA:1A:A5,0x5a020c,Nokia 5230
+A0:4E:04:F4:4D:53,0x5a020c,Nokia 5230
+A0:75:91:54:5C:69,0x5a0204,SGH-T259
+A0:75:91:63:D5:0E,0x5a0204,SGH-T259
+A0:75:91:E0:FF:97,0x5a0204,SGH-T369
+A0:75:91:E2:BD:0B,0x5a0204,SGH-T359
+A0:75:91:E5:BD:CA,0x5a0204,SGH-T479
+A0:75:91:E6:3C:EC,0x5a0204,SGH-T479
+A0:75:91:EA:22:08,0x5a0204,Linda
+A0:75:91:EC:18:7E,0x5a0204,Brandon 
+A4:ED:4E:C9:23:3D,0x4a0204,Motorola Phone
+A4:ED:4E:E3:E5:C9,0x520204,Motorola Phone
+A8:6A:6F:01:45:4F,0x7a020c,BlackBerry 8520
+A8:6A:6F:12:C2:8F,0x78020c,BlackBerry 9300
+A8:6A:6F:19:32:DB,0x7a020c,BlackBerry 9780
+A8:6A:6F:25:18:35,0x7a020c,BlackBerry 9800
+A8:6A:6F:28:AB:0D,0x7a020c,MyHeadset
+A8:6A:6F:30:9C:D9,0x7a020c,BlackBerry 9780
+A8:6A:6F:49:29:DD,0x7a020c,BlackBerry 9330
+A8:6A:6F:50:7A:21,0x7a020c,BlackBerry 9670
+A8:6A:6F:78:72:48,0x7a020c,BlackBerry 9650
+A8:6A:6F:A3:C1:51,0x7a020c,BlackBerry 9800
+A8:6A:6F:AD:80:35,0x7a020c,BlackBerry 9330
+A8:6A:6F:B7:AA:B9,0x7a020c,BlackBerry 9650
+A8:6A:6F:BC:CD:9D,0x7a020c,BlackBerry 9650
+A8:6A:6F:D9:B1:FC,0x7a020c,BlackBerry 9650
+A8:6A:6F:E5:A6:02,0x7a020c,BlackBerry 9800
+A8:6A:6F:E9:38:B6,0x7a020c,BlackBerry 9800
+A8:6A:6F:EA:B1:89,0x7a020c,BlackBerry 9330
+A8:7E:33:3D:E5:AC,0x5a0204,Nokia 3711 fold
+A8:E0:18:0F:76:29,0x5a020c,Nokia C6-00
+A8:F2:74:01:77:89,0x5a0204,SGH-A877
+A8:F2:74:0B:29:9D,0x5a0204,SGH-A887
+A8:F2:74:18:EC:9F,0x5a0204,SGH-A887
+A8:F2:74:23:E3:52,0x5a0204,SGH-T469
+A8:F2:74:34:8A:3D,0x5a0204,Mother
+A8:F2:74:37:8D:05,0x5a0204,SGH-T469
+A8:F2:74:37:A0:66,0x5a0204,SGH-T469
+A8:F2:74:3D:C4:97,0x5a0204,Slider
+A8:F2:74:64:9D:06,0x5a2204,SPH-M810
+A8:F2:74:66:74:CB,0x5a0204,Samsung Reclaim
+A8:F2:74:6B:89:50,0x5a0204,Samsung Reclaim
+A8:F2:74:73:79:28,0x5a0204,SGH-T469
+A8:F2:74:76:7A:CC,0x5a0204,SGH-T469
+A8:F2:74:76:7D:A2,0x5a0204,SGH-T469
+A8:F2:74:7B:D6:EF,0x5a0204,SGH-T749
+A8:F2:74:7F:15:0E,0x5a0204,SGH-T749
+A8:F2:74:86:01:F2,0x5a0204,VOID
+A8:F2:74:D0:5C:D5,0x5a0204,SGH-T559
+A8:F2:74:D5:8B:A6,0x5a0204,Britts phone
+A8:F2:74:E0:0B:96,0x5a0204,SGH-T469
+A8:F2:74:E3:36:BF,0x5a0204,Babyy_Gurl
+A8:F2:74:FA:2B:FC,0x522204,Samsung Mantra
+AC:93:2F:AF:1D:E4,0x5a0204,X2-01
+AC:93:2F:AF:2B:36,0x5a0204,X2-01
+B0:89:91:08:F7:94,0x5a0204,LG RUMOR TOUCH
+B0:89:91:09:07:80,0x5a0204,LG GW370
+B0:89:91:24:00:EE,0x5a0204,LG RUMOR TOUCH
+B0:89:91:3A:5A:B4,0x580204,VMU Rumor Touch
+B0:89:91:40:AB:A0,0x520204,LG GS170
+B0:89:91:50:CB:62,0x520204,LG GS170
+B0:89:91:68:83:4A,0x5a0204,LG RUMOR TOUCH
+B0:89:91:87:B3:DE,0x520204,LG GS170
+B8:C7:5D:D4:A9:2E,0x6a041c,Rob's iPad
+BC:47:60:02:54:17,0x5a0204,SGH-A667
+BC:47:60:0D:9B:E8,0x5a0204,SGH-A667
+BC:47:60:0D:9C:47,0x5a0204,SGH-A667
+BC:47:60:35:B1:21,0x5a0204,SGH-T479
+BC:47:60:35:B6:D0,0x5a0204,SGH-T479
+BC:47:60:38:70:90,0x5a0204,SGH-T479
+BC:47:60:3A:01:FA,0x5a0204,SGH-T669
+BC:47:60:3D:B0:A2,0x5a0204,Yup thas me yup
+BC:47:60:40:34:79,0x5a0204,SGH-A797
+BC:47:60:47:FC:FD,0x5a0204,SGH-T359
+BC:47:60:48:06:B0,0x5a0204,SGH-T359
+BC:47:60:4B:D1:79,0x5a0204,SGH-T359
+BC:47:60:D7:A2:37,0x5a0204,VOID
+BC:47:60:D8:B4:72,0x5a0204,SGH-T359
+BC:47:60:E7:27:99,0x5a0204,SGH-A68
+C0:38:F9:41:C3:67,0x5a0204,Nokia 6350
+C0:38:F9:49:32:89,0x5a0204,Nokia 6350
+C0:38:F9:4D:7D:C3,0x520204,Nokia 2720a-2b
+C0:38:F9:54:9A:21,0x520204,VOID
+C0:38:F9:57:8D:70,0x520204,Nokia 2720a-2b
+C0:38:F9:5D:96:BB,0x520204,Nokia 2720a-2b
+C0:38:F9:5F:43:32,0x520204,Nokia 2720a-2b
+C0:38:F9:6B:51:0F,0x520204,Nokia 2330c-2b
+C0:38:F9:73:1B:5D,0x520204,Nokia 2330c-2b
+C0:38:F9:73:EB:AD,0x520204,Nokia 2330c-2b
+C0:38:F9:7A:65:CE,0x520204,Nokia 2330c-2b
+C0:38:F9:EF:3B:6A,0x5a0204,Nokia 3711 fold
+C4:17:FE:EE:DF:37,0x00010c,SR_409
+C8:7E:75:09:A1:BC,0x5a0204,SGH-T401G
+C8:7E:75:0C:D0:FE,0x5a0204,SGH-T469
+C8:7E:75:30:BC:E9,0x5a0204,Raja
+C8:7E:75:34:18:94,0x5a0204,SGH-A877
+C8:7E:75:3E:06:83,0x5a0204,SGH-A877
+C8:7E:75:42:73:7A,0x5a0204,SGH-A897
+C8:7E:75:4E:8F:C1,0x5a0204,SGH-A897
+C8:7E:75:4E:A7:D5,0x5a0204,SGH-A797
+C8:7E:75:52:9B:3A,0x5a0204,Cathy
+C8:7E:75:8B:04:2F,0x5a0204,SGH-T469
+C8:7E:75:8E:8C:F5,0x5a0204,Atbt 
+C8:7E:75:9F:A5:78,0x5a0204,SGH-T469
+C8:7E:75:A2:02:10,0x5a020c,VOID
+CC:55:AD:06:AC:DC,0x7a020c,BlackBerry 9650
+CC:55:AD:06:B0:58,0x7a020c,BlackBerry 9650
+CC:55:AD:0B:2E:2F,0x7a020c,BlackBerry 9330
+CC:55:AD:13:3E:2F,0x7a020c,BDD
+CC:55:AD:1D:9E:F8,0x7a020c,BlackBerry 9550
+CC:55:AD:28:66:71,0x7a020c,BlackBerry 9650
+CC:55:AD:3F:47:73,0x7a020c,BlackBerry 9650
+CC:55:AD:42:71:B9,0x7a020c,BlackBerry 9800
+CC:55:AD:59:F3:EA,0x7a020c,BlackBerry 9330
+CC:55:AD:5E:27:85,0x7a020c,BlackBerry 9670
+CC:55:AD:61:CE:2C,0x7a020c,BlackBerry 9650
+CC:55:AD:71:CB:19,0x7a020c,BlackBerry 9330
+CC:55:AD:73:CF:DC,0x7a020c,Cameron
+CC:55:AD:76:A4:37,0x7a020c,VOID
+CC:55:AD:82:8C:90,0x7a020c,BlackBerry 9800
+CC:55:AD:84:77:CB,0x7a020c,BlackBerry 9330
+CC:55:AD:92:9F:A6,0x7a020c,BlackBerry 9800
+CC:55:AD:96:FD:15,0x7a020c,Bran9780
+CC:55:AD:9F:32:3B,0x7a020c,Jasi
+CC:55:AD:A6:0F:86,0x7a020c,BlackBerry 9650
+CC:55:AD:AB:8A:03,0x7a020c,tina
+CC:55:AD:AF:37:AE,0x7a020c,BlackBerry 9650
+CC:55:AD:B8:3E:A5,0x7a020c,BlackBerry 9650
+CC:55:AD:B8:79:C7,0x7a020c,VOID
+CC:55:AD:CB:70:8E,0x7a020c,BlackBerry 9800
+CC:55:AD:DF:A5:23,0x7a020c,BlackBerry 9650
+CC:55:AD:F0:22:3B,0x7a020c,BlackBerry 9800
+CC:55:AD:FE:0F:F1,0x7a020c,VOID
+D0:15:4A:BD:C6:E9,0x580204,chepito
+D4:88:90:2D:8B:82,0x5a0204,Erin
+D4:88:90:46:23:7F,0x5a2204,Samsung SeeK
+D4:88:90:62:FC:D2,0x5a0204,SGH-A887
+D4:88:90:7E:F1:13,0x5a2204,Samsung Seek
+D4:88:90:92:4A:F2,0x5a0204,9
+D4:88:90:9A:68:D0,0x5a0204,SGH-T359 lovee youh !
+D4:88:90:A5:BA:48,0x5a0204,SGH-A847
+D4:88:90:A8:BD:EA,0x5a0204,Lil jr26
+D4:88:90:AB:97:39,0x5a0204,SGH-A797
+D4:88:90:AC:E1:0F,0x5a0204,SGH-T479
+D4:88:90:AF:F8:0B,0x5a0204,SGH-T479
+D4:88:90:CF:6D:4B,0x5a0204,SGH-A927
+D4:9A:20:A1:55:92,0x0a041c,Alex's iPod
+D4:CB:AF:31:63:70,0x5a020c,Nokia 5230hi you
+D4:CB:AF:BC:AF:55,0x5a0204,Nokia X3-00
+D4:E8:B2:21:6C:F4,0x5a0204,SGH-A687
+D4:E8:B2:2C:AA:09,0x5a0204,SGH-T359
+D4:E8:B2:2D:68:DF,0x5a0204,SGH-T669
+D4:E8:B2:2D:7B:F9,0x5a0204,SGH-T669
+D4:E8:B2:2F:80:E1,0x5a0204,SGH-T359
+D4:E8:B2:32:76:01,0x5a0204,SGH-A897
+D4:E8:B2:34:7C:31,0x5a0204,SGH-T669
+D4:E8:B2:3B:13:2E,0x5a0204,VOID
+D4:E8:B2:55:DE:74,0x5a0204,SGH t369
+D4:E8:B2:56:F9:38,0x5a0204,I watch u while u sleep x)im gonna get u soon x__x
+D4:E8:B2:DD:B5:9E,0x5a0204,SGH-T479
+D4:E8:B2:DD:CA:C8,0x5a0204,SGH-T669
+D4:E8:B2:E6:B2:09,0x5a0204,SGH-A847
+D4:E8:B2:E8:57:A4,0x5a0204,VOID
+D4:E8:B2:E9:93:78,0x5a0204,SGH-T47
+D4:E8:B2:ED:D0:AD,0x5a0204,shan
+D4:E8:B2:EF:49:63,0x5a0204,SGH-A847
+E0:A6:70:77:ED:4C,0x5a020c,Nokia 5230
+E0:A6:70:86:04:6F,0x5a0204,Seagulls 
+E0:A6:70:CB:83:24,0x5a0204,Nokia 6350
+E8:3E:B6:02:23:69,0x7a020c,BlackBerry 9650
+E8:3E:B6:02:4B:CC,0x7a020c,BlackBerry 9650
+E8:3E:B6:14:13:FD,0x7a020c,BlackBerry 9700
+E8:3E:B6:2D:46:E4,0x7a020c,ray curran
+E8:3E:B6:4B:27:7F,0x7a020c,BlackBerry 9650
+E8:3E:B6:A1:50:37,0x7a020c,BlackBerry 9650
+E8:E5:D6:04:14:C9,0x5a0204,SGH-A887
+E8:E5:D6:21:1D:F3,0x5a2204,TONYA
+E8:E5:D6:22:CE:48,0x5a2204,Andrea<3
+E8:E5:D6:26:58:2B,0x5a2204,TASHA
+E8:E5:D6:63:71:34,0x5a0204,SGH-T359
+E8:E5:D6:68:D9:7D,0x5a0204,SGH-A797
+E8:E5:D6:7B:D5:B7,0x5a0204,Gracie m
+E8:E5:D6:7D:F6:99,0x5a0204,Tuff Phone
+E8:E5:D6:7D:FC:86,0x5a0204,SGH-T359
+E8:E5:D6:99:CC:D5,0x5a0204,SGH-A877
+E8:E5:D6:D0:53:CD,0x5a0204,SGH-T669
+E8:E5:D6:D2:1C:51,0x5a0204,SGH-T669
+E8:E5:D6:D5:F0:EC,0x5a0204,SGH-T669
+E8:E5:D6:D9:58:97,0x5a0204,GT-M8910
+E8:E5:D6:E2:98:93,0x5a0204,SGH-A877
+E8:E5:D6:EC:B3:EA,0x5a0204,SGH-A877
+E8:E5:D6:FF:0F:AD,0x5a0204,SGH-A877
+EC:9B:5B:8B:F6:5A,0x5a020c,Jaz
+EC:9B:5B:A6:92:59,0x5a020c,Nokia 5230
+F4:0B:93:00:5F:5D,0x7a020c,paulsbb
+F4:0B:93:02:5D:D2,0x7a020c,BlackBerry 9630
+F4:0B:93:0C:49:5B,0x7a020c,BlackBerry 8530
+F4:0B:93:39:95:C5,0x7a020c,BlackBerry 9630
+F4:0B:93:40:B2:7E,0x7a020c,BlackBerry 8530
+F4:0B:93:4E:92:3B,0x7a020c,BlackBerry 8530
+F4:0B:93:52:54:6E,0x7a020c,BlackBerry 9700
+F4:0B:93:56:6B:01,0x7a020c,BlackBerry 8520
+F4:0B:93:64:A3:C5,0x7a020c,VOID
+F4:0B:93:83:FF:B6,0x7a020c,BlackBerry 9700
+F4:0B:93:89:9E:C9,0x7a020c,BlackBerry 8530
+F4:0B:93:92:44:AD,0x7a020c,Joe BlackBerry 9700
+F4:0B:93:9D:96:4F,0x7a020c,BlackBerry 8530
+F4:0B:93:B1:69:12,0x78020c,BlackBerry 8330
+F4:0B:93:B2:97:33,0x7a020c,BlackBerry 8530
+F4:0B:93:B9:91:5F,0x7a020c,BlackBerry 9700
+F4:0B:93:D3:05:E5,0x7a020c,BlackBerry 9700
+F4:0B:93:D8:69:9C,0x78020c,BlackBerry 9630
+F4:0B:93:D8:89:9C,0x7a020c,BlackBerry 9630
+F4:0B:93:E8:A8:7E,0x7a020c,Klein
+F4:9F:54:10:0F:2C,0x5a0204,SGH-T479
+F4:9F:54:19:5E:8C,0x5a0204,SGH-T359
+F4:9F:54:23:B0:C6,0x5a0204,SGH-A687
+F4:9F:54:28:F7:B5,0x5a0204,SGH-A777
+F4:9F:54:85:7C:6C,0x5a2204,Samsung Seek
+F4:9F:54:A5:20:49,0x5a0204,SGH-A847
+F4:9F:54:A8:3A:32,0x5a0204,SGH-T479
+F4:9F:54:AB:4F:09,0x5a0204,SGH-T479
+F4:9F:54:AB:BB:85,0x5a0204,SGH-T669
+F4:9F:54:AF:72:78,0x5a0204,SGH-T359
+F4:9F:54:AF:9E:CF,0x5a0204,Rico Cell
+F4:9F:54:B5:77:B0,0x5a0204,SGH-T669
+F4:9F:54:BC:F4:67,0x5a0204,SGH-T669
+F4:9F:54:BD:9B:61,0x5a0204,SGH-T479
+F4:9F:54:F1:9C:B3,0x5a2204,Shawn
+F4:9F:54:F1:A6:C1,0x5a2204,Em228
+F4:C7:14:0C:04:62,0x58020c,M860
+F4:C7:14:0E:02:FF,0x58020c,M860
+F4:C7:14:17:7E:4A,0x58020c,Roc harland
+F4:C7:14:19:70:B7,0x58020c,Michi
+F4:C7:14:1B:94:ED,0x58020c,Carlos
+F4:C7:14:1D:7F:3B,0x580204,Huawei M735
+F4:C7:14:1F:30:59,0x58020c,M500
+F4:C7:14:2A:09:87,0x58020c,Manny
+F4:C7:14:2A:4E:6D,0x58020c,Daniel Gwernga
+F4:C7:14:64:EB:21,0x58020c,M860
+F4:C7:14:65:8A:B9,0x58020c,M860
+F4:C7:14:6D:D3:27,0x58020c,wep450
+F4:C7:14:7D:5D:FD,0x58020c,Plantronics
+F4:C7:14:7D:72:E1,0x58020c,Mz.blast
+F4:C7:14:8E:D0:6E,0x58020c,Mrs. JLGreen
+F4:C7:14:B2:38:10,0x58020c,plantronics
+F4:C7:14:BE:9C:73,0x58020c,VOID
+F4:C7:14:BE:9D:CA,0x58020c,JR
+F4:C7:14:C0:97:38,0x58020c,M860
+F4:C7:14:C0:DC:16,0x58020c,M860
+F4:C7:14:FC:12:80,0x58020c,M860
+FC:A1:3E:07:F3:80,0x5a0204,SGH-T359
+FC:A1:3E:0B:E2:0E,0x5a0204,SGH-T359
+FC:A1:3E:13:3F:22,0x5a0204,SGH-T669
+FC:A1:3E:13:3F:29,0x5a0204,SGH-T669
+FC:A1:3E:16:1B:8C,0x5a0204,SGH-T479
+FC:A1:3E:18:4E:E0,0x5a0204,SGH-T479
+FC:A1:3E:18:9F:3B,0x5a0204,SGH-A897
+FC:A1:3E:1B:DD:F5,0x5a0204,SGH-T359
+FC:A1:3E:1F:3F:7D,0x5a0204,SGH-T669
+FC:A1:3E:A2:CA:C0,0x5a0204,SGH-T669
+FC:A1:3E:A2:FA:C1,0x5a0204,SGH-T669
+FC:A1:3E:A4:A1:E7,0x5a0204,*-deb:-)
+FC:A1:3E:A8:E9:60,0x5a0204,SGH-T359
+FC:A1:3E:A8:F7:0B,0x5a0204,SGH-T359
+FC:A1:3E:A9:C1:18,0x5a0204,SGH-A797
+FC:A1:3E:AA:F1:43,0x5a0204,SGH-T479
+FC:A1:3E:AD:E5:48,0x5a0204,SGH-T669
+FC:A1:3E:BC:C3:53,0x5a0204,SGH-T369
+FC:A1:3E:E1:75:9F,0x522204,Samsung M360
+FC:A1:3E:E1:97:EC,0x5a2204,Jabra</code></pre>
+<h1>Detailed Analysis</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;While the sheer number of discovered devices is
+impressive enough, there are some interesting avenues of research within the
+data itself. Between the unique device names and class IDs, there is a considerable
+amount of identifying data being broadcast out for anyone to hear.
+<p>
+For example, I was especially surprised by the number of results from the vehicles
+themselves. Originally, I expected that the passengers of the vehicles would be the
+primary target in this exercise, but these results show just how much the modern
+automobile has advanced technologically:
+<p>
+<center><div id="chart_manufacturer"></div><div id="chart_nav"></div></center>
+<p>
+From this small example, we can see that GM is apparently pushing Bluetooth fairly
+hard in their new vehicles, while Garmin's nuvi line of navigation systems is absolutely
+dominating the marketplace.
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

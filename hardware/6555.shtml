@@ -1,0 +1,268 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - Nokia 6555b</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Nokia 6555,Local Mode,Test Mode,Blooover,JSR-82,Gammu" />
+<meta name="description" content="Hardware and software information about the Nokia 6555b cell phone." />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="right"><img src="/images/hardware/6555_1.jpg" alt="6555b" /></span>
+<h1>Hardware Specifications</h1>
+<b>
+&nbsp; &nbsp; &nbsp; &nbsp;OS: Nokia Series 40
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Storage: 30 MB onboard, removable microSD
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Display: 240 x 320 TFT LCD
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Battery: 1020 mAh Lithium-ion
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Size: 99.6 x 44.3 x 19.6 mm
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Weight: 97 g
+</b>
+<h1>It's just a phone...</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Well, <i>obviously</i> it is a phone. The real
+question is: why would I make a page about this particular phone? Let's take a
+few steps back for that one...
+<p>
+Throughout my time researching Bluetooth technology and associated security
+risks, I had been interested in taking things to the next logical level, a
+mobile device that would allow me to do more than simply scan for remote
+devices. I searched around a bit and found that, while it isn't exactly a
+bustling industry, there are a few decent Java Bluetooth tools available for
+mobile phones and PDAs. While none of them are suitable as a replacement to
+PC-based tools, they are certainly worth playing around with. One clear
+advantage of using phone-based tools is that staring at your phone and hitting
+buttons over and over again is about the least suspicious thing a person could
+do in the 21st century. This, plus the phone's obviously smaller screen, make
+scanning and enumerating devices in public a non-event.
+<p>
+Of course, there is always a catch. To run these particular applications, your
+phone needs to meet certain software criteria. To make matters worse, I use
+Verizon. Now if you don't already know, Verizon has exceptionally strict
+limitations on all of their phones (though somewhat less on their smartphones),
+to the extent that I needed to find a second phone just to do Bluetooth
+research with. After a few months searching, and a number of eBay auctions
+later, I ended up with what I consider one of the best Bluetooth-security
+research devices you can get your hands on, the Nokia 6555b.
+<h1>The Nokia difference</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;There are two main criteria for running Bluetooth
+software on your mobile phone. The first is <a href="http://en.wikipedia.org/wiki/Java_Platform,_Micro_Edition" target="_blank">J2ME MIDP 2.0</a>. This is the
+Java runtime environment necessary to run third party software in the first
+place. All modern GSM phones should have MIDP 2.0, so that probably won't be an
+issue for most people. The other criteria is a little bit harder to satisfy.
+<p>
+Java applications access your phone's hardware through various sets of APIs
+known as JSRs. There is a different JSR for each function a Java application
+might want to use, like reading and writing to the phone's filesystem,
+accessing the phone's GPS receiver, etc, etc. The basic modules are included in
+the firmware of most phones, but some of the advanced ones are left out. The
+Bluetooth API, known as <a href="http://en.wikipedia.org/wiki/Java_APIs_for_Bluetooth" target="_blank">JSR-82</a> is one of those that often gets left out. For
+example, when I first started trying to get some of these mobile tools working
+I installed them on one of my Motorola RAZRs. The RAZR has J2ME MIDP 2.0, so
+the software will install fine and even start up. But the RAZR lacks JSR-82, so
+the application will eventually fail as soon as you try and scan or do anything
+else that would power-up the Bluetooth hardware.
+<p>
+After spending a number of days online, I was able to find out that a good deal
+of newer Nokia phones included JSR-82. The problem was, I wanted to find a
+phone that could do everything I wanted without being overly expensive, and
+some of these Nokias were going for more used on eBay than my primary phone
+cost me.
+<p>
+Eventually I found the 6555b. This phone is basically Nokia's answer to the
+absurdly popular Motorola RAZR. You can notice some obvious visual
+similarities, but the best parallel the 6555b has with the RAZR is price. These
+phones go for about a much as a good condition RAZR does on eBay, but has all
+of the functionality necessary to be used for Bluetooth research. Not only does
+it have the appropriate software environment, but I have found it to have a
+fairly capable transceiver under the hood, detection range is noticeably better
+when scanning on this phone than others I have tried. It is also worth
+mentioning that the 6555 is not a bad looking phone, and you certainly won't
+feel embarrassed holding onto one in public.
+<P>
+Another advantage of using Nokia phones is that all of them (at least the ones
+I have worked with) will allow you to start without a SIM card at boot. Many
+other phones will simply fail to startup without a SIM, which means you need to
+either get a valid pre-paid SIM card or a "dummy" SIM used for phone testing.
+I got a pack of dummy SIMs from DealExtreme for a few dollars, but when using
+these you need to wait for the phone to find the network and try to associate
+every time you start it up (which on some phones is several minutes). It is a
+lot more convenient with the Nokia phones, as they are smart enough to just
+turn off their radio's when no SIM is present and stop bugging you about it.
+<p>
+Finally, while not specific to the 6555b, I have to say that Nokia phones are
+some of the best engineered pieces of consumer hardware I have seen. Taking
+apart one of these phones is like a guided lesson in efficiency. There are very
+few parts inside the phone, and everything just makes sense. I have taken apart
+a few other Nokia's in the course of my research, and I have found them all to
+be equally (if not better) designed. If for nothing else, I would pick a Nokia
+over any other phone for use in work like this just because it is so well built
+and it is so easy to swap parts out between them. As it turns out, this last
+trait turned out to be especially helpful...
+<h1>The Crying Game</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;A person much wiser than myself once coined the term
+, "You get what you pay for." This person was right then, and is doubly
+accurate in the days of craigslist and eBay. As I mentioned before, I was
+trying to set this all up on the cheap, so I initially bought two 6555b's
+listed as damaged on eBay for about $15 each. The seller said that one had a
+cracked screen, and the other wouldn't power on. In my mind, this sounded like
+the perfect combination, I would simply swap the LCDs and I would have one
+working phone for ~$30. Unfortunately, upon opening them up I learned that
+whatever happened to these two phones, it involved <i>a lot</i> of what
+appeared to be salt water. The internals on both were mildly to severely
+corroded in places, and the motherboard on one looked to be a total loss. After
+a few nights of trying to clean the assorted components enough to put together
+one phone, I realized it was never going to happen. So I ordered a third
+phone, this one supposedly in perfect condition, for $60. Bringing the total
+for this "cheap" phone to $90.
+<p>
+When this one got here I was happy to see it really did look nearly new. It
+even had the original plastic film over the internal LCD. I powered it on
+and...what's this? A PIN? I contacted the seller, who (and I have to give him
+credit for this much) rattled through literally dozens of possible PIN codes.
+But none of them worked, and I was stuck with a very pretty, but very useless,
+phone.
+<h1>Nokia Test Mode</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;If you do a quick search for unlocking Nokia phones,
+you will see a lot of talk about using the phone's IMEI to generate a master
+passcode which will get you through the PIN lock. Initially I thought this was
+my answer, but found out this only works on older phones. The only way to get
+past a PIN on a newer Nokia is to remove it in the firmware EEPROM itself. To
+do this you need to put the phone in either "Test" or "Local" mode. Now, I have
+never seen a very concise description about how Test and Local differ, and I
+get the impression their functions might even mean different things on
+different models.
+<p>
+To put a 6555b into these special modes, you need to put a resistor between the
+negative and Battery Status Indicator (BSI) terminals on the battery. In the
+following image, you can see that the negative terminal is clearly marked on
+the left side, while the BSI terminal is in the center.
+<p>
+<span class="center"><img src="/images/hardware/6555_2.jpg" alt="BL5C" /></span>
+<p>
+To put the phone into "Local" mode, use a resistor of 3.3K Ohm, and for "Test"
+mode a resistor of 4.7K Ohm. My understanding is that different Nokia phones
+have slightly different resistance values, so I can only verify these values
+for the 6555b. Now, keeping the phone powered while maintaining a connection
+with the resistor is a bit tricky. You can try to slip the resistor's legs into
+the space between the battery terminals and the phone's pins, but this tends to
+be a little finicky. I found the best method is to use test leads on the
+phone's battery pins and hook the battery and resistor up to the other end. In
+fact, if you have an adjustable power supply, you could just as easily feed the
+phone 3.7 Volts and not even need the battery in the equation.
+<h1>Software Restore</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Once the phone is in "Test" mode, you can do pretty
+much anything you want to it without it complaining. You can edit files in it's
+storage, change configuration, do a complete factory reset, etc. I have seen a
+few guides online that explain how you can download the phone's primary
+configuration file and modify the PIN entries directly, but I was never able to
+get that to work properly. For my purposes, it was enough to simply reset the
+phone to factory, as that will clear out the PIN (or at least set it back to
+the Nokia default).
+<p>
+To do this, you need to use <a href="http://www.b-phreaks.co.uk/NSSDownloadLanding.htm" target="_blank">Nemesis Service Suite</a> (NSS). The BETA version is
+free, at least at the time of this writing, and should be enough to get the job
+done, assuming they don't add some arbitrary limits later on. NSS supports a
+number of devices used to connect to the different models of Nokia phones, but
+luckily for us the 6555b doesn't need anything more exotic than a standard <a href="http://en.wikipedia.org/wiki/Universal_Serial_Bus#Mini_and_Micro" target="_blank">Micro-USB</a> cable. You can get one for less than a dollar on <a href="http://www.monoprice.com" target="_blank">MonoPrice.com</a> (item 5457) if you
+don't already have one. You will also need to install the <a href="https://www.nokiausa.com/get-support-and-software/software/nokia-suites-for-your-pc" target="_blank">Nokia PC Suite</a>, as this will provide you with the drivers for your
+specific phone. I am not aware of anyway to get the drivers without the full
+suite, which is a shame, since it is completely unnecessary for this.
+<p>
+Once the phone is connected (in Test Mode) and the drivers are installed, start
+up NSS and click the magnifying glass on the top right corner, then click the
+button that says "Phone Info." You should see some information about your
+phone like version and the IMEI number. To the right you should see a button
+marked "Tools", click this, and then click the tab on the bottom labeled
+"Factory Settings":
+<p>
+<span class="center"><img src="/images/hardware/6555_3.png" alt="Phone Info" /></span>
+<p>
+Select the radio button for "Full Factory" (alternately, you should be able to
+just select "User Code" if you just want to clear the PIN), then click "Reset".
+Let it do it's thing, and when you power the phone back on it should be back to
+factory settings.
+<h1>Installing Software</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Now that I (finally) had a workable phone, the next
+step was installing software onto it. There are a number of ways to install
+applications on a Nokia phone, but not all of them were usable in my case. For
+example, anything over the air (OTA) was out of the question, as this phone
+doesn't even have a SIM in it. I could install over USB with the Nokia PC
+Suite, but I was not happy about having to find a Windows machine every time I
+wanted to install new software (it was hard enough getting one for NSS). It
+seemed fitting that I use Bluetooth to install the applications, but when I
+tried to send the phone a program over OBEX PUSH (as I had with other phones),
+I got an error. Turns out that Nokia phones don't install software over OBEX
+PUSH natively, but luckily there is software that handles this for us.
+<p>
+<a href="http://www.gammu.org" target="_blank">Gammu</a> is a set of tools and
+scripts that let you manage various functions on GSM phones. Gammu supports
+many different makes and models of phone, but has very specific support for
+Nokia phones and their special functions. There are Nokia commands to do
+everything from force the camera to take a picture to saving the currently
+displayed image on the LCD to file, you can even read and write to system files
+which wouldn't normally be accessible to the user (over Bluetooth, no less!). I
+will leave mischief with these commands to another day; for right now let's see
+how we can use Gammu to install applications on a Nokia phone over Bluetooth.
+<p>
+You first need to put your phone into Bluetooth discoverable mode by going to
+Menu -> Settings -> Connectivity -> Bluetooth, and changing "My Phone's
+Visibility" to either temporary or permanent. You can also change your phone's
+Bluetooth name on this screen. Once you have put your phone in discoverable
+mode you search for it as usual:
+<pre><code>bash:~# hcitool scan
+Scanning ...
+	00:1B:AF:DB:XX:XX	Nokia 6555b
+</code></pre>
+Now that you have the phone's MAC, you need to write a small configuration file
+for Gammu, which basically just consists of the Bluetooth MAC and a line
+telling Gammu you want it to use Bluetooth. Open up your favorite text editor
+and save the following into ~/.gammurc (changing the MAC to your phone's,
+obviously):
+<pre><code>[gammu]
+connection = bluephonet
+port = 00:1B:AF:DB:XX:XX
+</code></pre>
+Now all Gammu commands will automatically connect with these settings, so you
+don't have to enter them each time you run the program. You can test to see if
+the connection is working with a command like:
+<pre><code>bash:~# gammu identify
+Manufacturer         : Nokia
+Model                : unknown (RM-289)
+Firmware             : 03.31 T (01-08-07)
+Hardware             : 5005
+IMEI                 : 356271019XXXXXX
+Product code         : 0541446
+</code></pre>
+I should mention that up to this point I am going to assume you already got
+your phone paired through BlueZ, and have already verified that other tools
+like obexftp are working.
+<p>
+To install software on a Nokia phone, Gammu needs a .jar and .jad file. Most
+software only comes as a .jar, so Gammu includes a program (appropriately)
+called "jadmaker" that can create a .jad out of a valid .jar. Once you have
+both of these files, you give Gammu the name of the <i>application</i> not the
+actual <i>files</i>. Let's look at the following example, which will show you
+how to install <a href="http://trifinite.org/trifinite_stuff_blooover.html" target="_blank">Blooover</a>.
+<pre><code>bash:~# jadmaker ./Blooover.jar 
+File ./Blooover.jad created
+bash:~# gammu nokiaaddfile Application Blooover
+Writing JAD file: 100 percent                              
+Writing JAR file: 100 percent
+</code></pre>
+If you look under Menu -> My Stuff -> Games & Apps, you should now see Blooover
+in the list. Have fun!
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

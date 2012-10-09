@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - Slackware Linux</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Linux,Slackware,mirror,packages,SlackBuilds" />
+<meta name="description" content="General information on Slackware Linux, mirror, and package downloads." />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="center"><img src="/images/misc/slackbanner.jpg" alt="Slackware" /></span>
+<h1>Slackware Linux</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;An ISO for Slackware Linux was the first thing I
+downloaded when I <i>finally</i> got broadband at my house. For a year or so
+prior to that, I had wanted desperately to try out Linux and had been reading
+about every distribution I could, preparing myself for the day I would finally
+have the bandwidth to make my dream a reality. At the time I was considering
+what I still consider the "Big Three": Slackware, Debian, Gentoo. I consider
+these the core distributions because so many other distributions are based on
+them or borrow concepts from them. Which of course is not surprising, as these
+are 3 of the very first successful GNU/Linux distributions; naturally upstarts
+would try and mimic them as closely as possible in their perceived strengths.
+<p>
+I finally decided on Slackware Linux because it seemed to be the closest to
+what my idea of an operating system should be. After downloading that very
+first ISO, I can honestly say that the course of my entire life changed. Linux
+became not only one of my biggest hobbies, but indeed an increasingly large
+part of my professional life. I have no doubt it my mind that, had I chosen a
+different distribution to download, I would not today have the same level of
+knowledge of the Linux kernel or the GNU system. While I understand that not
+everyone wants (or even needs) to understand the low-level workings of their
+operating system, I strongly suggest that anyone who <i>does</i> take a look at
+starting their journey with Slackware. While distributions like Ubuntu
+certainly have the limelight today (and not without good reason), Slackware
+will always have it's place, and it's fans, in the Linux world.
+<p>
+<h1>Involvement with Slackware</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;While I am not officially involved with the
+Slackware Linux project, I have from time to time submitted suggestions and
+fixes upstream which have been implemented in the stable releases; such as the
+Bluetooth implementation used in Slackware 12.2 - 13.0.
+<p>
+<h1>The Goods</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;I have put up for public download both my Slackware
+package repository (all of the packages I have built for my own personal use
+organized by stable Slackware release versions), and a mirror of Slackware's
+-current development branch. I am not sure that my upload bandwidth is quite up
+to the task of being a serious mirror for many people, but I imagine it should
+be pretty quick for those in the Northeast US.
+<p>
+In the near future I also hope to put up my SlackBuilds directory which is what
+was used to build all of the binary packages I have up. I need to do a little
+maintenance with them and figure out a way to easily share them publicly while
+not hindering my work-flow, as my build machine is not currently accessible by
+the Internet. In the meantime, binary packages are what most people are looking
+for anyway, though feel free to contact me if there is a specific SlackBuild
+you would like and I can send it along.
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

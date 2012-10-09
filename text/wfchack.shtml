@@ -1,0 +1,376 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - Hacking the Nintendo Wi-Fi USB Connector</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Nintendo,DS,ASUS,Buffalo,WiFi,wmbhost,masscat,2600" />
+<meta name="description" content="Guide on modifying the Nintendo Wi-Fi USB Connector for use as a Soft AP, as published in 2600" />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="right"><img src="/images/text/wfchack1.jpg" alt="2600 Cover" /></span>
+<h1>Foreword</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The following is <i>"Hacking the Nintendo Wi-Fi USB
+Connector"</i>, as it appeared on page 54 of <i>2600</i> issue 24:3.
+Through the magic of the Internet I will include the images published with the
+original article, as well as making all URLs proper clickable links (even if
+they are dead...). As this article was written for a considerably less capable
+display device (sheets of paper, can you imagine?) the layout is less than
+stellar in this format. If you would rather see the article in it's full 80
+column glory, you can find the original ASCII text file in the "Text" section
+of the <a href="/misc/downloads.shtml">Downloads</a> page.
+<p>
+This article is similar to the section contained in the
+<a href="/text/guides.shtml">DS Wireless Networking Guide</a> I had published
+earlier, but is a completely original work written for a much more
+technologically savvy audience. It also covers advanced topics I had not
+addressed in the previous work, such as the status of Linux device drivers or
+using the Wi-Fi Connector to send homebrew software and demos to the Nintendo
+DS.
+<p>
+Since this article was published in 2007, the Nintendo Wi-Fi Connector itself
+has been pulled from production, though it is still easy to find these devices
+at used-game retailers or online auction sites such as eBay.
+<h1>Introduction</h1>
+The Nintendo Wi-Fi USB Connector (which from now on I will simply refer to as
+the Wi-Fi Connector) is a product released by Nintendo in 2005 for use with
+their DS handheld, and more recently their Wii console. The Wi-Fi Connector is
+designed as an alternative to standard WiFi networks (which both the DS and Wii
+use to access the Internet for various functions), with the intended advantages
+being automated setup and security. It is available in most electronics and
+game stores, and currently costs $35 to $40.
+<p>
+Hardware wise, the Wi-Fi Connector is simply a rebranded Buffalo WLI-U2-KG54-AI
+adapter. This device was most likely chosen due to the fact that it uses the
+USB version of the RT2500 chipset (also known as the RT2570), one of the few
+chipsets that can be used as a software AP under Windows. The software itself
+on the other hand is totally proprietary to Nintendo, including the
+authentication method used.
+<p>
+So that's very interesting and all, but what does it really mean? Basically,
+the Wi-Fi Connector allows you to turn your Windows XP computer (the only OS
+Nintendo's software currently supports) into a WiFi AP for your DS and Wii
+systems. The problem is, those are the only devices the Wi-Fi Connector will
+work with. Nintendo's software makes it so that any device connecting to the AP
+needs to go through it's proprietary authentication system.
+<p>
+Wouldn't it be nice to have a soft AP like that which works with all your other
+WiFi devices? Or perhaps you want a decent USB WiFi adapter that you can use
+under Linux with native drivers? Luckily for us, we can do all of that and more
+with the Wi-Fi Connector, it just takes a bit of hacking.
+<h1>Windows</h1>
+By following these steps you will be able to do two very important things with
+your Wi-Fi Connector, two things which should never have been limited in the
+first place.
+<p>
+First, you will be able to use the Wi-Fi Connector as a standard WiFi adapter,
+allowing you to connect to existing wireless networks, run NetStumbler, and so
+on. More importantly, you can unlock the soft AP function of the Wi-Fi
+Connector to work with any WiFi device, not just Nintendo's.
+<p>
+Accomplishing this will require two separate hacks, one building on top of the
+other. We will first modify the original Buffalo WLI-U2-KG54-AI drivers to work
+with the Wi-Fi Connector, and then hex edit the configuration software from a
+different USB WiFi adapter (but one with the same chipset) which will give us
+more control over the device than Windows alone allows.
+<p>
+Before beginning, I should note that this is only tested and confirmed to work
+on Windows XP, and will probably work on Windows 2000 as well. Unfortunately, I
+have no idea if this will work on Vista, and have no way to test it myself. I
+would be very interested in hearing from anyone who tries this on Vista,
+working or not.
+<h1>Driver Modification</h1>
+To get started, download the drivers from the Buffalo site:
+<p>
+<a href="http://www.buffalotech.com/support/getfile/?U2KG54_1-01-02-0002.zip" target="_blank">http://www.buffalotech.com/support/getfile/?U2KG54_1-01-02-0002.zip</a>
+<p>
+Extract the "Win2000" directory from the archive onto your computer and open it
+up. Inside you will see the file "NETU2G54.INF", which is what we need to
+modify for the drivers to apply to the Wi-Fi Connector.
+<p>
+Make sure to remove the read-only protection on this file, then open it in
+Notepad. Fairly close to the top of the file you will see a section with the
+heading, [Adapters]. This is the list of device IDs that Windows uses to
+determine what hardware the driver will work with.
+<p>
+We need to change the device ID that is listed here to match that of the Wi-Fi
+Connector. To do this, simply delete the existing device ID from the top line
+(USB\VID_0411&PID_005E) and replace it with USB\VID_0411&PID_008B.
+<p>
+After you have changed the device ID, save the file and close it.
+<p>
+You can now proceed with the installation of the modified driver. If you
+already had the official Nintendo software and drivers installed on your
+machine, make sure these are completely removed before continuing.
+<p>
+Plug the Wi-Fi Connector into the computer. When the "Found New Hardware
+Wizard" starts, select "Install from a list or a specific location (Advanced)".
+Then tell it to search for the driver in the directory where the modified
+NETU2G54.INF file is located and click "Next".
+<p>
+After the installation, you should see a icon in your system tray indicating
+that a new wireless device has been installed but not configured (it will look
+like a computer with waves coming out and a red "X").
+<p>
+If you didn't get any errors, your Wi-Fi Connector is now recognized as a
+Buffalo WLI-U2-KG54-AI by Windows. You can now use it as you would any other
+WiFi adapter. But what fun is that? Let's move along and get it working as a
+soft AP.
+<h1>Software Modification</h1>
+Since Windows only includes very basic WiFi configuration utilities, we need to
+go out and find our own to configure a soft AP. To do this we will hex edit
+the software for another device (the ASUS WL-167g) which uses the same chipset
+as the Wi-Fi Connector.
+<p>
+The software we need can be located at:
+<p>
+<a href="http://dlsvr01.asus.com/pub/ASUS/wireless/WL-167g/Utility_2933.zip" target="_blank">http://dlsvr01.asus.com/pub/ASUS/wireless/WL-167g/Utility_2933.zip</a>
+<p>
+Download the archive, extract it, and run "setup.exe" to start the installer.
+But don't try to start it once it is installed, you will only get errors about
+no suitable devices being found.
+<p>
+To modify the software, you are going to need to use a hex editor to once again
+change the device ID from the intended hardware to that of the Wi-Fi Connector.
+You will need a hex editor that has a good replace function, or else this is
+going to be a very tedious modification. Specifically, you want one that is
+able to retain the strings you want to replace after you have saved and opened
+another file.
+<p>
+I would suggest XVI32 if you don't already have a hex editor you are
+comfortable with. It's small, free, and it's robust replace function makes the
+following modifications a breeze.
+<p>
+Using your hex editor, navigate to where the ASUS Utilities are installed,
+which by default will be:
+<p>
+C:\Program Files\ASUS\WLAN Card Utilities\
+<p>
+Inside of this directory there are 7 files you need to modify to get the
+software to recognize the Wi-Fi Connector. They are:
+<p>
+AsAuthen.dll<br>
+Center.exe<br>
+Mobile.exe<br>
+StMonitor.exe<br>
+TShoot.exe<br>
+Wireless.exe<br>
+Wizard.exe<br>
+<p>
+<span class="right"><img src="/images/text/wfchack2.png" alt="WLAN" /></span>
+The modification is exactly the same for each file, so once you get into the
+rhythm of it, you should be able to blow through them pretty quick.
+<p>
+Open the first file (it doesn't matter which order you do them in) in your hex
+editor and replace all occurrences of USB\VID_0B05&PID_1706 with
+USB\VID_0411&PID_008B.
+<p>
+After replacing all of the instances in that file, save it, and open the next
+one. Each file should have at least 1 occurrence in it, so if your editor is
+saying that nothing has been replaced, double check that you have the proper
+device IDs typed in.
+<p>
+After all of the files have been hex edited, there is still one more step you
+must perform before you can run the software.
+<p>
+Open up "My Computer" and navigate to the following directory:
+<p>
+C:\Program Files\ASUS\WLAN Card Utilities\Driver\WinXP\AP\
+<p>
+Inside this directory you should see a file named "rt2500usb.sys". You need to
+copy this file to:
+<p>
+C:\WINDOWS\system32\drivers\
+<p>
+Windows will ask you if you want to overwrite the existing file, click "Yes".
+<p>
+Now, make sure the Wi-Fi Connector is plugged in, and click on the "ASUS WLAN
+Control Center" icon. You are probably going to see a bunch of error and status
+messages when you first start it up, but there is only one you need to look at
+right now.
+<p>
+There should be a window named "Wireless Option" open. In this window you need
+to make sure that option which says "Only use our WLAN utilities..." is
+selected, and then click "OK". A wizard will now start, click on "Cancel" to
+close it, and then "OK" on the message that will result.
+<p>
+The "ASUS WLAN Card Settings" window should now show the Buffalo WLI-U2-KG54-AI
+along with some information about it. If you see this screen then the software
+was modified correctly.
+<h1>Soft AP Configuration</h1>
+<span class="right"><img src="/images/text/wfchack3.png" alt="ICS" /></span>
+Now that the Wi-Fi Connector is being detected by the ASUS WLAN Utilities, we
+can make the appropriate adjustments for it to run in AP mode. The ASUS
+software makes this very simple, and it only takes a minute or two to configure
+everything.
+<p>
+Open the "ASUS WLAN Control Center" and click on the "Config" icon located on
+the left side. On this new page you should see a tab on the top that says
+"Soft AP", click on it.
+<p>
+Click the radio button next to "Soft AP Mode" to change the operating mode of
+the Wi-Fi Connector. Under that you should see a diagram of a basic network,
+and a bit farther down a box that says "Available Network Connections". Click
+on the device that is currently connecting you to the Internet (it doesn't
+matter what this device actually is, so long as it can get online) and drag it
+into the box next to the "Internet" icon. Make sure that the box next to
+"Enable ICS" is checked. Then click "Apply".
+<p>
+After a moment you should get a warning about changing the modes of the
+adapter, click "Yes". A few seconds later and you should get another window
+popping up to tell you that enabling ICS may take awhile, click "OK" again.
+Then wait, like the message said, this can take awhile. You will know that it
+is finished when the green "Apply" icon becomes greyed out again. Once this
+happens, click on the "Basic" tab.
+<p>
+Here you are going to set the SSID and channel for the soft AP. I won't go into
+detail here since I am sure we are all familiar with basic WiFi configuration
+options like these. I also will assume I don't need to explain that running
+an open AP is probably not a good idea. Take a look at the "Encryption" and
+"Access Control" tabs to configure basic security settings.
+<p>
+After you have configured your soft AP options, click "Apply", then "OK". Your
+Wi-Fi Connector is now running as a standard soft AP. You can connect any WiFi
+device you want to it, including the DS and Wii systems that it was originally
+limited to.
+<h1>Linux</h1>
+Officially, Nintendo offers no support at all for Linux (shocking, I know). But
+as previously covered, the Wi-Fi Connector itself is not a specialized piece of
+hardware in the first place, so luckily we don't need any specialized drivers
+either.
+<p>
+The Wi-Fi Connector works perfectly using the drivers from the rt2x00 Open
+Source Project (<a href="http://rt2x00.serialmonkey.com" target="_blank">http://rt2x00.serialmonkey.com</a>), specifically the RT2570 branch of the project.
+The rt2x00 drivers are pretty popular, so there is a good chance your
+distribution already includes them, or at least has them available in it's
+repository. But if not, the installation is very simple; if you have ever
+compiled a Linux application from source before, you should have no problems at
+all getting the drivers installed.
+<p>
+The rt2x00 drivers are quite capable, and the Wi-Fi Connector proves
+to be a decent piece of hardware. Monitor mode is supported, and it works very
+well with Kismet using a source definition like:
+<p>
+source=rt2500,rausb0,NiWiFi
+<p>
+Ironically though, the current rt2x00 drivers do not support Master mode, so
+you can't use the Wi-Fi Connector to actually share a connection out from your
+Linux machine. This feature should be included in the final version of the
+drivers however.
+<p>
+While it is disappointing you can't use the Wi-Fi Connector in Master mode,
+there is still more to the story. Much like under Windows, using the Wi-Fi
+Connector as a standard WiFi device is the least interesting thing you can do
+with it.
+<h1>DS Wireless Multi Boot</h1>
+DS Wireless Multi Boot (WMB) is the method the Nintendo DS uses to download
+and execute official software from demo kiosks, other DS systems, etc. With
+modified rt2x00 drivers, you can use the Wi-Fi Connector to host these
+downloads from your Linux computer.
+<p>
+The modified driver is written by masscat and can be downloaded from:
+<p>
+<a href="http://masscat.afraid.org/ninds/rt2570.php" target="_blank">http://masscat.afraid.org/ninds/rt2570.php</a>
+<p>
+Keep in mind this project is completely separate from the rt2x00 Project, so
+don't send them any questions or bug reports when running this driver. There is
+also a possibility that the driver will break normal WiFi operation, but in my
+personal experience it has never been a problem.
+<p>
+Unfortunately it does have a rather nasty tendency to disable my keyboard when
+I unplug the Wi-Fi Connector; so I would suggest you fully shut down the
+computer before removing the device.
+<p>
+To install the modified driver you will need to have the kernel source
+installed on your machine, as well as a sane build environment. There is no
+configuration required, you simply need to extract the source, build the kernel
+module, and then install it.
+<p>
+The following commands should be all you need to get the module built:
+<pre><code>bash# bunzip2 nin_rt2570-1.1.0-b2-20060811.tar.bz2
+bash# tar xvf nin_rt2570-1.1.0-b2-20060811.tar
+bash# cd ./nin_rt2570-1.1.0-b2/Module/
+bash# make
+</code></pre>
+Assuming you didn't get any errors during the build process, you can now copy
+the module to the proper directory and then update your module dependencies
+so the kernel will recognize it. To do so, run the following commands as root:
+<pre><code>bash# cp ./nin_rt2570.ko /lib/modules/`uname -r`/misc
+bash# depmod -a
+</code></pre>
+Once you have installed the modified driver, plug in the Wi-Fi Connector. You
+can verify the module has properly loaded like so:
+<pre><code>bash# lsmod | grep nin_rt2570
+nin_rt2570            157504  1 
+</code></pre>
+If you just get a blank line after running that command, something has gone
+wrong. Double check that you copied the module to the proper directory, and
+then run depmod again.
+<p>
+Once the driver is installed and loaded up, you will need to configure the
+device. Running the following commands as root will get the Wi-Fi Connector
+setup to start sending out WMB demos:
+<pre><code>bash# ifconfig ninusb0 up
+bash# iwpriv ninusb0 rfmontx 1
+bash# iwconfig ninusb0 mode Monitor channel 13 rate 2M
+</code></pre>
+You will now need to download the "NinWMB" package from:
+<p>
+<a href="http://masscat.afraid.org/ninds/wifi_apps.php" target="_blank">http://masscat.afraid.org/ninds/wifi_apps.php</a>
+<p>
+To build these applications, simply run the following commands:
+<pre><code>bash# bunzip2 NinWMB_20060609b.tar.bz
+bash# tar xvf NinWMB_20060609b.tar
+bash# cd ./NinWMB_20060609b
+bash# make
+</code></pre>
+Once installed, you will run the wmbhost program by giving it the interface you
+want to use, the channel, and the .nds file itself. Make sure to run wmbhost as
+root, otherwise it will not run and you will just get errors.
+<pre><code>bash# cd wmbhost/
+bash# ./wmbhost -i ninusb0 -c 13 filename.nds
+</code></pre>
+Then start up your Nintendo DS, select "DS Download Play", and follow the
+on-screen prompts to download and run the software.
+<p>
+Of course, you will need some .nds files to actually do anything. As these
+downloads are freely available over the air from demo kiosks running in most
+major retailers and have never been sold, they are considered legal to
+distribute. As far as anyone currently knows, at least.
+<p>
+You can download some demos at the following sites:
+<p>
+<a href="http://davr.org/ds2/demos/" target="_blank">http://davr.org/ds2/demos/</a><br>
+<a href="http://wiki.akkit.org/Downloadable_DS_Demos" target="_blank">http://wiki.akkit.org/Downloadable_DS_Demos</a>
+<p>
+<span class="center"><img src="/images/text/wfchack4.png" alt="WMB" /></span>
+<h1>Conclusion</h1>
+The Wi-Fi Connector is a useful device, even if you don't own a DS or Wii. At
+$40 it certainly is not the cheapest adapter you can by, but there is no
+question that it is also more capable than most devices you will find on the
+shelf as well.
+<p>
+Whether you are running Windows or Linux, you will be able to use the Wi-Fi
+Connector in some unique ways that are not possible with most other devices.
+In addition, due to it's specialized nature and software, the Wi-Fi Connector
+likely won't switch chipsets in later production runs; which is often a concern
+when buying WiFi hardware for use with Linux.
+<p>
+In the end, the Nintendo Wi-Fi USB Connector offers some tantalizing
+possibilities considering it's price and availability, even if Nintendo doesn't
+know it.
+<p>
+<h2>Thanks:<br>
+I would like to thank Waffle for laying the ground work for the soft AP
+conversion, and masscat for his invaluable help and excellent software. Special
+thanks to my wife, as well as everyone I don't hate.</h2>
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>
