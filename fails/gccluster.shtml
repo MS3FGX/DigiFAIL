@@ -13,7 +13,7 @@
 <body>
 <!--#include virtual="/ui.html" -->
 <div id="content">
-<span class="center"><img src="/images/fails/cluster1.jpg" alt="Group Shot" title="Tremble at their power!" /></span>
+<span class="right"><img src="/images/fails/cluster1.jpg" alt="Group Shot" title="Tremble at their power!" /></span>
 <h1>Why a GameCube cluster?</h1>
 &nbsp; &nbsp; &nbsp; &nbsp;Back in 2003 or so I was very involved with the
 GameCube homebrew scene, working on libogc (which has now matured to include

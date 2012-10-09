@@ -14,7 +14,7 @@ wireless controller to the Microsoft Xbox" />
 <body>
 <!--#include virtual="/ui.html" -->
 <div id="content">
-<span class="center"><img src="/images/fails/xboxmod1.jpg" alt="Xbox and controller" /></span>
+<span class="right"><img src="/images/fails/xboxmod1.jpg" alt="Xbox and controller" /></span>
 <h1>What was it?</h1>
 &nbsp; &nbsp; &nbsp; &nbsp;Back when I was still actually using the original
 Xbox, I became increasingly unhappy with the tangle of wires that was always
@@ -120,7 +120,7 @@ open or closed state of the sense wire in the controller port.
 While these improvements are easy enough to implement, I no longer use the Xbox
 so I have no reason to do so personally. Even though I technically consider
 this project a failure in it's current form, I do take some pride in the fact
-that, to my knowledge, this is the only documented modification of it's type
+that, to my knowledge, this is the only documented modification of its type
 for the Xbox.
 <!-- End of "content" --!>
 </div>

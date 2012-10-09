@@ -13,7 +13,7 @@
 <body>
 <!--#include virtual="/ui.html" -->
 <div id="content">
-<span class="center"><img src="/images/fails/serial1.jpg" alt="LCD and Switch" /></span>
+<span class="right"><img src="/images/fails/serial1.jpg" alt="LCD and Switch" /></span>
 <h1>What was it?</h1>
 &nbsp; &nbsp; &nbsp; &nbsp;OK, maybe the best way to start this would be a
 little background information. Basically I was relocating my primary network
