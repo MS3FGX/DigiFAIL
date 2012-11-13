@@ -99,10 +99,6 @@ source, but being output with predictable patterns. Let's take a look:
 If you ever see output like that on a production device or server: run away,
 quickly.
 <h1>Downloads</h1>
-&nbsp; &nbsp; &nbsp; &nbsp;The following are the source tarballs for all of the
-public releases of Spectra so far. In addition, I (try to) maintain Slackware
-packages for the latest stable version, which you can get on the 
-<a href="/slackware/packages.shtml">Slackware Packages</a> page.
 <p>
 <!--#include virtual="/var/spectra.html" -->
 <!-- End of "content" --!>

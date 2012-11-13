@@ -386,10 +386,7 @@ un-terrible to keep this one out of the "Fails" department.
 &nbsp; &nbsp; &nbsp; &nbsp;As a blind Starfleet Chief Engineer once said, "But
 you don't have to take <i>my</i> word for it." You can download stable(ish)
 versions of bt_rng from the
-<a href="/misc/downloads.shtml">Downloads</a> section. As with my other
-projects, I will also try to keep
-<a href="/slackware/packages.shtml">Slackware packages</a>
-built for at least the latest stable Slackware release.
+<a href="/misc/downloads.shtml">Downloads</a> section.
 <p>
 You will notice that there is a 1.x series and a 2.x series of bt_rng in the
 Downloads. bt_rng 2.x is the new series that takes into account advice and
