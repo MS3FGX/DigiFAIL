@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - Bluefog</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Linux,Bluetooth,scanner,discoverable" />
+<meta name="description" content="Bluefog, tool to generate large numbers of phantom Bluetooth devices." />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="right">
+<!--<img src="/images/software/bluelog1.png" alt="Bluelog logo" />-->
+</span>
+<h1>Bluefog</h1>
+<b>
+&nbsp; &nbsp; &nbsp; &nbsp;Platform: GNU/Linux
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Language: C
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;License: GPLv2
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Dependencies: BlueZ
+<br>
+<!--
+&nbsp; &nbsp; &nbsp; &nbsp;Google Plus Page: <a href="https://plus.google.com/112295798437810480494?prsrc=3">View</a>
+<br>-->
+&nbsp; &nbsp; &nbsp; &nbsp;Tagged Blog Posts: <a href="http://blog.digifail.com/tagged/bluefog">View</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Development Progress:
+(<a href="https://github.com/MS3FGX/Bluefog">github</a>)
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp;Latest Stable Release: 0.0.2
+(<a href="ftp://ftp.digifail.com/downloads/software/bluefog/bluefog-0.0.2.tar.gz">Download</a>)
+</b>
+<h1>About</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Bluefog is an experimental tool designed to create large numbers
+of phantom Bluetooth devices. The idea for Bluefog came while developing
+<a href="/software/bluelog.shtml">Bluelog</a>, as I wished
+there was a way I could test Bluelog without having to drag myself and my laptop to a public
+area every time I wanted to scan for more than a handful of devices. Being able to generate
+essentially infinite numbers of Bluetooth targets from one computer means easier and faster
+development.
+<p>
+While Bluefog was originally conceived as a diagnostic tool, it also has its own defensive and
+offensive uses. Being able to generate a flood of fake Bluetooth devices can confuse anyone
+attempting to monitor or track physical Bluetooth hardware, as well as making legitimate Bluetooth
+use considerably more difficult.
+<h1>WARNING!</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Bluefog is in a very early state of development, in fact, I wouldn't
+normally release software at this stage. But since I think Bluefog is an interesting concept and
+would like to get people's opinions on it, I'm throwing caution to the wind and letting it out
+in the wild as is.
+<p>
+<B>BUT PLEASE BE CAREFUL...</b>
+<p>
+In its current state, Bluefog has almost no error handling and can easily misbehave; <i>especially</i>
+if you're using Bluetooth hardware which I haven't had a chance to test with. Also, while the MAC
+changing code is supposed to be temporary, I managed to permanently delete the MAC address of my
+laptop's internal Bluetooth radio, so keep that in mind.
+<h1>Basic Fogging</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;To start fogging Bluetooth, you don't even need to pass
+Bluefog any arguments, it will start up with the most reasonable options automatically:
+<pre><code>bash:~# bluefog
+Bluefog (v0.0.2) by MS3FGX
+---------------------------
+Bluetooth Interface: Auto
+Device Name: Randomized
+Available Names: 788
+MAC Address: Randomized
+Device Class: Randomized
+Fogging started at [12/21/12 12:41:24] on 1 threads.
+Hit Ctrl+C to end.
+</code></pre>
+<h1>Parallel Fogging</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Due to the way Bluetooth scanners work, Bluefog needs
+to take at least 20 seconds between switching its MAC address and device name.
+This means that, with only one Bluetooth adapter, it will take awhile to generate
+the fake devices.
+<p>
+To combat this, Bluefog supports multithreading to run parallel tasks on up to
+4 physical Bluetooth adapters. If you have enough Bluetooth hardware, pass Bluefog
+the "-t" option along with how many threads you want to run.
+<h1>Coming Soon...</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The documentation for Bluefog is rather light right now,
+but I'll be improving this steadily with time, as well as refining the code to
+improve speed and capability. Be sure to check back regularly.
+<p>
+Any input at this early stage is very much appreciated.
+<p>
+<h1>Downloads</h1>
+<p>
+<!--#include virtual="/var/bluelog.html" -->
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>
