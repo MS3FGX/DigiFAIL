@@ -21,7 +21,7 @@ function updateObjectIframe(which)
 <span class="center"><img src="/images/misc/downloads.jpg" alt="Downloads" /></span>
 <ul id="filetabs">
 <li><a href="/var/bluelog.html" onclick="updateObjectIframe(this); return false;">Bluelog</a></li>
-<li><a href="/var/bluelog.html" onclick="updateObjectIframe(this); return false;">Bluefog</a></li>
+<li><a href="/var/bluefog.html" onclick="updateObjectIframe(this); return false;">Bluefog</a></li>
 <li><a href="/var/bt_rng.html" onclick="updateObjectIframe(this); return false;">bt_rng</a></li>
 <li><a href="/var/pwn_sdr.html" onclick="updateObjectIframe(this); return false;">pwn_sdr</a></li>
 <li><a href="/var/scripts.html" onclick="updateObjectIframe(this); return false;">Scripts</a></li>
