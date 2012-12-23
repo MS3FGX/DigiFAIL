@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - Blu-ray Player Storage Mod</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="USB,Flash,mod,Blu-ray,BDP-S185" />
+<meta name="description" content="Modifying the Sony BDP-S185 to add internal flash storage." />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<h1>Sony BDP-S185</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The Sony BDP-S185 is a sub-$100 Blu-ray disc player that I picked up
+after my first BD player (a Sony PlayStation 3) was stolen. As I used my PS3 for playing movies
+much more than I ever did playing games on it, this seemed like a fair enough trade considering
+it was roughly 1/4th the cost.
+<p>
+But there was one thing that <b>really</b> annoyed me about it. I knew when I bought it that the
+BDP-S185 lacked internal storage, which meant that if I wanted to use functions on certain
+Blu-ray discs that required saving content to your player, I would have to provide my own USB
+storage device. I was fine with that, until I found out there is only <b>one</b> USB port on the
+BDP-S185...<i>and it's on the front</i>.
+<p>
+So if I wanted to use the local storage option on my Blu-ray movies, I either had to leave a USB
+flash drive hanging out of the front of the player 24/7 like some obscene appendage, or keep
+removing and reinserting the thing all the time. Neither of these options sounded very appealing
+to me, and after a few months I decided it was time to crack the thing open and improve the situation.
+<h1>Opening it up</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Opening the BDP-S185 doesn't actually require any special tools. Don't be fooled
+by those two screws on the back panel, they are just reinforcements for the connectors on the back so
+it takes some strain off the PCB when they get plugged in.
+<p>
+While the player is still plugged in, press the eject button so the tray comes up and then pull the plug.
+With the disc tray out, flip the player upside down and pry up the 4 tabs along the face. With the tabs
+pulled up, slide the plastic shell forward.
+<p>
+<span class="center"><img src="/images/hacks/bdmod_btm.jpg" alt="BDP-S185" /></span>
+<p>
+The shell won't move very much, only an inch or so. Once it has stopped moving forward, look on the left
+and right sides of the player for the arrows stamped into the metal. These two arrows are pointing to
+clips which are holding the plastic shell in place. You might be able to get these with your fingers, but
+I had to use a long screw driver. With the two clips pushed in, you can slide the shell all the way off.
+<h1>Internal Modifications</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Once it was opened up, I was pleasantly surprised to see how much internal space
+there was inside of the player. If you were feeling industrious, you could easily fit a USB hub in there or
+perhaps even a laptop HDD with connected USB converter. For my purposes however, I just wanted to pull the
+USB port off the front of the player and relocate it internally, so I could leave a USB drive plugged into
+it all the time.
+<p>
+The front panel (controls, IR, LED, USB port) board is held in with a single screw, and easily comes off
+its ribbon cable. With the panel removed, I went to work desoldering the USB connector so I could connect
+up the new wires.
+<p>
+<span class="center"><img src="/images/hacks/bdmod_desold.jpg" alt="Front panel board" /></span>
+<p>
+With the USB port removed, I rummaged around in my parts boxes until I found a scrap piece of PCB with a
+female USB connector attached that I pulled out of some other piece of electronics. I soldered a 5 inch
+piece of CAT5 network cable to it, and wrapped the whole thing up in Kapton tape. The other end of the CAT5
+went into the front panel board.
+<p>
+<span class="center"><img src="/images/hacks/bdmod_jumper.jpg" alt="USB jumper" /></span>
+<h1>Reassembly</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Putting it back together was very simple, I just had to route the new USB line
+through the player's body (made easy, as the internal shielding uses clever removable clips) and reattach
+the front panel ribbon cable. A quick test to make sure no magic smoke escaped (I have a terrible tendency
+to forget which wire color I've chosen for a particular pin), and everything was ready to get closed back up.
+<p>
+<span class="center"><img src="/images/hacks/bdmod_flash.jpg" alt="Flash drive installed" /></span>
+<p>
+<i>But isn't there a...</i>
+<p>
+The more astute readers out there may have realized that there is now a big hole in the front of my Blu-ray
+player. I thought about how to cover this up for some time, everything from cutting a black LEGO brick down
+to size (perfect color and finish) to filling it in with Bondo.
+<p>
+But in the end, I noticed that a piece of black shrink tubing cut down to the appropriate size perfectly fit
+into the hole the USB port used to fill. While it certainly isn't perfect, the color is close enough that
+you really need to be right up on the player to notice something isn't right. Unless you were actually looking
+for it, you would never notice.
+<h1>Improvements</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;After completing this little modification, I realized that while I had fixed the
+lack of internal storage on the BD player, I had removed the convenience of having an external storage connector.
+While I could only remember a handful of times I used the function, it was nice to be able to just plug a flash drive
+right into the faceplate and load up some videos.
+<p>
+Because of this, I am entertaining the idea of putting a USB hub inside of the player, routed to another female USB
+connector mounted into the back panel of the player. This would let me keep the internal storage I was after for so long,
+but also give me a way to quickly and easily plug in additional storage.
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>
