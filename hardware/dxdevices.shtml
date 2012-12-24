@@ -8,7 +8,7 @@
 <link rel="icon" type="image/png" href="/images/site/favicon.png" />
 <link rel="shortcut icon" href="/images/site/favicon.png" /> 
 <meta name="keywords" content="DealExtreme,Bluetooth,adapter" />
-<meta name="description" content="Reviews and information about electronic devices sold on DealExtreme.com" />
+<meta name="description" content="Reviews and information about products sold on DealExtreme" />
 </head>
 <body>
 <!--#include virtual="/ui.html" -->
@@ -17,7 +17,7 @@
 <h1>DealExtreme.com</h1>
 &nbsp; &nbsp; &nbsp; &nbsp;I think most people browsing my site are probably
 the sort of people who already know about
-<a href="http://www.dealextreme.com/default.dx/r.58964868" target="_blank">DealExtreme.com</a>;
+<a href="http://dx.com/?Utm_rid=58964868&Utm_source=affiliate" target="_blank">DealExtreme.com</a>;
 but if not, DealExtreme is a site that sells all manners of strange gadgets and
 devices direct from Chinese manufacturers, with <i>free</i> worldwide shipping.
 Well, the shipping cost is tacked onto the item price, naturally, but the
@@ -46,7 +46,7 @@ things and get a chance to play with them.
 <span class="center"><img src="/images/hardware/dxdevices2.jpg" alt="16229" /></span>
 <p>
 &nbsp; &nbsp; &nbsp; &nbsp;For $2.17 (in bulk orders),
-<a href="http://www.dealextreme.com/details.dx/sku.16229~r.58964868" target="_blank">SKU 16229</a>
+<a href="http://dx.com/p/16229?Utm_rid=58964868&Utm_source=affiliate" target="_blank">SKU 16229</a>
 is the cheapest USB Bluetooth adapter I am personally aware of (that actually
 works). I have ordered somewhere in the neighborhood of 20 of these devices for
 my various projects and machines here, and they have been of
@@ -78,7 +78,7 @@ adapter with BlueCore4-External, like the
 <a href="/hardware/hostxr.shtml">AIRcable Host XR</a>.
 <p>
 As a side note,
-<a href="http://www.dealextreme.com/details.dx/sku.12696~r.58964868" target="_blank">SKU 12696</a>
+<a href="http://dx.com/p/12696?Utm_rid=58964868&Utm_source=affiliate" target="_blank">SKU 12696</a>
 appears to be an identical clone to SKU 16229, just at a higher price point. As
 the capabilities of these two adapters are identical, they are both good choices
 for basic Bluetooth research...but since one costs more than double the other,
@@ -87,7 +87,7 @@ the choice between them is pretty obvious.
 &nbsp; &nbsp; &nbsp; &nbsp;Now, above I mentioned SKU 16229 was the cheapest
 <i>working</i> Bluetooth adapter I am aware of. That is because DX also sells
 another adapter with the same name under
-<a href="http://www.dealextreme.com/details.dx/sku.11866~r.58964868" target="_blank">SKU 11866</a>
+<a href="http://dx.com/p/11866?Utm_rid=58964868&Utm_source=affiliate" target="_blank">SKU 11866</a>
 for $1.80 ($1.13 in bulk); this adapter is <i>not</i> the same as SKU 16229 and
 is in fact complete garbage. I ordered 10 of SKU 11866 once I saw how cheap
 they were, and not only did they all come with the same default MAC address
@@ -112,7 +112,7 @@ which is marginally less terrible, but doesn't have the software support that
 CSR enjoys. Unless you just want to scan for remote devices, please don't buy
 SKU 11866.
 <h1>Class 1 BT Dongle (14484)</h1>
-&nbsp; &nbsp; &nbsp; &nbsp;<a href="http://www.dealextreme.com/details.dx/sku.14484~r.58964868" target="_blank">SKU 14484</a> is a cheap knock-off of the
+&nbsp; &nbsp; &nbsp; &nbsp;<a href="http://dx.com/p/14484?Utm_rid=58964868&Utm_source=affiliate" target="_blank">SKU 14484</a> is a cheap knock-off of the
 Linksys BT100, and even for a knock-off, it is absolute garbage. It's nothing
 more than a standard Bluetooth adapter with a thin piece of wire soldered
 (poorly) to the internal antenna. It is certainly not Class 1, and if anything,
@@ -129,7 +129,7 @@ item for any reason.
 <span class="center"><img src="/images/hardware/dxdevices4.jpg" alt="17726" /></span>
 <p>
 &nbsp; &nbsp; &nbsp; &nbsp;As of this writing,
-<a href="http://www.dealextreme.com/details.dx/sku.17726~r.58964868" target="_blank">SKU 17726</a> is unfortunately no longer available on DX. For $20 it is a
+<a href="http://dx.com/p/17726?Utm_rid=58964868&Utm_source=affiliate" target="_blank">SKU 17726</a> is unfortunately no longer available on DX. For $20 it is a
 decent quality USB magnetic stripe reader that appears as a USB HID to the host
 OS. Well, that is the idea anyway. I found that this doesn't always work as
 expected under Linux, and the reader only seems to work randomly. This is an
@@ -164,7 +164,7 @@ a problem.
 <p>
 &nbsp; &nbsp; &nbsp; &nbsp;Not a whole lot to say about this one, other than
 that it is a very handy tool to have around. For under $4,
-<a href="http://www.dealextreme.com/details.dx/sku.5859~r.58964868" target="_blank">SKU 5859</a> it's worth keeping in your parts box just in case you need to
+<a href="http://dx.com/p/5859?Utm_rid=58964868&Utm_source=affiliate" target="_blank">SKU 5859</a> it's worth keeping in your parts box just in case you need to
 quickly interface a serial device with one of your machines. This device is
 obviously designed for machines that lack serial ports, but even on machines
 that do have serial ports, I find it is more convenient to simply use this
@@ -192,7 +192,7 @@ PL2303 device specifically.
 <h1>Dummy SIM Cards (16159)</h1>
 <span class="center"><img src="/images/hardware/dxdevices6.jpg" alt="16159" /></span>
 <p>
-&nbsp; &nbsp; &nbsp; &nbsp;<a href="http://www.dealextreme.com/details.dx/sku.16159~r.58964868" target="_blank">SKU 16159</a> is a 10 pack of dummy SIM cards,
+&nbsp; &nbsp; &nbsp; &nbsp;<a href="http://dx.com/p/16159?Utm_rid=58964868&Utm_source=affiliate" target="_blank">SKU 16159</a> is a 10 pack of dummy SIM cards,
 which are invaluable when working with cell phones, as many brands of GSM phone
 won't start without a valid SIM inserted. During my Bluetooth research I picked
 up dozens of cheap phones off of eBay to test with, so luckily they are a
@@ -208,7 +208,7 @@ pulled from). To get past the carrier lock, you will need...
 <h1>i-SmartSim Unlocker (12167)</h1>
 <span class="right"><img src="/images/hardware/dxdevices7.jpg" alt="12167" /></span>
 <p>
-&nbsp; &nbsp; &nbsp; &nbsp;<a href="http://www.dealextreme.com/details.dx/sku.12167~r.58964868" target="_blank">SKU 12167</a> is a very small device that
+&nbsp; &nbsp; &nbsp; &nbsp;<a href="http://dx.com/p/12167?Utm_rid=58964868&Utm_source=affiliate" target="_blank">SKU 12167</a> is a very small device that
 piggy-backs onto a SIM card and fools the phone into thinking it is for the
 carrier the phone is locked to. You can use this device to perform a physical
 unlock on your phone (say for example, if you wanted to use the iPhone on
@@ -252,7 +252,7 @@ following phones:
 <h1>100g Digital Scale (15002)</h1>
 <span class="right"><img src="/images/hardware/dxdevices8.jpg" alt="15002" /></span>
 <p>
-&nbsp; &nbsp; &nbsp; &nbsp;<a href="http://www.dealextreme.com/details.dx/sku.15002~r.58964868" target="_blank">SKU 15002</a>
+&nbsp; &nbsp; &nbsp; &nbsp;<a href="http://dx.com/p/15002?Utm_rid=58964868&Utm_source=affiliate" target="_blank">SKU 15002</a>
 is an extremely accurate digital scale at an incredible price ($10.87 as of
 this writing), perfect for weighing small objects and chemistry work. This
 scale features a maximum capacity of 100g, with a precision of 0.01g. The scale
@@ -261,7 +261,7 @@ is a plastic snap-on protector for the actual weighing platform.
 <p>
 If you are going to get this scale and want to make sure it is as accurate as
 possible, you should also order the 100g calibration weight
-(<a href="http://www.dealextreme.com/details.dx/sku.15761~r.58964868" target="_blank">SKU 15761</a>).
+(<a href="http://dx.com/p/15761?Utm_rid=58964868&Utm_source=affiliate" target="_blank">SKU 15761</a>).
 Even if the scale is perfectly accurate when you receive it (which is already
 unlikely as movement tends to knock it out of precision), with time and temperature
 changes the accuracy of the scale will begin to drift. To calibrate the scale,
@@ -275,7 +275,7 @@ If you need higher capacity, this same scale is available in models all the way
 up to 300g. After that, there is a trade off between accuracy and capacity.
 Scales above 500g usually only offer 0.1g resolution. If you are looking for
 very high resolution, you may want to check out
-<a href="http://www.dealextreme.com/details.dx/sku.10515~r.58964868" target="_blank">SKU 10515</a>,
+<a href="http://dx.com/p/10515?Utm_rid=58964868&Utm_source=affiliate" target="_blank">SKU 10515</a>,
 which appears to be the highest resolution scale currently offered on DealExtreme.
 <!-- End of "content" --!>
 </div>
