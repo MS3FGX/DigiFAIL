@@ -34,9 +34,9 @@
 &nbsp; &nbsp; &nbsp; &nbsp;Development Progress:
 (<a href="https://github.com/MS3FGX/Bluelog">github</a>)
 <br>
-&nbsp; &nbsp; &nbsp; &nbsp;Latest Stable Release: 1.0.4
-(<a href="ftp://ftp.digifail.com/downloads/software/bluelog/bluelog-1.0.4.tar.gz">Download</a>)
-(<a href="http://packetstormsecurity.org/files/download/113924/bluelog-1.0.4.tar.gz">Mirror</a>)
+&nbsp; &nbsp; &nbsp; &nbsp;Latest Stable Release: 1.1.0
+(<a href="ftp://ftp.digifail.com/downloads/software/bluelog/bluelog-1.1.0.tar.gz">Download</a>)
+<!--(<a href="http://packetstormsecurity.org/files/download/113924/bluelog-1.0.4.tar.gz">Mirror</a>)-->
 </b>
 <h1>About</h1>
 &nbsp; &nbsp; &nbsp; &nbsp;Bluelog is a Linux Bluetooth scanner written
@@ -103,7 +103,8 @@ format:
 &nbsp; &nbsp; &nbsp; &nbsp;Bluelog features multiple options for configuring
 the log file, all of which are optional but could be helpful depending on how
 you intend on parsing the resulting data. As of the current version, Bluelog
-supports the following logging options:
+supports the following logging options (check the Bluelog MAN page or README
+for a complete list of options):
 <p>
 <b>-b</b>
 <p>
