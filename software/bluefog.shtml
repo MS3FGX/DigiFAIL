@@ -94,7 +94,7 @@ Any input at this early stage is very much appreciated.
 <p>
 <h1>Downloads</h1>
 <p>
-<!--#include virtual="/var/bluelog.html" -->
+<!--#include virtual="/var/bluefog.html" -->
 </div>
 <!--#include virtual="/analytics.html" -->
 </body>
