@@ -31,10 +31,10 @@ removing and reinserting the thing all the time. Neither of these options sounde
 to me, and after a few months I decided it was time to crack the thing open and improve the situation.
 <h1>Opening it up</h1>
 &nbsp; &nbsp; &nbsp; &nbsp;Opening the BDP-S185 doesn't actually require any special tools. Don't be fooled
-by those two screws on the back panel, they are just reinforcements for the connectors on the back so
-it takes some strain off the PCB when they get plugged in.
+by those two screws on the back panel, they are just reinforcements for the connectors so it takes some
+strain off the PCB.
 <p>
-While the player is still plugged in, press the eject button so the tray comes up and then pull the plug.
+While the player is still plugged in, press the eject button so the tray comes out and then pull the plug.
 With the disc tray out, flip the player upside down and pry up the 4 tabs along the face. With the tabs
 pulled up, slide the plastic shell forward.
 <p>
@@ -58,9 +58,9 @@ up the new wires.
 <span class="center"><img src="/images/hacks/bdmod_desold.jpg" alt="Front panel board" /></span>
 <p>
 With the USB port removed, I rummaged around in my parts boxes until I found a scrap piece of PCB with a
-female USB connector attached that I pulled out of some other piece of electronics. I soldered a 5 inch
-piece of CAT5 network cable to it, and wrapped the whole thing up in Kapton tape. The other end of the CAT5
-went into the front panel board.
+female USB connector attached that I pulled out of some device. I soldered a 5 inch piece of CAT5 network
+cable to it, and wrapped the whole thing up in Kapton tape. The other end of the CAT5 went into the
+front panel board.
 <p>
 <span class="center"><img src="/images/hacks/bdmod_jumper.jpg" alt="USB jumper" /></span>
 <h1>Reassembly</h1>
