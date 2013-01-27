@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - First Act MI115 Power LED</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="First Act, MI115, Mod, Power, LED" />
+<meta name="description" content="Adding a power LED to the First Act MI115 drum machine." />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="right"><img src="/images/hacks/drumled_done.jpg" alt="First Act MI115 LED" /></span>
+<h1>First Act MI115</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Recently I found a fully functioning First Act MI115 electronic
+drum machine in the garbage, and thought it would be a fun toy for my 2 year old daughter.
+Despite its (somewhat) professional look, this thing is really more of a kids toy than anything,
+and certainly isn't suitable for real musical work. If I had to guess, I would bet that's why this
+one ended up in the trash.
+<p>
+Whatever the reason, my daughter now had a new device to make a lot of noise with, and she was very
+happy. But there was a pretty big problem with the drum kit that was driving me nuts. There was no
+indication of whether or not the thing is turned on, and worse, pressing any button on the device
+(other than the pads themselves, at least) turned it on.
+<p>
+With this thing taking 5 AAs at a clip (and no provision for external power), the first time my
+daughter left it on overnight and killed the batteries, I was looking for a fix.
+<h1>Looking Inside</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The idea seemed simple enough. Crack this thing open, turn it on, and
+poke around with my meter until I found some traces giving out 3+ volts that I could use to drive
+an LED mounted into the front panel.
+<p>
+As soon as I opened up the drum machine, I knew this was firmly in the territory of child's toy.
+I haven't seen internal construction this lame in a long time, it looked like a cheap piece of
+electronics from the 80's inside. The one thing I can say positively about the construction of
+this device is that they did do a pretty good job labeling traces and wires, but that isn't
+saying a whole lot. The mass of wires and explosion of hot glue definitely doesn't instil
+confidence, and I don't know how long this could last with my daughter smashing it like a
+lunatic everyday.
+<p>
+<span class="center"><img src="/images/hacks/drumled_int.jpg" alt="MI115 Internals" /><br>This is just terrible.</span>
+<p>
+That little piece of PCB that looks like a reject from a $1 calculator is
+apparently the brains of the whole operation, as everything else on the
+board is passive. I figured this was the best place to look for a source of
+steady voltage that would toggle nicely with the power state of the device,
+so I started working my way along the edge connector that connects it to
+the main board.
+<span class="center"><img src="/images/hacks/drumled_con.jpg" alt="Edge Connector" /><br></span>
+<h1>Making A Connection</h1>
+Luckily, it didn't take too long. The third pad from the right gave me
+a steady 4.5 volts when the drum was powered on, and nothing when off, and
+the negative line coming in from the battery compartment was right in the
+neighborhood.
+<p>
+<span class="center"><img src="/images/hacks/drumled_solder.jpg" alt="Solder Connections" /><br></span>
+<p>
+I soldered two leads onto the pads, and rummaged through my parts box until
+I found a suitably sized LED and a resistor close enough (around 200 &#8486)
+to the appropriate values to keep it from exploding.
+<p>
+I trimmed the leads down on the LED, soldered the negative wire directly to
+cathode side, and put the resistor and positive wire on the anode side.
+<p>
+<span class="center"><img src="/images/hacks/drumled_led.jpg" alt="Back of LED" /><br></span>
+<p>
+I found a spot on the front of the drum which had a relatively smooth
+backside, drilled through, then pushed the little LED assembly right in.
+I drilled a small enough hole so the LED fit snuggly inside, but I thought
+it was a good idea to judiciously apply some hot glue to the whole area
+to make sure it didn't work its way back out. At any rate, it matched the
+construction of the rest of the device.
+<p>
+Before reassembling the drum, I wrapped the exposed LED and resistor legs
+with Kapton, so they were insulated from each other and anything else that
+might decide to bump up against it inside of that shoddy enclosure.
+<h1>Installed LED</h1>
+In the end, the power LED modification worked very well. The location I drilled
+for the LED was a bit too close to the membrane for the keypad, which meant
+I had to install the LED in a slightly off-center way. The plastic also chipped
+a bit when I was drilling through the front panel, which I didn't expect.
+In hindsight I should have drilled through the back instead of the front,
+which would have looked a little nicer.
+<p>
+Of course, none of those little details mattered much to my client this time
+around. She was just glad to have her drum back, and I was glad to be able
+to tell if she had left it on after her latest impromptu jam session.
+<p>
+<span class="center"><img src="/images/hacks/drumled_test.jpg" alt="Doing a test" /><br></span>
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>
