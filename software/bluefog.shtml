@@ -50,18 +50,18 @@ While Bluefog was originally conceived as a diagnostic tool, it also has its own
 offensive uses. Being able to generate a flood of fake Bluetooth devices can confuse anyone
 attempting to monitor or track physical Bluetooth hardware, as well as making legitimate Bluetooth
 use considerably more difficult.
-<h1>WARNING!</h1>
-&nbsp; &nbsp; &nbsp; &nbsp;Bluefog is in a very early state of development, in fact, I wouldn't
-normally release software at this stage. But since I think Bluefog is an interesting concept and
-would like to get people's opinions on it, I'm throwing caution to the wind and letting it out
-in the wild as is.
-<p>
-<B>BUT PLEASE BE CAREFUL...</b>
-<p>
-In its current state, Bluefog has almost no error handling and can easily misbehave; <i>especially</i>
-if you're using Bluetooth hardware which I haven't had a chance to test with. Also, while the MAC
-changing code is supposed to be temporary, I managed to permanently delete the MAC address of my
-laptop's internal Bluetooth radio, so keep that in mind.
+<h1>Warnings</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The changes Bluelog makes to your Bluetooth hardware
+is supposed to be temporary, but not all Bluetooth chipsets behave appropriately.
+During the development of Bluefog, I managed to permanently delete the MAC
+address of my laptop's internal radio. This isn't that big of a deal, but you
+may want to keep it in mind.
+
+In addition, I have occasionally found BlueZ to lock up after running Bluefog
+with large numbers of Bluetooth radios (4 or more), and indeed, BlueZ in
+general doesn't seem to work reliably with multiple radios. If BlueZ starts to
+behave oddly after running Bluefog, just reboot and everything should be back
+to normal.
 <h1>Basic Fogging</h1>
 &nbsp; &nbsp; &nbsp; &nbsp;To start fogging Bluetooth, you don't even need to pass
 Bluefog any arguments, it will start up with the most reasonable options automatically:
