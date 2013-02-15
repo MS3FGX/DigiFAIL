@@ -118,10 +118,10 @@ so it starts and stops with the rest of your services.
 copy and paste the code from the box on the bottom of this page and paste it
 into a new file called linux_ics.sh, or else you can download the script
 directly: <a href="ftp://ftp.digifail.com/downloads/software/scripts/linux_ics.sh">linux_ics.sh</a> 
-<pre><code>#!/bin/sh
+<pre><code>#!/bin/bash
 # 
 # linux_ics.sh
-VER="0.9"
+VER="0.9.1"
 #
 # A script to bridge two interfaces and perform NAT under Linux. Can be used
 # to share an Internet connection to client devices.
