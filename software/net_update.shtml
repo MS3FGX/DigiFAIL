@@ -62,7 +62,7 @@ put together as $BASEURL$APPNAME, so you need to make sure they are correct or
 your download will fail. VER is obviously the version number of the script
 itself, which will be compared with the version number marked as latest on the
 server.
-<pre><code>#!/bin/sh
+<pre><code>#!/bin/bash
 # Prototype Internet-update engine for Bash scripts
 
 # Global variables
@@ -309,7 +309,7 @@ else
 	echo "${TARGET} not found, bailing out!"
 	exit
 fi
-</code</pre>
+</code></pre>
 Now, to use this tool you must call it from the directory the update is being
 shared from. That's because it uses "basename" to fill in the APPNAME variable.
 You must also give it the file which will be delivered as the update payload,
