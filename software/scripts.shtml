@@ -18,7 +18,7 @@
 written over the years, hosted here on the off chance somebody might find
 them useful. Most of these were written up as a quick fix for whatever
 problem I was tackling at the moment, rather than full on projects. As such,
-they are not well tested or as throughly tested as most of my other software.
+they are not well tested or as throughly thought out as most of my other software.
 <p>
 You can download any of these files from the
 <a href="/misc/downloads.shtml">Downloads</a> section, just make sure to make
@@ -241,6 +241,11 @@ SECONDS="$(echo $UTC | cut -c 5-6)"
 
 # Put it back together and set the time
 date -u $DATE$TIME$YEAR.$SECONDS</pre></code>
+<h1>web_ftp.sh</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;This one is actually used by DigiFAIL itself to generate the
+files used by the "Download" UI. Basically, it creates a hidden metadata file for each
+file in a given directory (MD5, size, date), then combines those into an HTML page which
+can be served out via your HTTP daemon of choice.
 <h1>Common Functions</h1>
 &nbsp; &nbsp; &nbsp; &nbsp;Early in my Bash scripting career, I realized I was
 writing the same code over and over again way too often. In more advanced
