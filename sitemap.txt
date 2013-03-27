@@ -21,6 +21,8 @@ http://www.digifail.com/research/entropy.shtml
 http://www.digifail.com/research/slackware.shtml
 http://www.digifail.com/research/streetsweep.shtml
 http://www.digifail.com/software/bluelog.shtml
+http://www.digifail.com/software/bluefog.shtml
+http://www.digifail.com/software/libmackerel.shtml
 http://www.digifail.com/software/droidapps.shtml
 http://www.digifail.com/software/linux_ics.shtml
 http://www.digifail.com/software/net_update.shtml
