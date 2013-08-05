@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - Support DigiFAIL</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Linux,Electronics,Hacking,Bluetooth,WiFi,Bash" />
+<meta name="description" content="Want to help keep the lights on?" />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<h1>Supporting DigiFAIL</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Everything on this site has been done in my free time
+because I found it either academically interesting or of practical use (alright, not so
+much that second one). The goal has never been to make money off of any of this, but rather
+to get the information out there so others will hopefully put it to use. So I've never
+considered locking content up behind a donation or fee; everything on this site will always
+be free (in terms of cost <i>and</i> freedom).
+<p>
+That said, people have from time to time have contacted me asking how they can
+help support me in my various endeavours. I still want to stress that I'm not
+in this for any kind of monetary gain, but I certainly will not refuse the goodwill
+of those who've found my work useful to them.
+<p>
+Bellow are a few practical options on how you can help keep DigiFAIL interesting.
+If you have a different idea in mind to help out, please feel free to
+<a href="/misc/contact.html" style="color: #FF9C27" onClick="window.open('/misc/contact.html','Contact','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,width=500,height=515,left=250,top=150'); return false;">contact me so we can discuss it.</a>
+<h3>PayPal Donations</h3>
+&nbsp; &nbsp; &nbsp; &nbsp;This was easily the most requested option, and despite
+the bad press it occasionally gets, most people seem more comfortable using PayPal
+than anything else. The "Donate" button visible on every page of the site will
+take you to PayPal, where you can make a donation of any size you wish.
+<p>
+All donations via this PayPal link go directly into research and development on my
+various projects by default, but if you have something you'd specifically like me
+to do with the money (such as buying a particular piece of hardware to try and add
+support for it in one of my software projects), then please let me know.
+<h3>Buy My Book</h3>
+&nbsp; &nbsp; &nbsp; &nbsp;I've recently published the eBook
+<i>"Inside the Open Source Mind"</i>, where I conduct interviews with various open
+source entrepreneurs, developers, and hackers. If you've read this much of my personal
+site, there's a pretty good chance you'll be interested in what these guys have to say.
+<p>
+Beyond just the interviews, I also go into some detail on how I found out about each
+person, and my thoughts on working with them during the interview process. Everyone I
+spoke with during the creation of the book was exceptionally courteous and professional,
+and I hope that in some small way, this book can help change the perception of open source
+developers being antisocial egomaniacs.
+<p>
+<i>"Inside the Open Source Mind"</i> is available now for the
+<a href="http://www.amazon.com/Inside-Open-Source-Mind-ebook/dp/B00CKEPZOA" target="_blank">Kindle</a>
+and
+<a href="http://www.barnesandnoble.com/w/inside-the-open-source-mind-tom-nardi/1115221975" target="_blank">Nook</a>.
+<h3>Hardware</h3>
+&nbsp; &nbsp; &nbsp; &nbsp;If you have any unwanted devices or gadgets which you
+think might fit into my interests, I would be glad to give them a good home
+(and ideally, feature them on the site). Send me an email and we can work out the details.
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>

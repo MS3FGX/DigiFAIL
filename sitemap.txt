@@ -36,3 +36,4 @@ http://www.digifail.com/text/guides.shtml
 http://www.digifail.com/text/spacehackers.shtml
 http://www.digifail.com/text/wfchack.shtml
 http://www.digifail.com/misc/links.html
+http://www.digifail.com/misc/support.shtml
