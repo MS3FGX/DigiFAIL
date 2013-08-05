@@ -14,7 +14,7 @@
 <!--#include virtual="/ui.html" -->
 <div id="content">
 <span class="center"><img src="/images/software/droidapps1.png" alt="Droid Apps" /></span>
-<h1>There's an app for that.</h1>
+<h1>Android Apps</h1>
 &nbsp; &nbsp; &nbsp; &nbsp;This page is going to be a little out of the
 norm for DigiFAIL, as instead of doing original research or documenting my own
 work, I am going to call out (in no particular order) a few Android
@@ -22,15 +22,20 @@ applications which I think are essential for the mobile hacker. Since this new
 generation of Android devices is pretty much in uncharted territory in terms of
 capability, I think I can get away with considering this "Research". I'll give a
 little background information for all the applications, and if the application
-is complicated enough perhaps even a bit of a tutorial. I plan on updating this
-page regularly, so check back once and awhile to see what I've been playing with.
-<p>
+is complicated enough perhaps even a bit of a tutorial.<p>
 <h2>Note:
 <br>
 Just because Android is an open source operating system doesn't mean all the
 software has to be free. The developers who create Android applications are the
 reason the platform is so popular, without them we would have nothing. Please
 consider donating to the authors of these applications if you find them useful.</h2>
+<h2>Note 2:
+<br>
+OK, so it turns out keeping this updated was a bit more work than I expected; there
+weren't nearly so many available Android applications when I first put this page up in
+2010. These applications are definitely still worth checking out, but there are
+many newer ones out there that also deserve a look. Drop me a line if there are
+any particularly awesome ones you would like me to take a look at.</h2>
 <h1>WiFi Analyzer</h1>
 <span class="right"><img src="/images/software/droidapps2.png" alt="WiFi Analyzer" /></span>
 <b>
@@ -177,51 +182,6 @@ will put some people off. If for nothing else, it is nice to have a trial
 version to verify the software works on your particular device and Android
 environment. Still, for the people who want or need SSH and SCP functionality
 on their Android devices, it is well worth the $1.50.
-<h1>Tricorder</h1>
-<span class="right"><img src="/images/software/droidapps5.png" alt="Tricorder" /></span>
-<b>
-&nbsp; &nbsp; &nbsp; &nbsp;Price: Free
-<br>
-&nbsp; &nbsp; &nbsp; &nbsp;Author: Moonblink
-<br>
-&nbsp; &nbsp; &nbsp; &nbsp;Root: No
-<br>
-&nbsp; &nbsp; &nbsp; &nbsp;Source Available: Yes (GPLv2)
-<br>
-&nbsp; &nbsp; &nbsp; &nbsp;QR Code:
-<a class="thumbnail" href="#thumb">Show<span><img src="http://chart.apis.google.com/chart?cht=qr&chs=135x135&chl=market://details?id=org.hermit.tricorder" /></span></a>
-<br>
-&nbsp; &nbsp; &nbsp; &nbsp;Android Market:
-<a href="http://market.android.com/details?id=org.hermit.tricorder" target="_blank">View</a>
-<br>
-&nbsp; &nbsp; &nbsp; &nbsp;Site:
-<a href="http://code.google.com/p/moonblink/wiki/Tricorder" target="_blank">http://code.google.com/p/moonblink/wiki/Tricorder</a>
-</b>
-<p>
-&nbsp; &nbsp; &nbsp; &nbsp;OK, I know what you are thinking. I realize that
-<i>Tricorder</i> is intended as a toy, not a serious scientific tool. But
-consider, presentation aside, that this application allows you to examine the
-output of all of your device's sensors with impressive accuracy. A modern
-smartphone like the <a href="/hardware/droid.shtml">Motorola Droid</a> has
-multiple sensors which can detect everything from the angle and position of
-the device to the local magnetic field. While these sensors were not
-originally intended for anything more advanced then detecting when the device
-is held up to your head rather than sitting in your pocket, with a little
-imagination they can be used for slightly more interesting purposes.
-<p>
-For example, the "MAG" tab in <i>Tricorder</i> allows you to examine the
-EMF field in the immediate area of the phone with micro-Tesla accuracy. In
-the past I have successfully used this function to determine if an electrical
-panel was receiving power or not. On one occasion, believe it or not, a friend
-of mine had discovered what he believed to be a meteorite and I used
-<i>Tricorder</i> to detect if the object had a higher magnetic field than other
-rocks found in the surrounding area.
-<p>
-I have had similar success using the "ACO" mode which is a decently accurate
-audio analyzer capable of showing both the waveform and frequency spectrum of
-the sound detected by your devices's microphone. While accuracy and response
-are dependent on the quality of the audio hardware (I.E. the Nexus One only has
-an 8kHz hardware sample rate), it is serviceable on most devices.
 <h1>SystemPanel</h1>
 <span class="right"><img src="/images/software/droidapps6.png" alt="SystemPanel" /></span>
 <b>
