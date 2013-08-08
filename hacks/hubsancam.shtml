@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - Hubsan X4 Onboard Camera</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Hubsan, Quad, 808, camera, drone" />
+<meta name="description" content="A terrible camera added to Hubsan X4 quad." />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="right"><img src="/images/hacks/hubsan_feat.jpg" alt="Hubsan X4 Cam" /></span>
+<h1>The Hubsan X4 H107L</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;For awhile now I've really wanted to get into "FPV Flying",
+which refers to flying a remote controlled aircraft through a first person (onboard) view.
+This has only become possible relatively recently (at least, at a hobbyist budget) because
+of advancements in miniaturization, high frequency RF chipsets, and ever smaller batteries.
+Basically, we can thank the smartphone industry for making this new hobby a reality.
+<p>
+Most people do FPV from a quadcopter, as they are extremely agile and stable. I wanted to go
+this route myself, but was held back from spending the money on a ready to run setup due to
+the fact I had never flown a multi-rotor aircraft before. I didn't want to do my first flight
+on a ~$500 piece of equipment, which in all likelihood, was going to get intimately acquainted
+with the dirt in a matter of seconds.
+<p>
+Luckily, we've entered the era of almost disposably priced quadcopters which substantially
+lower the stress level of your first attempts to get airborne. After researching the various
+versions out there, I decided on the Hubsan X4 H107L.
+<p>
+At the time of this writing,
+<a href="http://www.banggood.com/Upgrade-Hubsan-X4-H107-2_4G-4CH-Remote-Control-RC-Quadcopter-p-71838.html?p=IC1818223587201307OS" target="_blank">the H107L can be had for around $40 USD from a direct-from-China
+retailer like Banggood.com</a>. This comes with the customary multi-week shipping time, so if you
+want to get it in a reasonable amount of time, you may want to look to a retailer located in your
+own country (and expect to pay more). I got mine for about $60 on Amazon, and it arrived in two days.
+<p>
+While I'm certainly not yet qualified to compare this particular quadcopter to any other,
+I can say that it's extremely fun to fly. The standard control sensitivity is fairly docile
+for getting a hang of how a quad moves and operates, and putting it into the "Expert" control
+mode enables completely absurd speed and maneuverability once you're ready for it. Popular
+opinion seems to agree that this is one of the best cheap quads to start with, and my
+experience with it so far has definitely been along those lines.
+<h1>Hobo Drone</h1>
+<span class="right"><img src="/images/hacks/hubsan_stock_cam.jpg" alt="Hubsan X4 Cam" /></span>
+&nbsp; &nbsp; &nbsp; &nbsp;Like I said, my goal is to start rolling some live video from
+above, and I thought a good first step might be to try and attach a camera to the Hubsan X4 to
+get a feel for what it's like using a quad as a video recording platform. Live video hardware
+small enough to fit on the Hubsan X4 <i>does</i> exist, but costs a bit more than I was willing
+to spend on an experiment like this; I'd rather spend the money on a proper FPV bird later on.
+<p>
+So I decided to get one of these cheap keychain "spy cams" that pop up on eBay for $8-$15 USD,
+and see if I could mount it to the quad well enough to record some in-flight video for later
+review. At a combined cost of no more than $60 USD, this seemed to be one of the cheapest ways
+to experiment with aerial photography and "drone" technology.
+<p>
+But as soon as I opened the box I realized there was a bit of a problem: the thing was
+fairly heavy. My scale put it at 14.82 grams.
+<p>
+OK, so ~15 grams might not <b>seem</b> heavy, but when you're talking about an aircraft smaller
+than a modern smartphone, that's a hell of a lot of weight to try and lug around. I tried
+strapping it to the bottom of the quad, but the thing could barely get off the ground at max
+throttle, let alone maneuver.
+<p>
+It was pretty clear I needed to give this thing a diet as quickly and easily as possible, as
+I really just wanted to get the thing up in the air and see what it looked like. So the most
+logical option was to just crack the case open and mount the bare PCB to the bottom of the
+quad. I was banking on the fact that the (relatively) thick plastic casing was a decent
+portion of the device's weight.
+<p>
+Opening up the case was a pleasantly simple affair. Two black screws on the back side come out,
+and the whole case hinges open on the side with the lens. There are then two smaller white
+screws which hold the PCB down into the other side of the case (where the buttons are).
+<p>
+<span class="center"><img src="/images/hacks/hubsan_cam_pcb.jpg" alt="Hubsan X4 Cam" /></span>
+<p>
+This brought the camera's weight down to 9.85 grams, which I figured would at least allow me
+to takeoff. I grabbed some Kapton tape I had nearby and wrapped it around the quad and the
+camera PCB a few times to hold it on tightly to the bottom, trying to keep it as centered as
+possible to as not to offset the overall balance. The camera attached to the Hubsan X4,
+including both batteries, brought the total flight weight up to 46.25 grams. Still pretty
+heavy, but good enough for a test.
+<p>
+<span class="center"><img src="/images/hacks/hubsan_mated.jpg" alt="Hubsan X4 Cam" /></span>
+<h1>First Flight</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;With my hacked together onboard camera, I took the Hubsan X4 outside
+and started climbing vertically to get some altitude. Performance seemed more or less unchanged
+when compared to flying without the camera (vertical speed is surely reduced, but in practice,
+it's hard to notice)...except when I tried to come back down. It seems like the extra weight
+on the bottom has some negative effect on the quad's automatic leveling function, as the whole
+craft starts to oscillate wildly while descending if you aren't very gentle.
+<p>
+So, how did it come out? Well, let's take a look...
+<p>
+<span class="center">
+<iframe width="640" height="480" src="//www.youtube.com/embed/M1h2yCZz7jQ" frameborder="0" allowfullscreen></iframe>
+</span>
+<p>
+That's...that's just terrible. I really hoped the video quality would be better, but I guess
+for $10, there isn't a whole lot I have to complain about. It's clear enough to make out the
+difference between a building and a tree, but beyond that, it's pretty helpless.
+<p>
+Other than looking terrible, the one major annoyance of this setup is that the buttons to operate
+the camera are located on the top of the PCB, which means that I had to mount it upside down
+on the bottom of the quad to operate it. Naturally, this makes all the video recorded with
+the quad upside-down as well.
+<p>
+Using the very straight-forward Avidemux, I was easily able to not only rotate the video back
+around the right way, but also get rid of the terrible audio track (imagine holding your head
+against a tin-can full of angry bees if you'd like to get an idea of what it was like). The
+only thing I don't like about this (and what somebody called me on almost immediately), is that
+it leaves the now inverted timestamp in the upper corner of the video. Naturally there's no
+option to just turn the timestamp off.
+<h1>Looking Ahead</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Honestly, seeing how poor the video came out largely put me off
+from doing many more flights with this camera to begin with, but then I started noticing some
+other annoying traits which really drove me nuts.
+<p>
+Such as the fact that, since the camera is now the lowest part of the quad (extending below the
+"landing pads" under each motor), it takes the brunt of the energy during landings.
+Unfortunately, this little camera seems to particularly dislike being jostled around, as even
+a fairly easy landing seems enough to force the camera to reboot (deleting the video that was
+currently recording, naturally).
+<p>
+The problems with this setup have been pushing me towards getting a larger quad where it's not
+quite as hard to add additional equipment to the craft. That said, the Hubsan X4 is a blast to
+fly and does manage to get into some hard-to-reach places.
+<p>
+So I may end up revisiting this experiment with a little less haphazard attitude in the
+future. Rigging up some light-weight landing skids would take the weight of landing off of the
+camera itself, and hopefully limit how many videos I lose. I'd also like to rig something up
+where I can drive the camera off of the quad's main battery, which would take a big chunk of
+the flying weight off.
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>
