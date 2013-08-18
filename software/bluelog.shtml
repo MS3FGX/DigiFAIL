@@ -39,11 +39,10 @@
 <!--(<a href="http://packetstormsecurity.org/files/download/113924/bluelog-1.0.4.tar.gz">Mirror</a>)-->
 </b>
 <h1>About</h1>
-&nbsp; &nbsp; &nbsp; &nbsp;Bluelog is a Linux Bluetooth scanner written
-to do a single task, log devices that are in discoverable mode. It is intended
-to be used as a site survey tool, determining how many discoverable Bluetooth
-devices there are in the area. It has also proven to be very well suited to
-Bluetooth traffic monitoring applications.
+&nbsp; &nbsp; &nbsp; &nbsp;Bluelog is a Linux Bluetooth scanner with optional
+daemon mode and web front-end, designed for site surveys and traffic
+monitoring. It's intended to be run for long periods of time in a static location
+to determine how many discoverable Bluetooth devices there are in the area.
 <p>
 While there are many different Bluetooth scanners available, none I found did
 exactly what I wanted, most seemed focused on pulling down various bits of
