@@ -73,12 +73,6 @@ over USB, and most importantly, install unofficial system images. By using
 SPRecovery you will not only be able to safely install custom ROMs, but fix
 your phone in the event that something goes wrong.
 <p>
-I haven't found an official homepage for SPRecovery with a proper download, so
-until then I am going to host the copy of the file I used here on the site.
-Before continuing on, download the following file and hold onto it until you
-need it:
-<a href="ftp://ftp.digifail.com/downloads/software/android/A855/SPRecovery_ESE81.sbf">SPRecovery_ESE81.sbf</a>.
-<p>
 In the following sections, I will cover how to install SPRecovery under both
 Windows and Linux. Both methods will get you the same result, so use whatever
 OS you are more comfortable with. For Mac OS users, I am not currently aware of

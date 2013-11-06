@@ -24,8 +24,8 @@
 <br>
 &nbsp; &nbsp; &nbsp; &nbsp;Dependencies: iwconfig, DHCPD, iptables
 <br>
-&nbsp; &nbsp; &nbsp; &nbsp;Latest Release: 0.9
-(<a href="ftp://ftp.digifail.com/downloads/software/scripts/linux_ics.sh">Download</a>)
+&nbsp; &nbsp; &nbsp; &nbsp;Latest Release: 0.9.1
+(<a href="ftp://ftp.digifail.com/software/scripts/linux_ics.sh">Download</a>)
 </b>
 <h1>About</h1>
 &nbsp; &nbsp; &nbsp; &nbsp;linux_ics started it's long life as "DS_AP", which
@@ -113,11 +113,7 @@ run "test" to make sure your configuration is valid, and then use the "start",
 "stop", and "restart" options to control the actual service. I wrote linux_ics
 with the intent being that you could integrate it right into your boot scripts
 so it starts and stops with the rest of your services.
-<h1>Downloading</h1>
-&nbsp; &nbsp; &nbsp; &nbsp;To get linux_ics on your system you can simply
-copy and paste the code from the box on the bottom of this page and paste it
-into a new file called linux_ics.sh, or else you can download the script
-directly: <a href="ftp://ftp.digifail.com/downloads/software/scripts/linux_ics.sh">linux_ics.sh</a> 
+<h1>linux_ics</h1>
 <pre><code>#!/bin/bash
 # 
 # linux_ics.sh

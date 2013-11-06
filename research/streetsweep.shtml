@@ -166,7 +166,7 @@ likely to fast moving vehicles). There are still improvements I can make to
 the scanning code, but I think the results are fairly impressive and show that
 an exploitable ecosystem of Bluetooth devices is out there waiting.
 <p>
-<b>Results:</b> (<a href="ftp://ftp.digifail.com/downloads/research/streetsweep/sweep_log.txt">Direct Download</a>)
+<b>Results:</b> (<a href="ftp://ftp.digifail.com/research/streetsweep/sweep_log.txt">Direct Download</a>)
 <pre><code>00:00:A0:2C:0C:2F,0x520204,SANYO KATANA I
 00:00:A0:2F:E2:9C,0x520204,SANYO SCP-7050
 00:00:A0:64:5A:3B,0x5a0204,SANYO KATANA Eclipse X
