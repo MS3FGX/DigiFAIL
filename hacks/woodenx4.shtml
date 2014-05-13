@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - Wooden Hubsan X4</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Quadcopter,Hubsan X4,rebuild" />
+<meta name="description" content="A wooden frame for the Hubsan X4 quadcopter." />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="right"><img src="/images/hacks/woodenx4_feat.jpg" alt="Wooden Hubsan X4" /></span>
+<h1>The First X4's Fate</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;After I got my first Hubsan X4, I spent the next week or so smashing it into
+all manners of objects at high speed. Trees, the ground, cars, even some unlucky people. No matter how soul-wrenching
+the sound of the impact was, it always turned out that the X4 took no serious damage. A bent propeller
+perhaps, but nothing that would ground it for more than a minute or two. The thing seemed essentially indestructible.
+<p>
+So when a friend of mine expressed interest in the X4 while he watched me fly it around one day, I thought
+nothing of asking him if he'd like to try flying it himself. After briefly explaining the theory of
+flying a multi-rotor aircraft, I handed him the controls and told him to take it slow at first.
+<p>
+Within 30 seconds, my first Hubsan X4 was laying in the dirt, shattered into pieces. In truth, I'm still
+not sure how he managed it. I'd seen the thing take much worse hits than that before. Perhaps all the beatings
+I put it through weakened it, and this was just the last straw.
+<p>
+Since the Hubsan X4 is so cheap, I ended up just buying another one for about $30 rather than trying to
+repair the first one. But I had a working flight controller and motors, and a few weeks to kill while the
+replacement X4 came in the mail, so I decided to see if I couldn't reuse the functioning components of the
+old quad to build a totally new one.
+<h1>A Weighty Question</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Quadcopters in general have to be pretty lightweight, and a micro quad like the X4
+especially so. I thought for awhile about what I could use as a frame material, but everything I could think of
+was either too heavy, too flexible, or too difficult to work with. Since I don't (yet) have a 3D printer, whatever material I
+chose needed to be something I could form into an appropriate shape without too much difficulty.
+<p>
+While in the Home Depot, I found some 5 mm thick plywood in the scrap pile which looked like it would work perfectly.
+It was very rigid, easy enough to cut and sand to shape, and seemed fairly light. But would it be light enough to
+build a quadcopter out of?
+<p>
+I knew how heavy the original frame was, and I knew that I was able to <a href="/hacks/hubsancam.shtml">carry about
+9 grams of payload around with that</a>, which gave me a considerable buffer zone; the wooden frame could end up being
+8-9 grams heavier than the original plastic, and I knew it would still at least fly.
+<p>
+The first step was to cut a square out of the 5 mm plywood and exactly measure its length and width (134 mm x 148 mm) to
+get its surface area. I then weighed the piece of plywood, and divided its weight (52 G) by its surface area. This gave
+me a density value (0.0026) that I could apply to a 2D model of the frame to get its estimated weight. I started drawing
+different frame shapes at 1:1 scale on paper, then measured them with the calipers and calculated what that shape would
+end up weighing when cut out of wood.
+<p>
+<span class="center"><img src="/images/hacks/woodenx4_drawings.jpg" alt="Papercraft" /></span>
+<p>
+In the end, I managed to use this method to estimate the weight of the final cut-out frames to within 1 G, which was more
+than accurate enough for what I was trying to do. All I wanted at this early of a point was to figure out how large I could
+make the frame before I went overweight.
+<h1>Building the Frame</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;Once I was fairly confident that my math was working, the rest was pretty simple. I just cut out
+the frame to a shape and size that I calculated to be within my weight limit, drilled some holes in the arms, and mounted the
+motor and main PCB to it.
+<p>
+<span class="center"><img src="/images/hacks/woodenx4_motor.jpg" alt="Installed motor" /></span>
+<p>
+I had considered making some kind of little landing gear so I wouldn't smash up the PCB on landing, but in the end,
+the bottom of the motors serve that purpose. I also didn't have enough slack in the motor wires to route them down
+the quad's arms, so they sort of hang in the middle like a spiderweb. Definitely a rough and tumble bird.
+<h1>The End Result</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The final wooden frame ended up making a quad that is slightly larger than the original
+Hubsan X4, but weighs in at just 0.31 G heavier than stock (39.23 G for stock, versus 39.54 for wood frame). I was
+honestly quite surprised, and in hindsight, there is no reason a larger frame couldn't be made out of the same
+material and still come in under the weight requirements. The motor leads would simply need to be extended to
+run out to the longer arms.
+<p>
+<span class="center"><img src="/images/hacks/woodenx4_compare.jpg" alt="Installed motor" /></span>
+<p>
+But the real question: <i>How does it fly?</i>
+<p>
+Well, it flies a bit like a piece of wood with some motors slapped onto it. It's slow and kind of clunky, but it
+certainly <b>does</b> fly.
+<p>
+If I had to guess, I would say the arm segments are much too thick in relation to the width of the propeller blade,
+which means a large amount of thrust is getting blocked and diverted upwards. Thinner arms would of course fix this,
+but at some point you'll loose structural integrity with this sort of material. As it is, drilling the holes in the
+arms for the motors caused some worrying cracks.
+<p>
+But you don't have to take my word for it, with the magic of modern technology, I present to you the wooden Hubsan X4's
+maiden flight in glorious 1080p:
+<p>
+<span class="center">
+<iframe width="853" height="480" src="//www.youtube.com/embed/WQJe3LPSdZc" frameborder="0" allowfullscreen></iframe>
+</span>
+<p>
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>
