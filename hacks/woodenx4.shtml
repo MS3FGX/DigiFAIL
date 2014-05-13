@@ -49,18 +49,18 @@ I knew how heavy the original frame was, and I knew that I was able to <a href="
 The first step was to cut a square out of the 5 mm plywood and exactly measure its length and width (134 mm x 148 mm) to
 get its surface area. I then weighed the piece of plywood, and divided its weight (52 G) by its surface area. This gave
 me a density value (0.0026) that I could apply to a 2D model of the frame to get its estimated weight. I started drawing
-different frame shapes at 1:1 scale on paper, then measured them with the calipers and calculated what that shape would
+different frame shapes at 1:1 scale on paper, then measured them with calipers and calculated what that shape would
 end up weighing when cut out of wood.
 <p>
 <span class="center"><img src="/images/hacks/woodenx4_drawings.jpg" alt="Papercraft" /></span>
 <p>
 In the end, I managed to use this method to estimate the weight of the final cut-out frames to within 1 G, which was more
-than accurate enough for what I was trying to do. All I wanted at this early of a point was to figure out how large I could
+than accurate enough for what I was trying to do. All I wanted at this point was to figure out how large I could
 make the frame before I went overweight.
 <h1>Building the Frame</h1>
 &nbsp; &nbsp; &nbsp; &nbsp;Once I was fairly confident that my math was working, the rest was pretty simple. I just cut out
 the frame to a shape and size that I calculated to be within my weight limit, drilled some holes in the arms, and mounted the
-motor and main PCB to it.
+motors and PCB to it.
 <p>
 <span class="center"><img src="/images/hacks/woodenx4_motor.jpg" alt="Installed motor" /></span>
 <p>
