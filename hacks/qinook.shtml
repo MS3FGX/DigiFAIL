@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - Qi Charging Nook</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Hack, Nook, Qi, charging" />
+<meta name="description" content="Adding Qi wireless charging support to a Nook Simple Touch" />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="right"><img src="/images/hacks/qinook_feat.jpg" alt="Featured Art" /></span>
+<h1>5 VDC from the Heavens</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;When I got the Nexus 5, one of the features I was most excited about
+was the Qi wireless charging built in. All I had to do was get a little charging pad, toss
+the phone on top of it, and I was suddenly in the future. No more wires to plug in, the energy
+was transfered into the phone via Tesla-esque moonbeams.
+<p>
+Of course, it wasn't long until I started to loath my other devices for still requiring lewd
+USB penetration to charge themselves. Why couldn't they evolve past such carnal desires? Had
+they no shame?
+<p>
+Like a missionary, I decided to start converting the wayward devices in my life and put them
+on the righteous path towards the miracle and glory of wireless charging. The first to go
+was my Nook Simple Touch.
+<h1>Qi Receiver</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The first step was to find a Qi receiving module that I could fit
+into the Nook. As it turns out, this was pretty easy, as there is a rather large market for
+retrofitting Qi charging into existing smartphones. They come in the form of very thin modules
+which get shoehorned into the back of the phone where the battery goes. All I needed to do was
+find one cheap and small enough.
+<p>
+I looked at the ones available on eBay, and on what was essentially a whim, I decided to get
+a Qi receiver intended for a Samsung S3. I figured the S3 was a (relatively) small phone, and
+as such, the receiver wouldn't be too large.
+<p>
+<span class="center"><img src="/images/hacks/qinook_receiver.jpg" alt="Qi Receiver" /></span>
+<p>
+As it turns out, the Samsung S3 Qi receiver was a perfect fit for the area behind the Nook's
+battery. It's almost like the thing was made to nestle in there. A few drops of glue tacked
+the receiver down, and a couple snips at the plastic around the battery tray gave me a spot to
+route the receiver's wires out.
+<h1>Wiring</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;There are Qi receivers out there that have a USB male end on them,
+and you can plug them directly into whatever it is you want to charge. But I thought that was
+just too hokey, I wanted to wire the Qi receiver directly into the Nook's USB port on the inside.
+<p>
+Taking out the Nook's mainboard and flipping it over gets you access to the USB port's pins, and
+from there it's just a matter of some thin wires and steady hands. I used some wire from a 40-pin
+IDE cable, which is actually a little thicker than I'd like, but I couldn't find an 80-pin IDE
+cable in any of my parts boxes.
+<p>
+<span class="center"><img src="/images/hacks/qinook_usb.jpg" alt="USB port" /></span>
+<p>
+It took me a few tries to solder the positive lead on without bridging the pins, and for the sake
+of simplicity I soldered the negative side right to the USB port's outer shielding.
+<h1>End Result</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;After closing the Nook back up, I was happy to see it readily start
+charging when I dropped it on my Qi charging pad. I left it on there for an hour or so and saw
+that the battery percentage went up by about 20%, so that's a good enough test for me. I only
+charge the Nook every month or so anyway, so even if it was a slow charge, it would hardly
+matter.
+<p>
+For the record, the USB port still does work as expected if you connect a standard charger or
+plug it into the computer. I was originally worried I'd need to add a diode between the USB
+port and the Qi receiver, but I'm guessing it must already have some kind of blocking circuitry
+built in, as the receiver being attached to the USB port full time doesn't seem to have any negative
+effect on operation.
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>
