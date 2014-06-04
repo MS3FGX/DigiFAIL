@@ -7,7 +7,7 @@ html, body
 	background-color: #33333F;
 	font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif;
 	font-size: 12px;
-	overflow: auto;
+	overflow: hidden;
 	background-image:url('/images/site/bgpattern.jpg')
 }
 
