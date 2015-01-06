@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>DigiFAIL.com - Algae Incubator</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="/style.css" type="text/css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="/images/site/favicon.png" />
+<link rel="shortcut icon" href="/images/site/favicon.png" /> 
+<meta name="keywords" content="Home Depot,Algae,Incubator" />
+<meta name="description" content="An algae incubator assembled from parts found at the Home Depot." />
+</head>
+<body>
+<!--#include virtual="/ui.html" -->
+<div id="content">
+<span class="right"><img src="/images/hacks/incubator_feat.jpg" alt="Featured Image" /></span>
+<h1>Home Depot Algae Incubator</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;I've been experimenting with growing algae, specifically <a href="http://en.wikipedia.org/wiki/Spirulina_(genus)" target="_blank">spirulina</a>, and wanted a way to place multiple samples in a stable environment so I could compare growth rates with different nutrient mixes and that sort of thing. Such things exist, of course, but a check of eBay and Craigslist showed they were pretty expensive even second hand. Even the incubators intended for growing chickens were well outside of the arbitrary budget I allow for my experiments.
+<p>
+So I set out to build a relatively cheap incubator with parts I could get from the local Home Depot. I needed a stable and adjustable source of light and heat, and I wanted it to be able to hold multiple microcentrifuge tubes as I found they are convenient and readily available on the cheap.
+<h1>Theory of Operation</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The idea here is really simple; you need light and you need heat, and it just so happens an incandescent bulb puts out a lot of both. So putting the samples in a closed box along with an incandescent bulb should be enough to provide a stable environment. Ideally the bulb should be adjustable, as you need to find a brightness level for the bulb which gives off heat, but doesn't give off <b>too much</b> heat. In practical terms, that means we need a sturdy enclosure that can handle having a heat source inside of it indefinitely, a light bulb with appropriate socket, and a dimmer control so the bulb's energy output can be regulated.
+<p>
+After wandering around the store for awhile, the best I could find for an enclosure were PVC junction boxes intended for electrical conduit. These weren't as cheap a I'd like, but they were sturdy and rated for higher temperature than I'd ever need. I got one large box to hold the samples and bulb, and a smaller one-gang box to mount the control in. The "candelabra" type socket, appropriate bulb, and dimmer, were no problem to get from the electrical department. 
+<h1>Construction</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;The first step was to drill a hole about halfway down the side of the larger box to
+install the light socket. I originally tried to think of a clever way to mount the socket in the side of the box,
+but in the end I just made a hole that was slightly smaller than the socket and jammed the thing in there; friction
+holds it in enough for my purposes.
+<p>
+<span class="center"><img src="/images/hacks/incubator_socket.jpg" alt="Mounted socket" /></span>
+<p>
+I then lined up the smaller box where I wanted it, and drilled not only a larger hole to correspond to the socket,
+but smaller holes on either side to take nuts and bolts. This allowed me to bolt both boxes together securely, and
+bring the wire for the socket into my smaller box where the dimmer goes.
+<p>
+The dimmer was a three-way model, so I cut the wires off that would go to the second switch as well as the ground. Wiring for this situation is very simple, the dimmer simply sits between the plug and the bulb and acts as a variable resistor. There are actually newer dimmers which use pulse width modulation to dim lights and are considerably
+more efficient, but for something as simple as this I went with the cheap rheostat type dimmer.
+<p>
+<span class="center"><img src="/images/hacks/incubator_wires.jpg" alt="Wiring inside" /></span>
+<p>
+The last thing required was to drill holes in the top cover of the box to hold the test tubes. I've been using 1.5 and 2.0 ml microcentrifuge tubes which have a diameter of just under 11 mm, so it was just a matter of measuring
+out a grid and some quick work on the drill press.
+<h1>Showing Off</h1>
+<span class="right"><img src="/images/hacks/incubator_knob.jpg" alt="Wiring inside" /></span>
+&nbsp; &nbsp; &nbsp; &nbsp;Realistically, that's all that I needed to do. The thing was put together and the light
+came on when I pushed the dimmer in. But since I recently took ownership of a PrintrBot Simple, and because the
+stock dimmer knob didn't have any indicator to show where it was pointing, I decided to quickly render up a replacement knob which features a small pointer. This marks the first project of mine which included a 3D printed component, which is pretty cool.
+<p>
+The files for the knob <a href="http://www.thingiverse.com/thing:623179" target="_blank">are available on Thingiverse</a>, if you're interested.
+<h1>Final Thoughts</h1>
+&nbsp; &nbsp; &nbsp; &nbsp;In the end, this cheap little incubator worked very well. Though I found that, even with a low wattage bulb intended for night lights, I had to have the dimmer pretty low to make sure the internal temperature of the chamber didn't get too high. The algae don't take kindly to temperatures much higher than 100F, so
+there was some careful calibration before I subjected any living cultures to this thing.
+<p>
+If I was going to add anything to this, it would be some kind of indicator under the knob to show what light strength (and accordingly, temperature) corresponds to what position of the knob. As it is, I have gotten into the habit
+of using little pieces of tape with numbers written on them, but I should be able to print something a little flashier than that out and stick it on there.
+<p>
+It may also be nice to install a digital thermometer inside the chamber to check internal temperature under various ambient room temperatures. So far I've never used in the incubator in an overly hot room, so I don't know how
+well it will behave in that case. My current method is to simply stick a temperature probe down one of the test
+tube holes, but that isn't as scientific as I'd like.
+
+
+<!-- End of "content" --!>
+</div>
+<!--#include virtual="/analytics.html" -->
+</body>
+</html>
